@@ -1,4 +1,8 @@
 # DocuCare - Health Records Management System
+#### Members:
+> - Apas, Andri M.
+> - Cartilla, Craig Matthew
+> - Tigley, Aeron Raye
 ## Overview of the Project
 "DocuCare" is a web-based Health Records Management System designed to improve healthcare delivery by efficiently managing patient information, appointments, billing, medication, and communication between healthcare providers and patients. The system aims to streamline healthcare processes, enhance patient care, and ensure easy access to critical health information for both patients and healthcare providers.
 
