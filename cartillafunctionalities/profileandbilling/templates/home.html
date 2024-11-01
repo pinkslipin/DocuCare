@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to Cartilla Functionalities</h1>
+    
+    {% if can_create_billing %}
+        <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
+    {% endif %}
+    
+    <a href="{% url 'register' %}">Create an Account</a>
+    <a href="{% url 'login' %}">Patient Login</a>
+</body>
+</html>

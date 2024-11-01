@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient List</title>
+</head>
+<body>
+    <h2>Patients</h2>
+    <a href="{% url 'home' %}">Back to Home</a>
+    <ul>
+        {% for patient in patients %}
+            <li>
+                {{ patient.username }} 
+                <a href="{% url 'view_patient' patient.id %}">View</a>
+                <a href="{% url 'update_patient' patient.id %}">Edit</a>
+                <a href="{% url 'delete_patient' patient.id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

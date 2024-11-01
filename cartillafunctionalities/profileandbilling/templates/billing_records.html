@@ -1,0 +1,40 @@
+<!-- billing_records.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Billing Records</title>
+    <style>
+        /* Inline styles for overdue records */
+        .overdue {
+            background-color: #ffdddd;  /* Light red background for overdue records */
+            border: 1px solid red;      /* Red border */
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Your Billing Records</h2>
+    <a href="{% url 'home' %}">Back to Home</a>
+    {% if records %}
+        {% for record in records %}
+            <div class="billing-record {% if record.due_date < today %}overdue{% endif %}">
+                <p>Description: {{ record.service_description }}</p>
+                <p>Amount Due: {{ record.amount_due }}</p>
+                <p>Amount Paid: {{ record.paid_amount }}</p>
+                <p>Balance Due: {{ record.balance_due }}</p>
+                <p>Status: {{ record.status }}</p>
+                <p>Due Date: {{ record.due_date }}</p>
+                {% if record.status != 'Paid' %}
+                    <a href="{% url 'process_payment' record.id %}">Pay Now</a>
+                {% else %}
+                    <p>Fully Paid</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No billing records found.</p>
+    {% endif %}
+</body>
+</html>

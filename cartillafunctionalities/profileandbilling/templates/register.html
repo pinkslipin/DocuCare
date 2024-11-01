@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <h1>Create a Patient Profile Account</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div style="color: red;">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label for="password1">Password:</label>
+        <input type="password" name="password1" required><br>
+
+        <label for="password2">Confirm Password:</label>
+        <input type="password" name="password2" required><br>
+
+        <label for="full_name">Full Name:</label>
+        <input type="text" name="full_name" required><br>
+
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" name="date_of_birth" required><br>
+
+        <label for="address">Address:</label>
+        <input type="text" name="address" required><br>
+
+        <label for="contact_number">Contact Number:</label>
+        <input type="tel" name="contact_number" required><br>
+
+        <label for="medical_history">Medical History (optional):</label>
+        <textarea name="medical_history"></textarea><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
