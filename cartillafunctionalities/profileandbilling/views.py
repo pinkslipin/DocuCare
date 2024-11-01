@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .forms import PatientRegistrationForm
+from .forms import PatientProfileForm, PatientRegistrationForm, BillingRecordForm, PaymentForm
+
 from datetime import date
-from .models import BillingRecord, Payment
+from .models import BillingRecord, PatientProfile, Payment
 from .forms import BillingRecordForm, PaymentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
@@ -24,9 +25,18 @@ def register(request):
     if request.method == 'POST':
         form = PatientRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
+            user = form.save()  # This will save the user and set the password
+        
+            # Create a PatientProfile for the new user
+            PatientProfile.objects.create(
+                user=user,
+                full_name=form.cleaned_data['full_name'],
+                date_of_birth=form.cleaned_data['date_of_birth'],
+                address=form.cleaned_data['address'],
+                contact_number=form.cleaned_data['contact_number'],
+                medical_history=form.cleaned_data['medical_history']
+            )
+
             messages.success(request, 'Account created successfully!')
             return redirect('login')
     else:
@@ -92,3 +102,42 @@ def process_payment(request, record_id):
     else:
         form = PaymentForm()
     return render(request, 'process_payment.html', {'form': form, 'billing_record': billing_record})
+
+##patient stuff
+
+@login_required
+def list_patients(request):
+    patients = User.objects.all()  # Assuming patients are User instances
+    return render(request, 'list_patients.html', {'patients': patients})
+
+@login_required
+def view_patient(request, patient_id):
+    # Get the PatientProfile associated with the User
+    patient_profile = get_object_or_404(PatientProfile, user__id=patient_id)
+    return render(request, 'view_patient.html', {'patient': patient_profile})
+
+@login_required
+def update_patient(request, patient_id):
+    patient_profile = get_object_or_404(PatientProfile, user__id=patient_id)
+    if request.method == 'POST':
+        form = PatientProfileForm(request.POST, instance=patient_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Patient profile updated successfully.')
+            return redirect('list_patients')
+        else:
+            messages.error(request, 'There were errors in your form. Please correct them.')
+
+    else:
+        form = PatientProfileForm(instance=patient_profile)
+
+    return render(request, 'update_patient.html', {'form': form, 'patient': patient_profile})
+
+@login_required
+def delete_patient(request, patient_id):
+    patient = get_object_or_404(User, id=patient_id)
+    if request.method == 'POST':
+        patient.delete()
+        messages.success(request, 'Patient profile deleted successfully.')
+        return redirect('list_patients')
+    return render(request, 'delete_patient.html', {'patient': patient})

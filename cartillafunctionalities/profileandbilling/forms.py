@@ -1,18 +1,19 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
-from .models import BillingRecord, Payment
+from .models import BillingRecord, PatientProfile, Payment
 
-class PatientRegistrationForm(forms.ModelForm):
+class PatientRegistrationForm(UserCreationForm):  # Inherit from UserCreationForm
     full_name = forms.CharField(max_length=100, required=True)
     date_of_birth = forms.DateField(required=True)
     address = forms.CharField(max_length=255, required=True)
     contact_number = forms.CharField(max_length=15, required=True)
-    medical_history = forms.CharField(widget=forms.Textarea, required=False)
+    medical_history = forms.CharField(widget=forms.Textarea, required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history']
+        fields = ['username', 'email', 'full_name', 'password1', 'password2']  # Add password fields
 
 class BillingRecordForm(forms.ModelForm):
     class Meta:
@@ -21,6 +22,11 @@ class BillingRecordForm(forms.ModelForm):
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+class PatientProfileForm(forms.ModelForm):
+    class Meta:
+        model = PatientProfile
+        fields = ['full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history']
 
 class PaymentForm(forms.ModelForm):
     class Meta:

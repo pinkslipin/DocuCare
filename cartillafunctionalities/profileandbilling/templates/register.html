@@ -8,14 +8,30 @@
     <form method="post">
         {% csrf_token %}
         
+        {% if form.errors %}
+            <div style="color: red;">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <label for="username">Username:</label>
         <input type="text" name="username" required><br>
 
         <label for="email">Email:</label>
         <input type="email" name="email" required><br>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br>
+        <label for="password1">Password:</label>
+        <input type="password" name="password1" required><br>
+
+        <label for="password2">Confirm Password:</label>
+        <input type="password" name="password2" required><br>
 
         <label for="full_name">Full Name:</label>
         <input type="text" name="full_name" required><br>

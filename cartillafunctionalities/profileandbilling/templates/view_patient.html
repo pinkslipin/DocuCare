@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Patient - {{ patient.username }}</title>
+</head>
+<body>
+    <h2>Patient Profile: {{ patient.user.username }}</h2>
+    <p><strong>Email:</strong> {{ patient.user.email }}</p>
+    <p><strong>Full Name:</strong> {{ patient.full_name }}</p>
+    <p><strong>Date of Birth:</strong> {{ patient.date_of_birth }}</p>
+    <p><strong>Address:</strong> {{ patient.address }}</p>
+    <p><strong>Contact Number:</strong> {{ patient.contact_number }}</p>
+    <p><strong>Medical History:</strong> {{ patient.medical_history }}</p>
+    
+    <a href="{% url 'update_patient' patient.user.id %}">Edit Patient</a>
+    <a href="{% url 'delete_patient' patient.user.id %}">Delete Patient</a>
+    <a href="{% url 'list_patients' %}">Back to Patient List</a>
+</body>
+</html>
