@@ -23,6 +23,10 @@ class BillingRecordForm(forms.ModelForm):
             'due_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user'].queryset = User.objects.exclude(is_staff=True)  # Exclude staff users if needed
+
 class PatientProfileForm(forms.ModelForm):
     class Meta:
         model = PatientProfile

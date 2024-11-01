@@ -1,0 +1,25 @@
+<h1>Your Billing Records</h1>
+<table>
+    <tr>
+        <th>Service Description</th>
+        <th>Amount Due</th>
+        <th>Paid Amount</th>
+        <th>Status</th>
+        <th>Action</th> <!-- New column for actions -->
+    </tr>
+    {% for record in records %}
+    <tr>
+        <td>{{ record.service_description }}</td>
+        <td>{{ record.amount_due }}</td>
+        <td>{{ record.paid_amount }}</td>
+        <td>{{ record.status }}</td>
+        <td>
+            {% if record.status != 'Paid' %}
+                <a href="{% url 'process_payment' record.id %}">Pay</a> <!-- Link to payment view -->
+            {% else %}
+                Paid
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
