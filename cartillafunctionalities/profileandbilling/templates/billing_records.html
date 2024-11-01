@@ -1,0 +1,9 @@
+<h2>Your Billing Records</h2>
+{% for record in records %}
+    <div>
+        <p>Description: {{ record.service_description }}</p>
+        <p>Amount Due: {{ record.amount_due }}</p>
+        <p>Due Date: {{ record.due_date }}</p>
+        <a href="{% url 'process_payment' record.id %}">Pay Now</a>
+    </div>
+{% endfor %}

@@ -1,0 +1,7 @@
+<h2>Process Payment for {{ billing_record.service_description }}</h2>
+<p>Amount Due: {{ billing_record.amount_due }}</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Payment</button>
+</form>
