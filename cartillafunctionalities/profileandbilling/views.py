@@ -9,6 +9,7 @@ from .models import BillingRecord, PatientProfile, Payment
 from .forms import BillingRecordForm, PaymentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import logout
 import logging
 
 
@@ -55,7 +56,7 @@ def login_view(request):
             if user.is_staff:
                 return redirect('billing_records')  # Redirect staff to billing records
             else:
-                return redirect('patient_billing_records')  # Redirect patients to their billing records
+                return redirect('user_home')  # Redirect patients
         else:
             messages.error(request, 'Invalid username or password')
             return render(request, 'login.html')
@@ -96,25 +97,30 @@ def create_billing_record(request):
 
 
 # View to process a payment
+# Make this view accessible to both patients and staff
 @login_required
-@user_passes_test(lambda u: u.is_staff)
 def process_payment(request, record_id):
     billing_record = get_object_or_404(BillingRecord, id=record_id)
+    # Ensure only the owner (patient) or staff can access
+    if request.user != billing_record.user and not request.user.is_staff:
+        return redirect('home')  # Redirect unauthorized users
+
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
             payment = form.save(commit=False)
             payment.billing_record = billing_record
             billing_record.paid_amount += payment.payment_amount
-            billing_record.update_status()  # Update the payment status
+            billing_record.update_status()
             payment.save()
             messages.success(request, 'Payment processed successfully.')
-            return redirect('billing_records')
+            return redirect('patient_billing_records')  # Redirect back to patient billing records
         else:
             messages.error(request, 'There was an issue with your payment.')
     else:
         form = PaymentForm()
     return render(request, 'process_payment.html', {'form': form, 'billing_record': billing_record})
+
 
 
 ##patient stuff
@@ -170,3 +176,13 @@ def patient_billing_records(request):
             record.status = 'Unpaid'
     
     return render(request, 'patient_billing_records.html', {'records': records})
+
+@login_required
+def user_home(request):
+    return render(request, 'user_home.html')
+
+@login_required
+def logout_view(request):
+    logout(request)  # This logs out the user
+    messages.success(request, 'You have been logged out successfully.')
+    return redirect('login')  # Redirect to the login page or home page

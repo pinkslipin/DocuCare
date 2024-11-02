@@ -1,6 +1,8 @@
+#profileandbilling/urls.py
+
 from django.urls import path
 from . import views
-from .views import patient_billing_records
+from .views import patient_billing_records, logout_view
 
 
 urlpatterns = [
@@ -15,5 +17,7 @@ urlpatterns = [
     path('patients/<int:patient_id>/', views.view_patient, name='view_patient'),  # View patient detail
     path('patients/<int:patient_id>/edit/', views.update_patient, name='update_patient'),  # Edit patient
     path('patients/<int:patient_id>/delete/', views.delete_patient, name='delete_patient'),  # Delete patient
+    path('user-home/', views.user_home, name='user_home'),  # User home page
+    path('logout/', logout_view, name='logout'),  # Logout page
 ]
 

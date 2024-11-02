@@ -36,3 +36,8 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['billing_record', 'payment_amount', 'payment_method']
+
+    def __init__(self, *args, **kwargs):
+        super(PaymentForm, self).__init__(*args, **kwargs)
+        # Filter out "Paid" billing records
+        self.fields['billing_record'].queryset = BillingRecord.objects.exclude(status='Paid')
