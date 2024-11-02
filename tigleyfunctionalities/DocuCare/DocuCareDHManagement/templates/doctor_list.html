@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Management</title>
+    <style>
+        .doctor-list {
+            margin-top: 20px;
+        }
+        .doctor-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .doctor-actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doctor Management</h1>
+
+    <!-- Create Doctor Form -->
+    <h2>Create Doctor</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+
+    <!-- List of Doctors -->
+    <div class="doctor-list">
+        <h2>Doctor List</h2>
+        <ul>
+            {% for doctor in doctors %}
+                <li class="doctor-item">
+                    {{ doctor.name }} - {{ doctor.specialization }}
+                    <div class="doctor-actions">
+                        <a href="{% url 'doctor_update' doctor.pk %}">Edit</a>
+                        <form method="post" action="{% url 'doctor_delete' doctor.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
