@@ -54,7 +54,7 @@ def login_view(request):
             login(request, user)
             messages.success(request, 'Logged in successfully!')
             if user.is_staff:
-                return redirect('billing_records')  # Redirect staff to billing records
+                return redirect('home')  # Redirect staff to billing records
             else:
                 return redirect('user_home')  # Redirect patients
         else:

@@ -10,7 +10,12 @@
         {{ form.as_p }}
         <button type="submit">Update Patient</button>
     </form>
-    <a href="{% url 'list_patients' %}">Cancel</a>
+    {% comment %} Conditional redirect based on user type {% endcomment %}
+    {% if request.user.is_staff %}
+        <a href="{% url 'list_patients' %}">Cancel</a>
+    {% else %}
+        <a href="{% url 'user_home' %}">Cancel</a>
+    {% endif %}
 
     {% if form.non_field_errors %}
         <div class="error">{{ form.non_field_errors }}</div>
