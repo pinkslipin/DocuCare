@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Home</title>
-</head>
-<body>
-    <h1>Welcome to Cartilla Functionalities</h1>
-    
-    {% if can_create_billing %}
-        <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
-    {% endif %}
-    
-    <a href="{% url 'register' %}">Create an Account</a>
-    <a href="{% url 'login' %}">Patient Login</a>
-</body>
-</html>
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to Cartilla Functionalities</h1>
+<a class="btn btn-primary" href="{% url 'register' %}">Create an Account</a>
+<a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
+{% endblock %}

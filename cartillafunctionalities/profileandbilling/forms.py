@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import PatientProfile
 
 from .models import BillingRecord, PatientProfile, Payment
 
@@ -23,12 +24,24 @@ class BillingRecordForm(forms.ModelForm):
             'due_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user'].queryset = User.objects.exclude(is_staff=True)  # Exclude staff users if needed
+
 class PatientProfileForm(forms.ModelForm):
+    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))  # Use a date input widget
+
     class Meta:
         model = PatientProfile
         fields = ['full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history']
 
+        
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['billing_record', 'payment_amount', 'payment_method']
+
+    def __init__(self, *args, **kwargs):
+        super(PaymentForm, self).__init__(*args, **kwargs)
+        # Filter out "Paid" billing records
+        self.fields['billing_record'].queryset = BillingRecord.objects.exclude(status='Paid')

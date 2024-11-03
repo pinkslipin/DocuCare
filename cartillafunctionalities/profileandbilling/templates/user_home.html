@@ -1,0 +1,13 @@
+<!-- user_home.html -->
+{% extends 'base.html' %}
+
+{% block title %}User Home{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ user.username }}!</h1>
+<div>
+    <a class="btn btn-info" href="{% url 'view_own_profile' %}">View Profile</a>
+    <a class="btn btn-warning" href="{% url 'patient_billing_records' %}">View Billing Records</a>
+    <a class="btn btn-danger" href="{% url 'logout' %}">Log Out</a>
+</div>
+{% endblock %}
