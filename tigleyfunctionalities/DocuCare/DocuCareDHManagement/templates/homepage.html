@@ -6,8 +6,15 @@
 <body>
     <h1>Welcome to DocuCare</h1>
     <p>Manage profiles of doctors and healthcare providers, assign doctors to patients, and maintain records of consultations and recommendations.</p>
+    
     <a href="{% url 'doctor_list' %}">
         <button>View Doctor List</button>
+    </a>
+    <a href="{% url 'edit_profile' %}">
+        <button>Edit Profile</button>
+    </a>
+    <a href="{% url 'medical_test_management' %}">
+        <button>Manage Medical Tests</button>
     </a>
     <a href="{% url 'logout' %}">
         <button>Logout</button>

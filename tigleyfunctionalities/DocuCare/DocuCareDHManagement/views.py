@@ -1,10 +1,9 @@
-from django.contrib.auth import logout
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import logout, login, authenticate
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .models import Doctor
-from .forms import DoctorForm, RegisterForm
+from .models import Doctor, MedicalTest
+from .forms import DoctorForm, EditProfileForm, MedicalTestForm, RegisterForm
 
 @login_required
 def homepage(request):
@@ -78,3 +77,57 @@ def doctor_delete(request, pk):
         doctor.delete()
         return redirect('doctor_list')
     return render(request, 'doctor_confirm_delete.html', {'doctor': doctor})
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    doctor = user.doctor  # Assuming there's a one-to-one relationship
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, user=user, instance=doctor)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view')  # Adjust the redirect as needed
+    else:
+        form = EditProfileForm(instance=doctor, user=user)
+
+    return render(request, 'edit_profile.html', {'form': form})
+
+@login_required
+def medical_test_management(request):
+    tests = MedicalTest.objects.all()
+    form = MedicalTestForm()
+    if request.method == "POST":
+        form = MedicalTestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('medical_test_management')
+    return render(request, 'medical_test_management.html', {'form': form, 'tests': tests})
+
+@login_required
+def medical_test_create(request):
+    if request.method == 'POST':
+        form = MedicalTestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('medical_test_management')
+    else:
+        form = MedicalTestForm()
+    return render(request, 'medical_test_form.html', {'form': form})
+
+@login_required
+def medical_test_update(request, test_id):
+    test = get_object_or_404(MedicalTest, id=test_id)
+    form = MedicalTestForm(request.POST or None, instance=test)
+    if form.is_valid():
+        form.save()
+        return redirect('medical_test_management')
+    return render(request, 'medical_test_form.html', {'form': form})
+
+@login_required
+def medical_test_delete(request, test_id):
+    test = get_object_or_404(MedicalTest, id=test_id)
+    if request.method == "POST":
+        test.delete()
+        return redirect('medical_test_management')
+    return render(request, 'medical_test_confirm_delete.html', {'test': test})
