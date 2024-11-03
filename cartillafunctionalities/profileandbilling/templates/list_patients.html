@@ -1,20 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Patient List</title>
-</head>
-<body>
-    <h2>Patients</h2>
-    <a href="{% url 'home' %}">Back to Home</a>
-    <ul>
-        {% for patient in patients %}
-            <li>
-                {{ patient.username }} 
-                <a href="{% url 'view_patient' patient.id %}">View</a>
-                <a href="{% url 'update_patient' patient.id %}">Edit</a>
-                <a href="{% url 'delete_patient' patient.id %}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+<!-- list_patients.html -->
+{% extends 'base.html' %}
+
+{% block title %}Patient List{% endblock %}
+
+{% block content %}
+<h2>Patients</h2>
+<a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
+<ul class="list-group">
+    {% for patient in patients %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ patient.username }} 
+            <div>
+                <a class="btn btn-info btn-sm" href="{% url 'view_patient' patient.id %}">View</a>
+                <a class="btn btn-warning btn-sm" href="{% url 'update_patient' patient.id %}">Edit</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'delete_patient' patient.id %}">Delete</a>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

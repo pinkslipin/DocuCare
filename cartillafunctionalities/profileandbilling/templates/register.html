@@ -1,56 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Register</title>
-</head>
-<body>
-    <h1>Create a Patient Profile Account</h1>
-    <form method="post">
-        {% csrf_token %}
-        
-        {% if form.errors %}
-            <div style="color: red;">
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                {% endfor %}
-                {% for error in form.non_field_errors %}
+<!-- register.html -->
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<h1>Create a Patient Profile Account</h1>
+<form method="post">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for field in form %}
+                {% for error in field.errors %}
                     <p>{{ error }}</p>
                 {% endfor %}
-            </div>
-        {% endif %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
+    <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" name="username" required><br>
-
+        <input class="form-control" type="text" name="username" required>
+    </div>
+    <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
-
+        <input class="form-control" type="email" name="email" required>
+    </div>
+    <div class="form-group">
         <label for="password1">Password:</label>
-        <input type="password" name="password1" required><br>
-
+        <input class="form-control" type="password" name="password1" required>
+    </div>
+    <div class="form-group">
         <label for="password2">Confirm Password:</label>
-        <input type="password" name="password2" required><br>
-
+        <input class="form-control" type="password" name="password2" required>
+    </div>
+    <div class="form-group">
         <label for="full_name">Full Name:</label>
-        <input type="text" name="full_name" required><br>
-
+        <input class="form-control" type="text" name="full_name" required>
+    </div>
+    <div class="form-group">
         <label for="date_of_birth">Date of Birth:</label>
-        <input type="date" name="date_of_birth" required><br>
-
+        <input class="form-control" type="date" name="date_of_birth" required>
+    </div>
+    <div class="form-group">
         <label for="address">Address:</label>
-        <input type="text" name="address" required><br>
-
+        <input class="form-control" type="text" name="address" required>
+    </div>
+    <div class="form-group">
         <label for="contact_number">Contact Number:</label>
-        <input type="tel" name="contact_number" required><br>
-
+        <input class="form-control" type="tel" name="contact_number" required>
+    </div>
+    <div class="form-group">
         <label for="medical_history">Medical History:</label>
-        <textarea name="medical_history"></textarea><br>
+        <textarea class="form-control" name="medical_history"></textarea>
+    </div>
 
-        <button type="submit">Register</button>
-    </form>
-
-    <a href="{% url 'home' %}">Back to Home</a>
-</body>
-</html>
+    <button class="btn btn-primary" type="submit">Register</button>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
+</form>
+{% endblock %}

@@ -132,20 +132,29 @@ def view_patient(request, patient_id):
 @login_required
 def update_patient(request, patient_id):
     patient_profile = get_object_or_404(PatientProfile, user__id=patient_id)
+    
     if request.method == 'POST':
         form = PatientProfileForm(request.POST, instance=patient_profile)
         if form.is_valid():
             form.save()
             messages.success(request, 'Patient profile updated successfully.')
-            return redirect('list_patients')
+            return redirect('list_patients')  # Redirect to patient list for admins
         else:
             messages.error(request, 'There were errors in your form. Please correct them.')
-
     else:
         form = PatientProfileForm(instance=patient_profile)
 
     return render(request, 'update_patient.html', {'form': form, 'patient': patient_profile})
 
+@login_required
+def cancel_update_patient(request, patient_id):
+    patient_profile = get_object_or_404(PatientProfile, user__id=patient_id)
+    
+    if request.user.is_staff:
+        return redirect('list_patients')  # Redirect to patient list for staff
+    else:
+        return redirect('view_own_profile')  # Redirect to own profile for patients
+    
 @login_required
 def delete_patient(request, patient_id):
     patient = get_object_or_404(User, id=patient_id)

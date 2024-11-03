@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Delete Patient - {{ patient.username }}</title>
-</head>
-<body>
-    <h2>Confirm Deletion of Patient: {{ patient.username }}</h2>
-    <p>Are you sure you want to delete this patient profile?</p>
-    <p><strong>Email:</strong> {{ patient.email }}</p>
-    
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Yes, Delete</button>
-    </form>
-    <a href="{% url 'list_patients' %}">Cancel</a>
-</body>
-</html>
+<!-- delete_patient.html -->
+{% extends 'base.html' %}
+
+{% block title %}Delete Patient{% endblock %}
+
+{% block content %}
+<h2>Confirm Deletion of Patient: {{ patient.username }}</h2>
+<p>Are you sure you want to delete this patient profile?</p>
+<p><strong>Email:</strong> {{ patient.email }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Yes, Delete</button>
+</form>
+<a class="btn btn-secondary" href="{% url 'list_patients' %}">Cancel</a>
+{% endblock %}

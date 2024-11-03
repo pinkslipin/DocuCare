@@ -1,15 +1,21 @@
+<!-- create_billing_record.html -->
+{% extends 'base.html' %}
+
+{% block title %}Create Billing Record{% endblock %}
+
+{% block content %}
 <h2>Create Billing Record</h2>
 {% if messages %}
-    <ul class="messages">
+    <div class="alert alert-info message">
         {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            <div>{{ message }}</div>
         {% endfor %}
-    </ul>
-    
+    </div>
 {% endif %}
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Create Record</button>
-    <a href="{% url 'home' %}">Back to Home</a>
+    <button class="btn btn-primary" type="submit">Create Record</button>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
 </form>
+{% endblock %}
