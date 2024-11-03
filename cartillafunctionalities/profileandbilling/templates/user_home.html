@@ -2,7 +2,7 @@
 <h1>Welcome, {{ user.username }}!</h1>
 
 <div>
-    <a href="{% url 'update_patient' user.id %}">Edit Profile</a>
+    <a href="{% url 'view_own_profile' %}">View Profile</a>
     <a href="{% url 'patient_billing_records' %}">View Billing Records</a>
     <a href="{% url 'logout' %}">Log Out</a>
 </div>

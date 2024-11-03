@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Home</title>
+</head>
+<body>
+    <h1>Welcome, Admin!</h1>
+    <a href="{% url 'create_billing_record' %}">Create Billing Record</a><br>
+    <a href="{% url 'list_patients' %}">View Patients List</a><br>
+    <a href="{% url 'register' %}">Create an Account</a><br>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>

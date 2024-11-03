@@ -4,6 +4,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit Payment</button>
+    <a href="{% url 'home' %}">Back to Home</a>
 </form>
 
 <script>

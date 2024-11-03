@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Profile - {{ patient.user.username }}</title>
+</head>
+<body>
+    <h2>Profile: {{ patient.user.username }}</h2>
+    <p><strong>Email:</strong> {{ patient.user.email }}</p>
+    <p><strong>Full Name:</strong> {{ patient.full_name }}</p>
+    <p><strong>Date of Birth:</strong> {{ patient.date_of_birth }}</p>
+    <p><strong>Address:</strong> {{ patient.address }}</p>
+    <p><strong>Contact Number:</strong> {{ patient.contact_number }}</p>
+    <p><strong>Medical History:</strong> {{ patient.medical_history }}</p>
+    
+    <a href="{% url 'update_patient' patient.user.id %}">Edit Profile</a>
+    <a href="{% url 'user_home' %}">Back to Home</a>
+</body>
+</html>
