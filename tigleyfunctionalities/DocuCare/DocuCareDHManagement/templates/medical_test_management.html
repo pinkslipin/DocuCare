@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medical Test Management</title>
+    <style>
+        .test-list {
+            margin-top: 20px;
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .test-actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Medical Test Management</h1>
+
+    <!-- Create Medical Test Form -->
+    <h2>Create Medical Test</h2>
+    <form method="post" action="{% url 'medical_test_create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+
+    <!-- List of Medical Tests -->
+    <div class="test-list">
+        <h2>Medical Test List</h2>
+        <ul>
+            {% for test in tests %}
+                <li class="test-item">
+                    {{ test.name }} - {{ test.description }} - ${{ test.price }}
+                    <div class="test-actions">
+                        <a href="{% url 'medical_test_update' test.pk %}">Edit</a>
+                        <form method="post" action="{% url 'medical_test_delete' test.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

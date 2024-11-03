@@ -1,0 +1,268 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In to your Account</title>
+    <!-- Add Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("{% static 'DocuCareDHManagement/resources/loginbg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-panel {
+            width: 100%;
+            background-color: rgba(100, 130, 173, 0.9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 70px;
+            width: 200px;
+        }
+
+        .back-button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .content {
+            display: flex;
+            width: 80%;
+            max-width: 1200px;
+            margin-top: 20px;
+            height: calc(100% - 60px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .login-box {
+            width: 50%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #333;
+        }
+
+        .login-box h4 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .login-box h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+            width: 100%;
+            position: relative; /* Added for positioning the icons */
+        }
+
+        .input-field input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            padding-right: 40px; /* Added padding to prevent text from overlapping with icon */
+        }
+
+        .password-icon {
+            position: absolute;
+            right: 10px; /* Position the icon inside the text field */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            height: 20px; /* Adjust size as needed */
+            width: auto; /* Adjust size as needed */
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .btn-primary {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+
+        .btn-google, .btn-facebook, .btn-apple {
+            width: 100%;
+            padding: 12px; /* Increased padding for bigger boxes */
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Increased font size */
+        }
+
+        .promo-box {
+            width: 50%;
+            background-color: rgba(100, 130, 173, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .promo-box h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .promo-box p {
+            font-size: 16px;
+        }
+
+        .register-link {
+            font-size: 14px;
+            color: black;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .register-link a {
+            font-weight: bold;
+            color: #333;
+            text-decoration: underline;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            let isPasswordVisible = false;
+
+            togglePassword.addEventListener('click', function() {
+                isPasswordVisible = !isPasswordVisible;
+                passwordInput.type = isPasswordVisible ? 'text' : 'password';
+                togglePassword.src = isPasswordVisible 
+                    ? "{% static 'DocuCareDHManagement/resources/hide_pass.png' %}" 
+                    : "{% static 'DocuCareDHManagement/resources/show_pass.png' %}";
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <!-- Top Panel -->
+    <div class="top-panel">
+        <div class="logo">
+            <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Login Box -->
+        <div class="login-box">
+            <h4>WELCOME BACK</h4>
+            <h2>Log In to your Account</h2>
+            
+            <form method="post">
+                {% csrf_token %}
+                <label for="email">Email</label>
+                <div class="input-field">
+                    <input type="text" id="email" name="username" placeholder="dr.johnny0" required>
+                </div>
+                
+                <label for="password">Password</label>
+                <div class="input-field password-container">
+                    <input type="password" id="password" name="password" placeholder="********" required>
+                    <img id="togglePassword" class="password-icon" src="{% static 'DocuCareDHManagement/resources/show_pass.png' %}" alt="Toggle Password Visibility">
+                </div>
+                
+                <div class="options">
+                    <label><input type="checkbox" name="remember"> Remember me</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn-primary">Continue</button>
+                
+                <p>Or</p>
+                
+                <button class="btn-google">Log In with Google</button>
+                <button class="btn-facebook">Log In with Facebook</button>
+                <button class="btn-apple">Log In with Apple</button>
+                
+                <div class="register-link">
+                    <p>New User? <a href="{% url 'register' %}">Create an account</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Promo Box -->
+        <div class="promo-box">
+            <h2>Building the Future...</h2>
+            <p>DocuCare here for you!</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

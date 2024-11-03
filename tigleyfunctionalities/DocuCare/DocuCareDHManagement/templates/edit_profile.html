@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Doctor Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url("{% static 'DocuCareDHManagement/resources/loginbg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(100, 130, 173, 0.8);
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+        .logo img {
+            height: 50px;
+            width: 50px;
+            margin-right: 10px;
+        }
+        .back-button {
+            padding: 10px;
+            text-align: right;
+            background-color: rgba(100, 130, 173, 0.8);
+        }
+        .back-button button {
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+        }
+        .form-container {
+            display: flex;
+            width: 100%;
+            padding: 20px;
+        }
+        .form-box {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            color: #333;
+        }
+        .form-box h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .form-box label {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #333;
+        }
+        .input-field {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+        }
+        .input-field input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .btn-primary {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
+            </div>
+            <h2>Edit Profile</h2>
+        </header>
+        <div class="back-button">
+            <button onclick="history.back()">← Go back</button>
+        </div>
+        <div class="form-container">
+            <div class="form-box">
+                <h2>Edit Your Profile</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
