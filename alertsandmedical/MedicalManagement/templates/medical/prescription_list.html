@@ -1,0 +1,45 @@
+{% extends 'medical/base.html' %}
+
+{% block title %}Prescriptions{% endblock %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+
+<a href="{% url 'medical:prescription_create' %}" class="button add-prescription">Add New Prescription</a>  <!-- Link to add prescription -->
+
+<table class="prescription-table">
+    <thead>
+        <tr>
+            <th>Appt. ID</th>
+            <th>Patient Name</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Prescription</th>
+            <th>Actions</th>
+            <th>Contact</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prescription in prescriptions %}
+        <tr>
+            <td>{{ prescription.appt_id }}</td>
+            <td>{{ prescription.patient.name }}</td>
+            <td>{{ prescription.date|date:"d.m.Y" }}</td>
+            <td>{{ prescription.time|time:"H:i" }}</td>
+            <td>{{ prescription.medication }}</td>
+            <td>
+                <button class="button edit">Edit</button>
+                <button class="button print">Print</button>
+            </td>
+            <td>
+                <button class="button message">Send Msg.</button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No prescriptions available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
