@@ -17,9 +17,9 @@ Including another URLconf
 # docucaremain/urls.py
 from django.contrib import admin
 from django.urls import path, include 
-from maincodes import views
+from profileandbilling import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('maincodes.urls')),  # Include the app URLs
+    path('', include('profileandbilling.urls')),  # Include the app URLs
 ]
