@@ -1,0 +1,26 @@
+<!-- process_payment.html -->
+{% extends 'base.html' %}
+
+{% block title %}Process Payment{% endblock %}
+
+{% block content %}
+<h2>Process Payment for {{ billing_record.service_description }}</h2>
+<p>Amount Due: {{ billing_record.balance_due }}</p>
+<form id="paymentForm" method="post" onsubmit="return validatePayment()">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Submit Payment</button>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
+</form>
+<script>
+    function validatePayment() {
+        const paymentAmount = parseFloat(document.querySelector('input[name="payment_amount"]').value);
+        const balanceDue = parseFloat("{{ billing_record.balance_due|floatformat:2 }}");
+        if (paymentAmount > balanceDue) {
+            alert("Payment amount cannot exceed balance due.");
+            return false;  // Prevent form submission
+        }
+        return confirm("Are you sure you want to submit this payment?");
+    }
+</script>
+{% endblock %}

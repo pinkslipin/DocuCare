@@ -1,0 +1,10 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to DocuCare</h1>
+<a class="btn btn-primary" href="{% url 'register' %}">Create an Account</a>
+<a class="btn btn-secondary" href="{% url 'login' %}">Login</a>
+{% endblock %}
