@@ -5,13 +5,9 @@ from django.contrib.auth.models import User
 from .models import Doctor, MedicalTest
 
 class DoctorForm(forms.ModelForm):
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)
-    email = forms.EmailField()
-
     class Meta:
         model = Doctor
-        fields = ['username', 'password', 'email', 'name', 'specialization', 'contact_info']
+        fields = ['name', 'specialization', 'contact_info']
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -85,4 +81,12 @@ class ConsultationForm(forms.ModelForm):
         fields = ['patient', 'doctor', 'date', 'description']
         widgets = {
             'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
         }

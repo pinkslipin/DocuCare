@@ -46,8 +46,6 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-from django.contrib.auth.models import User
-
 @login_required
 def doctor_list(request):
     if request.method == 'POST':
