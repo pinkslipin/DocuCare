@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Test Management</title>
+    <title>Book Consultation</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -26,12 +26,12 @@
             padding: 20px 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
-            height: 115%; /* Sidebar height dynamically matches the content */
+            height: 115%; /* Matches the content dynamically */
         }
 
         .sidebar img {
             max-width: 150px;
-            margin: 0 auto 20px auto; /* Center logo and add spacing below */
+            margin: 0 auto 20px auto;
         }
 
         .sidebar a {
@@ -66,18 +66,19 @@
             justify-content: space-between;
             padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 60px;
+            height: 70px; /* Increased height */
             flex-shrink: 0;
         }
 
-        .top-panel div:last-child {
-            margin-right: 30px; /* Ensure logout button is aligned further to the right */
+        .top-panel div {
+            display: flex;
+            align-items: center;
         }
 
         .content {
             display: flex;
             flex-grow: 1;
-            align-items: flex-start; /* Align sidebar and content at the top */
+            align-items: flex-start;
         }
 
         .main-content {
@@ -97,54 +98,36 @@
             margin-bottom: 20px;
         }
 
-        .main-content h2 {
-            font-size: 22px;
-            color: #7FA1C3;
-            margin-bottom: 10px;
-        }
-
-        .test-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .test-item {
-            margin-bottom: 15px;
+        .form-group {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #F5EDED;
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .test-actions a, .test-actions button {
-            margin-left: 10px;
-            color: #6482AD;
-            text-decoration: none;
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .test-actions a:hover, .test-actions button:hover {
-            color: #7FA1C3;
-        }
-
-        form button {
+        button {
             background-color: #6482AD;
             color: white;
             border: none;
-            padding: 10px 20px;
             border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        form button:hover {
+        button:hover {
             background-color: #7FA1C3;
+        }
+
+        a {
+            color: #6482AD;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        a:hover {
+            color: #7FA1C3;
         }
     </style>
 </head>
@@ -154,8 +137,8 @@
         <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
         <a href="{% url 'homepage' %}">Dashboard</a>
         <a href="{% url 'doctor_list' %}">Doctor List</a>
-        <a href="{% url 'medical_test_management' %}" class="active">Manage Medical Tests</a> <!-- Active class here -->
-        <a href="{% url 'book_consultation' %}">Book Consultation</a>
+        <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
+        <a href="{% url 'book_consultation' %}" class="active">Book Consultation</a> <!-- Active link -->
         <a href="{% url 'consultation_list' %}">Consultation List</a>
         <a href="{% url 'edit_profile' %}">Profile</a>
     </div>
@@ -170,34 +153,15 @@
         </div>
         <div class="content">
             <div class="main-content">
-                <h1>Medical Test Management</h1>
-
-                <!-- Create Medical Test Form -->
-                <h2>Create Medical Test</h2>
-                <form method="post" action="{% url 'medical_test_create' %}">
+                <h1>Book a Consultation</h1>
+                <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Save</button>
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit">Book</button>
                 </form>
-
-                <!-- List of Medical Tests -->
-                <div class="test-list">
-                    <h2>Medical Test List</h2>
-                    <ul>
-                        {% for test in tests %}
-                            <li class="test-item">
-                                {{ test.name }} - {{ test.description }} - Php {{ test.price }}
-                                <div class="test-actions">
-                                    <a href="{% url 'medical_test_update' test.pk %}">Edit</a>
-                                    <form method="post" action="{% url 'medical_test_delete' test.pk %}" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                <a href="{% url 'homepage' %}">Cancel</a>
             </div>
         </div>
     </div>

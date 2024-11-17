@@ -1,4 +1,3 @@
-# urls.py
 from django.urls import path
 from . import views
 
@@ -15,4 +14,6 @@ urlpatterns = [
     path('medical-tests/create/', views.medical_test_create, name='medical_test_create'),
     path('medical-tests/<int:test_id>/edit/', views.medical_test_update, name='medical_test_update'),
     path('medical-tests/<int:test_id>/delete/', views.medical_test_delete, name='medical_test_delete'),
+    path('consultations/book/', views.book_consultation, name='book_consultation'),
+    path('consultations/', views.consultation_list, name='consultation_list'),
 ]

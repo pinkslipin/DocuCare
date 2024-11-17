@@ -30,6 +30,7 @@ class Consultation(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateTimeField()
     notes = models.TextField()
+    description = models.TextField()  # Add description field
 
     def __str__(self):
         return f"Consultation on {self.date} with {self.doctor}"
