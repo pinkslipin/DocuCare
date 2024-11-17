@@ -12,7 +12,7 @@
             {{ patient.username }} 
             <div>
                 <a class="btn btn-info btn-sm" href="{% url 'view_patient' patient.id %}">View</a>
-                <a class="btn btn-warning btn-sm" href="{% url 'update_patient' patient.id %}">Edit</a>
+                <!-- <a class="btn btn-warning btn-sm" href="{% url 'update_patient' patient.id %}">Edit</a> -->
                 <a class="btn btn-danger btn-sm" href="{% url 'delete_patient' patient.id %}">Delete</a>
             </div>
         </li>
