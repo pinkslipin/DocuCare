@@ -5,9 +5,13 @@ from django.contrib.auth.models import User
 from .models import Doctor, MedicalTest
 
 class DoctorForm(forms.ModelForm):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField()
+
     class Meta:
         model = Doctor
-        fields = ['name', 'specialization', 'contact_info']
+        fields = ['username', 'password', 'email', 'name', 'specialization', 'contact_info']
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -61,7 +65,7 @@ class EditProfileForm(forms.ModelForm):
         user.email = self.cleaned_data['email']
 
         if self.cleaned_data['password']:
-            user.set_password(self.cleaned_data['password'])  # Set the new password
+            user.set_password(self.cleaned_data['password'])  
 
         if commit:
             user.save()
@@ -71,3 +75,14 @@ class MedicalTestForm(forms.ModelForm):
     class Meta:
         model = MedicalTest
         fields = ['name', 'description', 'price', 'availability']
+
+        from django import forms
+from .models import Consultation
+
+class ConsultationForm(forms.ModelForm):
+    class Meta:
+        model = Consultation
+        fields = ['patient', 'doctor', 'date', 'description']
+        widgets = {
+            'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }

@@ -14,54 +14,103 @@
             height: 100%;
             font-family: 'Poppins', sans-serif;
             display: flex;
-            justify-content: center;
-            align-items: center;
             background: url("{% static 'DocuCareDHManagement/resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
         }
-        .container {
-            width: 80%;
-            max-width: 900px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        .sidebar {
+            width: 250px;
+            background-color: #E2DAD6;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 20px 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            height: 115%; /* Sidebar height dynamically matches the content */
         }
-        .header {
+
+        .sidebar img {
+            max-width: 150px;
+            margin: 0 auto 20px auto; /* Center logo and add spacing below */
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #6482AD;
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #6482AD;
+            color: white;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-panel {
             width: 100%;
+            background-color: rgba(100, 130, 173, 0.9);
+            color: white;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .top-panel div:last-child {
+            margin-right: 30px; /* Ensure logout button is aligned further to the right */
+        }
+
+        .content {
+            display: flex;
+            flex-grow: 1;
+            align-items: flex-start; /* Align sidebar and content at the top */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
-            background-color: rgba(100, 130, 173, 0.8);
-            color: white;
-            position: relative;
-            z-index: 1;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
         }
-        .logo img {
-            height: 50px;
-            width: 50px;
-            margin-right: 10px;
+
+        .main-content h1 {
+            font-size: 28px;
+            color: #6482AD;
+            margin-bottom: 20px;
         }
-        .back-button {
-            padding: 10px;
-            text-align: right;
-            background-color: rgba(100, 130, 173, 0.8);
+
+        .main-content h2 {
+            font-size: 22px;
+            color: #7FA1C3;
+            margin-bottom: 10px;
         }
-        .back-button button {
-            background-color: transparent;
-            border: none;
-            font-size: 16px;
-            color: white;
-            cursor: pointer;
-        }
+
         .form-container {
             display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             width: 100%;
             padding: 20px;
         }
+
         .form-box {
             width: 100%;
             padding: 20px;
@@ -71,15 +120,13 @@
             align-items: flex-start;
             color: #333;
         }
-        .form-box h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
+
         .form-box label {
             font-size: 14px;
             margin-top: 10px;
             color: #333;
         }
+
         .input-field {
             display: flex;
             align-items: center;
@@ -89,6 +136,7 @@
             margin-top: 5px;
             width: 100%;
         }
+
         .input-field input {
             border: none;
             outline: none;
@@ -96,6 +144,7 @@
             padding: 10px;
             font-size: 16px;
         }
+
         .btn-primary {
             background-color: #6482AD;
             color: white;
@@ -106,30 +155,48 @@
             cursor: pointer;
             margin-top: 20px;
         }
+
         .btn-primary:hover {
             background-color: #4f6fbf;
         }
+
     </style>
 </head>
 <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
+        <a href="{% url 'homepage' %}">Dashboard</a>
+        <a href="{% url 'doctor_list' %}">Doctor List</a>
+        <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
+        <a href="{% url 'consultation_list' %}">Consultation List</a>
+        <a href="{% url 'book_consultation' %}">Book Consultation</a>
+        <a href="{% url 'edit_profile' %}"class="active">Profile</a>
+    </div>
+
+    <!-- Main Content -->
     <div class="container">
-        <header class="header">
-            <div class="logo">
-                <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
+        <div class="top-panel">
+            <div>Welcome, Craig!</div>
+            <div>
+                <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
             </div>
-            <h2>Edit Profile</h2>
-        </header>
-        <div class="back-button">
-            <button onclick="history.back()">← Go back</button>
         </div>
-        <div class="form-container">
-            <div class="form-box">
-                <h2>Edit Your Profile</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn-primary">Save Changes</button>
-                </form>
+        <div class="content">
+            <div class="main-content">
+                <h1>Doctor Profile</h1>
+
+                <!-- Edit Doctor Profile Form -->
+                <div class="form-container">
+                    <h2>Edit Your Profile</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-box">
+                            {{ form.as_p }}
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

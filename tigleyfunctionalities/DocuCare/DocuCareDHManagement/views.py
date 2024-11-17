@@ -2,8 +2,9 @@ from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .models import Doctor, MedicalTest
-from .forms import DoctorForm, EditProfileForm, MedicalTestForm, RegisterForm
+from .models import Consultation, Doctor, MedicalTest
+from .forms import ConsultationForm, DoctorForm, EditProfileForm, MedicalTestForm, RegisterForm
+from django.contrib.auth.models import User
 
 @login_required
 def homepage(request):
@@ -45,12 +46,23 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+from django.contrib.auth.models import User
+
 @login_required
 def doctor_list(request):
     if request.method == 'POST':
         form = DoctorForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'],
+                email=form.cleaned_data['email']
+            )
+            user.is_staff = True  # Make the user a staff member
+            user.save()
+            doctor = form.save(commit=False)
+            doctor.user = user
+            doctor.save()
             return redirect('doctor_list')
     else:
         form = DoctorForm()
@@ -74,20 +86,22 @@ def doctor_update(request, pk):
 def doctor_delete(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
     if request.method == 'POST':
+        user = doctor.user
         doctor.delete()
+        user.delete() 
         return redirect('doctor_list')
     return render(request, 'doctor_confirm_delete.html', {'doctor': doctor})
 
 @login_required
 def edit_profile(request):
     user = request.user
-    doctor = user.doctor  # Assuming there's a one-to-one relationship
+    doctor = user.doctor  
 
     if request.method == 'POST':
         form = EditProfileForm(request.POST, user=user, instance=doctor)
         if form.is_valid():
             form.save()
-            return redirect('profile_view')  # Adjust the redirect as needed
+            return redirect('profile_view')  
     else:
         form = EditProfileForm(instance=doctor, user=user)
 
@@ -131,3 +145,19 @@ def medical_test_delete(request, test_id):
         test.delete()
         return redirect('medical_test_management')
     return render(request, 'medical_test_confirm_delete.html', {'test': test})
+
+@login_required
+def book_consultation(request):
+    if request.method == 'POST':
+        form = ConsultationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'consultation_success.html')
+    else:
+        form = ConsultationForm()
+    return render(request, 'book_consultation.html', {'form': form})
+
+@login_required
+def consultation_list(request):
+    consultations = Consultation.objects.all()
+    return render(request, 'consultation_list.html', {'consultations': consultations})
