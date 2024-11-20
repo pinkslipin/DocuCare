@@ -26,9 +26,12 @@ urlpatterns = [
     # User-Specific Routes
     path('user-home/', views.user_home, name='user_home'),  # User Home
     path('profile/', views.view_own_profile, name='view_own_profile'),  # User Profile
+    path('profile/edit/', views.edit_own_profile, name='edit_own_profile'),  # Edit Own Profile
     path('patient-billing-records/', views.patient_billing_records, name='patient_billing_records'),  # Billing Records
     path('create-billing-record/', views.create_billing_record, name='create_billing_record'),  # Create Billing Record
     path('process-payment/<int:record_id>/', views.process_payment, name='process_payment'),  # Process Payment
+    path('billing-records/', views.billing_records, name='billing_records'),  # Billing Records
+    path('billing-records/delete/<int:record_id>/', views.delete_billing_record, name='delete_billing_record'),  # Delete Billing Record
 
     # Patient Management (Admin-Specific)
     path('patients/', views.list_patients, name='list_patients'),  # List Patients

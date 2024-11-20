@@ -17,6 +17,7 @@ class PatientRegistrationForm(UserCreationForm):
     address = forms.CharField(max_length=255, required=True)
     contact_number = forms.CharField(max_length=15, required=True)
     medical_history = forms.CharField(widget=forms.Textarea, required=False)
+    email = forms.EmailField(required=True)  # New email field
 
     class Meta:
         model = User
@@ -34,7 +35,8 @@ class PatientRegistrationForm(UserCreationForm):
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 address=self.cleaned_data['address'],
                 contact_number=self.cleaned_data['contact_number'],
-                medical_history=self.cleaned_data.get('medical_history', '')
+                medical_history=self.cleaned_data.get('medical_history', ''),
+                email=self.cleaned_data['email']  # Save email in PatientProfile
             )
         return user
 
@@ -75,10 +77,18 @@ class PaymentForm(forms.ModelForm):
 
 # Doctor Registration Form (Admin-Only)
 class DoctorForm(forms.ModelForm):
+    email = forms.EmailField(required=True)  # New email field
+
     class Meta:
         model = Doctor
-        fields = ['name', 'specialization', 'contact_info']
+        fields = ['name', 'specialization', 'contact_info', 'email']  # Include email field
 
+    def save(self, commit=True):
+        doctor = super().save(commit=False)
+        doctor.email = self.cleaned_data['email']  # Save email in Doctor
+        if commit:
+            doctor.save()
+        return doctor
 
 # Medical Test Form (Admin-Only)
 class MedicalTestForm(forms.ModelForm):

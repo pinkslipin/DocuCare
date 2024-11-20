@@ -7,6 +7,7 @@ class Doctor(models.Model):
     name = models.CharField(max_length=100)
     specialization = models.CharField(max_length=100)
     contact_info = models.CharField(max_length=100)
+    email = models.EmailField(max_length=254, unique=True,null=True, blank=True)  # New email field
 
     def __str__(self):
         return self.name
@@ -20,6 +21,8 @@ class PatientProfile(models.Model):
     address = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=15)
     medical_history = models.TextField(blank=True)
+    email = models.EmailField(max_length=254, unique=True,null=True, blank=True)  # New email field
+
 
     def __str__(self):
         return self.full_name

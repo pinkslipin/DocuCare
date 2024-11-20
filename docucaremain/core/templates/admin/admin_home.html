@@ -15,7 +15,7 @@
             height: 100%;
             font-family: 'Poppins', sans-serif;
             display: flex;
-            background: url("{% static 'DocuCareDHManagement/resources/loginbg.jpg' %}") no-repeat center center fixed;
+            background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -123,7 +123,11 @@
         <a href="{% url 'doctor_list' %}">Doctor List</a>
         <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
         <a href="{% url 'list_patients' %}">View Patients</a>
-        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a href="{% url 'book_consultation' %}">Book Consultation</a>
+        <a href="{% url 'consultation_list' %}">Consultation List</a>
+        <a href="{% url 'edit_profile' %}">Profile</a>
+        <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
+        <a href="{% url 'register_doctor' %}">Create an Account</a>
     </div>
 
     <!-- Main Content -->
@@ -136,138 +140,11 @@
         </div>
         <div class="content">
             <div class="main-content">
-                <h1>Welcome to Admin Dashboard</h1>
-                <a class="btn btn-primary" href="{% url 'create_billing_record' %}">Create Billing Record</a>
-                <a class="btn btn-secondary" href="{% url 'list_patients' %}">View Patients List</a>
-                <a class="btn btn-success" href="{% url 'register_doctor' %}">Create an Account</a>
-                <a class="btn btn-danger" href="{% url 'logout' %}">Logout</a>
+                <h1>Welcome to DocuCare</h1>
+                <p>Manage profiles of doctors and healthcare providers, assign doctors to patients, and maintain records of consultations and recommendations.</p>
             </div>
         </div>
     </div>
 </body>
 </html>
 
-<!-- admin_home.html better version
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Home - DocuCare</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            background: url("{% static 'DocuCareDHManagement/resources/loginbg.jpg' %}") no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        .sidebar {
-            width: 250px;
-            background-color: #E2DAD6;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar img {
-            max-width: 150px;
-            margin: 0 auto 20px auto;
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            color: #6482AD;
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            display: block;
-            border-radius: 5px;
-            font-weight: 500;
-        }
-
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #6482AD;
-            color: white;
-        }
-
-        .container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .top-panel {
-            width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 60px;
-        }
-
-        .content {
-            display: flex;
-            flex-grow: 1;
-            height: calc(100% - 60px);
-        }
-
-        .main-content {
-            flex-grow: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content h1 {
-            font-size: 28px;
-            color: #6482AD;
-            margin-bottom: 20px;
-        }
-
-        .main-content p {
-            font-size: 16px;
-        }
-    </style>
-</head>
-<body>
-    Sidebar 
-    <div class="sidebar">
-        <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
-        <a href="{% url 'admin_home' %}" class="active">Dashboard</a>
-        <a href="{% url 'doctor_list' %}">Doctor List</a>
-        <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
-        <a href="{% url 'list_patients' %}">View Patients</a>
-        <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
-        <a href="{% url 'register_doctor' %}">Create an Account</a>
-        <a href="{% url 'edit_profile' %}">Edit Profile</a>
-    </div>
-
-    Main Content 
-    <div class="container">
-        <div class="top-panel">
-            <div>Welcome, Admin!</div>
-        </div>
-        <div class="content">
-            <div class="main-content">
-                <h1>Welcome to Admin Dashboard</h1>
-                <p>Manage all aspects of the DocuCare system, including billing, patients, and doctor records.</p>
-            </div>
-        </div>
-    </div>
-</body>
-</html> -->

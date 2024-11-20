@@ -11,6 +11,6 @@
 <p><strong>Address:</strong> {{ patient.address }}</p>
 <p><strong>Contact Number:</strong> {{ patient.contact_number }}</p>
 <p><strong>Medical History:</strong> {{ patient.medical_history }}</p>
-<a class="btn btn-warning" href="{% url 'update_patient' patient.user.id %}">Edit Profile</a>
+<a class="btn btn-warning" href="{% url 'edit_own_profile' %}">Edit Profile</a>
 <a class="btn btn-info" href="{% url 'user_home' %}">Back to Home</a> <!-- New Back to User Home Button -->
 {% endblock %}

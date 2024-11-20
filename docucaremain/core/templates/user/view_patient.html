@@ -17,7 +17,7 @@
     </div>
     
     <div class="mt-4">
-        <a class="btn btn-warning" href="{% url 'update_patient' patient.user.id %}">Edit Patient</a>
+        <a class="btn btn-warning btn-sm" href="{% url 'update_patient' patient.id %}">Edit</a>
         <a class="btn btn-danger" href="{% url 'delete_patient' patient.user.id %}">Delete Patient</a>
         <a class="btn btn-secondary" href="{% url 'list_patients' %}">Back to Patient List</a>
     </div>

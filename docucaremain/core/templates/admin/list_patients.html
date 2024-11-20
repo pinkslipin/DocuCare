@@ -115,11 +115,11 @@
     <a href="{% url 'admin_home' %}">Dashboard</a>
     <a href="{% url 'doctor_list' %}">Doctor List</a>
     <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
-    <a href="{% url 'list_patients' %}">View Patients</a>
+    <a href="{% url 'list_patients' %}" class="active">View Patients</a>
     <a href="{% url 'book_consultation' %}">Book Consultation</a>
     <a href="{% url 'consultation_list' %}">Consultation List</a>
     <a href="{% url 'edit_profile' %}">Profile</a>
-    <a href="{% url 'create_billing_record' %}" class="active">Create Billing Record</a>
+    <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
     <a href="{% url 'register_doctor' %}">Create an Account</a>
 </div>
 
@@ -132,20 +132,20 @@
     </div>
     <div class="content">
         <div class="main-content">
-            <h2>Create Billing Record</h2>
-            {% if messages %}
-                <div class="alert alert-info message">
-                    {% for message in messages %}
-                        <div>{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-primary" type="submit">Create Record</button>
-                <a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
-            </form>
+            <h2>Patients</h2>
+            <a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
+            <ul class="list-group">
+                {% for patient in patients %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ patient.user.username }} 
+                        <div>
+                            <a class="btn btn-info btn-sm" href="{% url 'view_patient' patient.id %}">View</a>
+                            <!-- <a class="btn btn-warning btn-sm" href="{% url 'update_patient' patient.id %}">Edit</a> -->
+                            <a class="btn btn-danger btn-sm" href="{% url 'delete_patient' patient.id %}">Delete</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

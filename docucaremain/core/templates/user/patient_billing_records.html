@@ -6,12 +6,22 @@
 {% block content %}
 <h1>Your Billing Records</h1>
 <a class="btn btn-secondary" href="{% url 'user_home' %}">Back to Home</a>
+
+{% if messages %}
+    <div class="alert alert-info">
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Service Description</th>
-            <th>Amount Due</th>
+            <th>Total Amount Due</th>
             <th>Paid Amount</th>
+            <th>Balance Due</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -22,12 +32,16 @@
             <td>{{ record.service_description }}</td>
             <td>{{ record.amount_due }}</td>
             <td>{{ record.paid_amount }}</td>
+            <td>{{ record.balance_due }}</td>
             <td>{{ record.status }}</td>
             <td>
-                {% if record.status != 'Paid' %}
-                    <a class="btn btn-success btn-sm" href="{% url 'process_payment' record.id %}">Pay</a>
+                {% if record.status == 'Completed' %}
+                    <form method="post" action="{% url 'delete_billing_record' record.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form> 
                 {% else %}
-                    Paid
+                    <a class="btn btn-success btn-sm" href="{% url 'process_payment' record.id %}">Pay</a>
                 {% endif %}
             </td>
         </tr>

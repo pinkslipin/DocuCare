@@ -200,18 +200,31 @@ def view_own_profile(request):
 
 @login_required
 def patient_billing_records(request):
-    records = BillingRecord.objects.filter(user=request.user).exclude(status='Paid')
+    records = BillingRecord.objects.filter(patient__user=request.user)
     
     # Update the status based on amounts
     for record in records:
         if record.paid_amount > 0 and record.balance_due > 0:
             record.status = 'Partially Paid'
         elif record.balance_due == 0:
-            record.status = 'Paid'
+            record.status = 'Completed'
         else:
             record.status = 'Unpaid'
     
     return render(request, 'user/patient_billing_records.html', {'records': records})
+
+@login_required
+def delete_billing_record(request, record_id):
+    record = get_object_or_404(BillingRecord, id=record_id)
+    if record.patient.user == request.user:
+        if record.balance_due == 0.00:
+            record.delete()
+            messages.success(request, 'Billing record deleted successfully.')
+        else:
+            messages.error(request, 'You can only delete completed billing records.')
+    else:
+        messages.error(request, 'You do not have permission to delete this billing record.')
+    return redirect('patient_billing_records')
 
 # Create Billing Record (Admin-Only)
 # Only allow staff users to create billing records
@@ -222,7 +235,7 @@ def create_billing_record(request):
         if form.is_valid():
             billing_record = form.save(commit=False)
             billing_record.save()  # Save the billing record
-            messages.success(request, f'Billing record created successfully for {billing_record.user.username}.')
+            messages.success(request, f'Billing record created successfully for {billing_record.patient.user.username}.')
             return redirect('create_billing_record')  # Reload the same page
     else:
         form = BillingRecordForm()
@@ -242,7 +255,7 @@ def cancel_update_patient(request, patient_id):
 @user_passes_test(lambda u: u.is_staff)
 def list_patients(request):
     patients = PatientProfile.objects.all()
-    return render(request, 'user/list_patients.html', {'patients': patients})
+    return render(request, 'admin/list_patients.html', {'patients': patients})
 
 # Patient Profile (Admin or Self)
 @login_required
@@ -259,7 +272,7 @@ def update_patient(request, patient_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Patient profile updated successfully.')
-            return redirect('list_patients')
+            return redirect('view_patient', patient_id=patient.id)  # Redirect to view_patient
     else:
         form = PatientProfileForm(instance=patient)
     return render(request, 'user/update_patient.html', {'form': form, 'patient': patient})
@@ -288,7 +301,7 @@ def doctor_update(request, pk):
             return redirect('doctor_list')
     else:
         form = DoctorForm(instance=doctor)
-    return render(request, 'admin/doctor_form.html', {'form': form})
+    return render(request, 'admin/doctor_list.html', {'form': form}) #if ilisan nig doctor_form lain ang style mugawas
 
 # Delete Doctor (Admin-Only)
 @login_required
@@ -324,8 +337,8 @@ def process_payment(request, record_id):
             record.paid_amount += payment.payment_amount
             record.update_status()
             payment.save()
-            messages.success(request, 'Payment processed successfully.')
-            return redirect('billing_records')
+            messages.success(request, 'Payment was successful.')
+            return redirect('patient_billing_records')
     else:
         form = PaymentForm()
     return render(request, 'user/process_payment.html', {'form': form, 'record': record})
@@ -351,3 +364,16 @@ def consultation_list(request):
     else:
         consultations = Consultation.objects.filter(patient__user=request.user)
     return render(request, 'admin/consultation_list.html', {'consultations': consultations})
+
+@login_required
+def edit_own_profile(request):
+    patient = get_object_or_404(PatientProfile, user=request.user)
+    if request.method == 'POST':
+        form = PatientProfileForm(request.POST, instance=patient)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('view_own_profile')
+    else:
+        form = PatientProfileForm(instance=patient)
+    return render(request, 'user/update_patient.html', {'form': form, 'patient': patient})
