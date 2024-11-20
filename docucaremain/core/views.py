@@ -4,6 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.generic import ListView, CreateView
+from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView, DeleteView
 
 from .forms import (
     PatientProfileForm,
@@ -14,6 +17,7 @@ from .forms import (
     EditProfileForm,
     MedicalTestForm,
     ConsultationForm,
+    PrescriptionForm,
 )
 from .models import (
     BillingRecord,
@@ -22,6 +26,8 @@ from .models import (
     Doctor,
     MedicalTest,
     Consultation,
+    Prescription,
+    Patient,
 )
 
 def landing_page(request):
@@ -75,7 +81,7 @@ def register_doctor(request):
             doctor.user = user
             doctor.save()
             messages.success(request, 'Doctor account created successfully!')
-            return redirect('doctor_list')
+            return redirect('login')  # Redirect to login page
     else:
         user_form = UserCreationForm()
         doctor_form = DoctorForm()
@@ -301,7 +307,7 @@ def doctor_update(request, pk):
             return redirect('doctor_list')
     else:
         form = DoctorForm(instance=doctor)
-    return render(request, 'admin/doctor_list.html', {'form': form}) #if ilisan nig doctor_form lain ang style mugawas
+    return render(request, 'admin/doctor_list.html', {'form': form}) #if ilisan nig doctor_form lain ang style mugawas  
 
 # Delete Doctor (Admin-Only)
 @login_required
@@ -377,3 +383,41 @@ def edit_own_profile(request):
     else:
         form = PatientProfileForm(instance=patient)
     return render(request, 'user/update_patient.html', {'form': form, 'patient': patient})
+
+class PrescriptionListView(ListView):
+    model = Prescription
+    template_name = 'admin/prescription_list.html'
+    context_object_name = 'prescriptions'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Prescriptions'
+        return context
+
+class PrescriptionCreateView(CreateView):
+    model = Prescription
+    form_class = PrescriptionForm
+    template_name = 'admin/prescription_form.html'
+    success_url = reverse_lazy('prescription_list')  # Redirect to the list after adding
+
+    def form_valid(self, form):
+        # Get the patient name from the form input
+        patient_name = form.cleaned_data['patient_name']
+        
+        # Fetch or create a Patient instance by name
+        patient, created = Patient.objects.get_or_create(name=patient_name)
+        
+        # Assign the patient instance to the prescription before saving
+        form.instance.patient = patient
+        return super().form_valid(form)
+
+class PrescriptionUpdateView(UpdateView):
+    model = Prescription
+    form_class = PrescriptionForm
+    template_name = 'admin/prescription_form.html'
+    success_url = reverse_lazy('prescription_list')
+
+class PrescriptionDeleteView(DeleteView):
+    model = Prescription
+    template_name = 'admin/prescription_confirm_delete.html'
+    success_url = reverse_lazy('prescription_list')

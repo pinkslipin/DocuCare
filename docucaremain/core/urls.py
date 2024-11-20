@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import PrescriptionListView, PrescriptionCreateView, PrescriptionUpdateView, PrescriptionDeleteView
 
 urlpatterns = [
     # General Routes
@@ -39,4 +40,10 @@ urlpatterns = [
     path('patients/<int:patient_id>/edit/', views.update_patient, name='update_patient'),  # Edit Patient
     path('patients/<int:patient_id>/delete/', views.delete_patient, name='delete_patient'),  # Delete Patient
     path('patients/<int:patient_id>/cancel/', views.cancel_update_patient, name='cancel_update_patient'),  # Cancel Patient Update
+
+    # Prescription Routes
+    path('prescriptions/', PrescriptionListView.as_view(), name='prescription_list'),
+    path('prescriptions/new/', PrescriptionCreateView.as_view(), name='prescription_create'),
+    path('prescriptions/<int:pk>/edit/', PrescriptionUpdateView.as_view(), name='prescription_update'),
+    path('prescriptions/<int:pk>/delete/', PrescriptionDeleteView.as_view(), name='prescription_delete'),
 ]

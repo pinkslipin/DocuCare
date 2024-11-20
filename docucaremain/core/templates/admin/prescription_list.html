@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Management</title>
+    <title>Prescriptions - DocuCare</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -25,8 +25,6 @@
             flex-direction: column;
             padding: 20px 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            height: 115%; /* Sidebar height dynamically matches the content */
         }
 
         .sidebar img {
@@ -54,7 +52,6 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
         .top-panel {
@@ -67,7 +64,6 @@
             padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             height: 60px;
-            flex-shrink: 0;
         }
 
         .top-panel div:last-child {
@@ -77,7 +73,7 @@
         .content {
             display: flex;
             flex-grow: 1;
-            align-items: flex-start; /* Align sidebar and content at the top */
+            height: calc(100% - 60px);
         }
 
         .main-content {
@@ -97,64 +93,33 @@
             margin-bottom: 20px;
         }
 
-        .main-content h2 {
-            font-size: 22px;
-            color: #7FA1C3;
-            margin-bottom: 10px;
-        }
-
-        .doctor-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .doctor-list li {
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #F5EDED;
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .doctor-actions a, .doctor-actions button {
-            margin-left: 10px;
-            color: #6482AD;
-            text-decoration: none;
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .doctor-actions a:hover, .doctor-actions button:hover {
-            color: #7FA1C3;
-        }
-
-        form button {
-            background-color: #6482AD;
-            color: white;
-            border: none;
+        .main-content a {
+            display: inline-block;
+            margin: 10px 0;
             padding: 10px 20px;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
             border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        form button:hover {
-            background-color: #7FA1C3;
+            font-weight: 500;
         }
 
+        .btn-primary { background-color: #007bff; }
+        .btn-secondary { background-color: #6c757d; }
+        .btn-success { background-color: #28a745; }
+        .btn-danger { background-color: #dc3545; }
+
+        .btn-primary:hover, .btn-secondary:hover, 
+        .btn-success:hover, .btn-danger:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
+  
     <div class="sidebar">
         <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
-        <a href="{% url 'home' %}">Dashboard</a>
-        <a href="{% url 'doctor_list' %}" class="active">Doctor List</a>
+        <a href="{% url 'admin_home' %}">Dashboard</a>
+        <a href="{% url 'doctor_list' %}">Doctor List</a>
         <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
         <a href="{% url 'list_patients' %}">View Patients</a>
         <a href="{% url 'book_consultation' %}">Book Consultation</a>
@@ -162,47 +127,57 @@
         <a href="{% url 'edit_profile' %}">Profile</a>
         <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
         <a href="{% url 'register_doctor' %}">Create an Account</a>
-        <a href="{% url 'prescription_list' %}">Manage Prescriptions</a>
+        <a href="{% url 'prescription_list' %}" class="active">Manage Prescriptions</a>
     </div>
 
     <!-- Main Content -->
     <div class="container">
         <div class="top-panel">
-            <div>Welcome, Craig!</div>
+            <div>Welcome, Admin!</div>
             <div>
                 <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
             </div>
         </div>
         <div class="content">
             <div class="main-content">
-                <h1>Doctor Management</h1>
-
-                <!-- Create Doctor Form -->
-                <h2>Create Doctor</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Save</button>
-                </form>
-
-                <!-- List of Doctors -->
-                <div class="doctor-list">
-                    <h2>Doctor List</h2>
-                    <ul>
-                        {% for doctor in doctors %}
-                            <li class="doctor-item">
-                                {{ doctor.name }} - {{ doctor.specialization }}
-                                <div class="doctor-actions">
-                                    <a href="{% url 'doctor_update' doctor.pk %}">Edit</a>
-                                    <form method="post" action="{% url 'doctor_delete' doctor.pk %}" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit">Delete</button>
-                                    </form>
-                                </div>
-                            </li>
+                <h1>{{ page_title }}</h1>
+                <a href="{% url 'prescription_create' %}" class="button add-prescription">Add New Prescription</a>
+                <table class="prescription-table">
+                    <thead>
+                        <tr>
+                            <th>Appt. ID</th>
+                            <th>Patient Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Prescription</th>
+                            <th>Actions</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prescription in prescriptions %}
+                        <tr>
+                            <td>{{ prescription.appt_id }}</td>
+                            <td>{{ prescription.patient.name }}</td>
+                            <td>{{ prescription.date|date:"d.m.Y" }}</td>
+                            <td>{{ prescription.time|time:"H:i" }}</td>
+                            <td>{{ prescription.medication }}</td>
+                            <td>
+                                <a href="{% url 'prescription_update' prescription.pk %}" class="button edit">Edit</a>
+                                <a href="{% url 'prescription_delete' prescription.pk %}" class="button delete">Delete</a>
+                                <button class="button print">Print</button>
+                            </td>
+                            <td>
+                                <button class="button message">Send Msg.</button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">No prescriptions available.</td>
+                        </tr>
                         {% endfor %}
-                    </ul>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
