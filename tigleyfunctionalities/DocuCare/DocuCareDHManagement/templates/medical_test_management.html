@@ -103,6 +103,56 @@
             margin-bottom: 10px;
         }
 
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .input-field input, .input-field select, .input-field textarea {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+
+        .alert.alert-danger {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-text.text-muted {
+            font-size: 12px;
+            color: #666;
+        }
+
         .test-list ul {
             list-style: none;
             padding: 0;
@@ -154,7 +204,7 @@
         <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
         <a href="{% url 'homepage' %}">Dashboard</a>
         <a href="{% url 'doctor_list' %}">Doctor List</a>
-        <a href="{% url 'medical_test_management' %}" class="active">Manage Medical Tests</a> <!-- Active class here -->
+        <a href="{% url 'medical_test_management' %}" class="active">Manage Medical Tests</a>
         <a href="{% url 'book_consultation' %}">Book Consultation</a>
         <a href="{% url 'consultation_list' %}">Consultation List</a>
         <a href="{% url 'edit_profile' %}">Profile</a>
@@ -176,8 +226,40 @@
                 <h2>Create Medical Test</h2>
                 <form method="post" action="{% url 'medical_test_create' %}">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Save</button>
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}">Name:</label>
+                        <div class="input-field">
+                            {{ form.name }}
+                        </div>
+                        {% if form.name.errors %}
+                            <div class="alert alert-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+
+                        <label for="{{ form.description.id_for_label }}">Description:</label>
+                        <div class="input-field">
+                            {{ form.description }}
+                        </div>
+                        {% if form.description.errors %}
+                            <div class="alert alert-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+
+                        <label for="{{ form.price.id_for_label }}">Price:</label>
+                        <div class="input-field">
+                            {{ form.price }}
+                        </div>
+                        {% if form.price.errors %}
+                            <div class="alert alert-danger">{{ form.price.errors }}</div>
+                        {% endif %}
+
+                        <label for="{{ form.availability.id_for_label }}">Availability:</label>
+                        <div class="input-field">
+                            {{ form.availability }}
+                        </div>
+                        {% if form.availability.errors %}
+                            <div class="alert alert-danger">{{ form.availability.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn-primary">Save</button>
                 </form>
 
                 <!-- List of Medical Tests -->
