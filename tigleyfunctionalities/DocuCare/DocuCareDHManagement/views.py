@@ -1,9 +1,10 @@
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .models import Consultation, Doctor, MedicalTest
-from .forms import ConsultationForm, DoctorForm, EditProfileForm, MedicalTestForm, RegisterForm
+from .forms import ConsultationForm, DoctorForm, EditProfileForm, MedicalTestForm, RegisterForm, UserForm
 from django.contrib.auth.models import User
 
 @login_required
@@ -49,36 +50,51 @@ def logout_view(request):
 @login_required
 def doctor_list(request):
     if request.method == 'POST':
-        form = DoctorForm(request.POST)
-        if form.is_valid():
-            user = User.objects.create_user(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password'],
-                email=form.cleaned_data['email']
-            )
+        user_form = UserForm(request.POST)
+        doctor_form = DoctorForm(request.POST)
+        if user_form.is_valid() and doctor_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user_form.cleaned_data['password'])  # Set the password
             user.is_staff = True  # Make the user a staff member
             user.save()
-            doctor = form.save(commit=False)
+            doctor = doctor_form.save(commit=False)
             doctor.user = user
             doctor.save()
             return redirect('doctor_list')
     else:
-        form = DoctorForm()
+        user_form = UserForm()
+        doctor_form = DoctorForm()
     
     doctors = Doctor.objects.all()
-    return render(request, 'doctor_list.html', {'form': form, 'doctors': doctors})
+    return render(request, 'doctor_list.html', {
+        'user_form': user_form,
+        'doctor_form': doctor_form,
+        'doctors': doctors
+    })
 
 @login_required
 def doctor_update(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
+    user = doctor.user
     if request.method == 'POST':
-        form = DoctorForm(request.POST, instance=doctor)
-        if form.is_valid():
-            form.save()
+        user_form = UserForm(request.POST, instance=user)
+        doctor_form = DoctorForm(request.POST, instance=doctor)
+        if user_form.is_valid() and doctor_form.is_valid():
+            user = user_form.save(commit=False)
+            if user_form.cleaned_data['password']:
+                user.set_password(user_form.cleaned_data['password'])  # Hash the password
+                update_session_auth_hash(request, user)
+            user.save()
+            doctor_form.save()
             return redirect('doctor_list')
     else:
-        form = DoctorForm(instance=doctor)
-    return render(request, 'doctor_list.html', {'form': form, 'doctors': Doctor.objects.all()})
+        user_form = UserForm(instance=user)
+        doctor_form = DoctorForm(instance=doctor)
+    return render(request, 'doctor_list.html', {
+        'user_form': user_form,
+        'doctor_form': doctor_form,
+        'doctor_to_update': doctor
+    })
 
 @login_required
 def doctor_delete(request, pk):
@@ -93,13 +109,22 @@ def doctor_delete(request, pk):
 @login_required
 def edit_profile(request):
     user = request.user
-    doctor = user.doctor  
+    doctor = user.doctor  # Assumes a OneToOne relationship between User and Doctor
 
     if request.method == 'POST':
         form = EditProfileForm(request.POST, user=user, instance=doctor)
         if form.is_valid():
-            form.save()
-            return redirect('profile_view')  
+            # Save the form and update the User model if necessary
+            form.save(commit=False)  # Save the Doctor model changes
+            user.username = form.cleaned_data['username']
+            user.email = form.cleaned_data['email']
+            if form.cleaned_data['password']:
+                user.set_password(form.cleaned_data['password'])  # Update the password
+                update_session_auth_hash(request, user)  # Keep user logged in
+            user.save()  # Save User model changes
+            doctor.save()  # Save Doctor model changes
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('edit_profile')
     else:
         form = EditProfileForm(instance=doctor, user=user)
 
