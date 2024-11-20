@@ -1,7 +1,7 @@
-<!-- register.html -->
+<!-- register_patient.html -->
 {% extends 'base.html' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register Patient{% endblock %}
 
 {% block content %}
 <h1>Create a Patient Profile Account</h1>
@@ -23,39 +23,39 @@
 
     <div class="form-group">
         <label for="username">Username:</label>
-        <input class="form-control" type="text" name="username" required>
+        <input class="form-control" type="text" name="username" id="username" required>
     </div>
     <div class="form-group">
         <label for="email">Email:</label>
-        <input class="form-control" type="email" name="email" required>
+        <input class="form-control" type="email" name="email" id="email" required>
     </div>
     <div class="form-group">
         <label for="password1">Password:</label>
-        <input class="form-control" type="password" name="password1" required>
+        <input class="form-control" type="password" name="password1" id="password1" required>
     </div>
     <div class="form-group">
         <label for="password2">Confirm Password:</label>
-        <input class="form-control" type="password" name="password2" required>
+        <input class="form-control" type="password" name="password2" id="password2" required>
     </div>
     <div class="form-group">
         <label for="full_name">Full Name:</label>
-        <input class="form-control" type="text" name="full_name" required>
+        <input class="form-control" type="text" name="full_name" id="full_name" required>
     </div>
     <div class="form-group">
         <label for="date_of_birth">Date of Birth:</label>
-        <input class="form-control" type="date" name="date_of_birth" required>
+        <input class="form-control" type="date" name="date_of_birth" id="date_of_birth" required>
     </div>
     <div class="form-group">
         <label for="address">Address:</label>
-        <input class="form-control" type="text" name="address" required>
+        <input class="form-control" type="text" name="address" id="address" required>
     </div>
     <div class="form-group">
         <label for="contact_number">Contact Number:</label>
-        <input class="form-control" type="tel" name="contact_number" required>
+        <input class="form-control" type="tel" name="contact_number" id="contact_number" required>
     </div>
     <div class="form-group">
         <label for="medical_history">Medical History:</label>
-        <textarea class="form-control" name="medical_history"></textarea>
+        <textarea class="form-control" name="medical_history" id="medical_history"></textarea>
     </div>
 
     <button class="btn btn-primary" type="submit">Register</button>

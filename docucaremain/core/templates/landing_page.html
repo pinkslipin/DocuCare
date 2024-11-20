@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to DocuCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: #125B9A;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .option {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            width: 150px;
+            cursor: pointer;
+        }
+
+        .option img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .option a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .footer a {
+            color: #125B9A;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">DocuCare</div>
+        <h2>Tell us what you are:</h2>
+        <div class="options">
+            <div class="option">
+                <img src="{% static 'resources/doctor_icon.png' %}" alt="Doctor">
+                <a href="{% url 'login' %}">Doctor</a>
+            </div>
+            <div class="option">
+                <img src="{% static 'resources/patient_icon.png' %}" alt="Patient">
+                <a href="{% url 'register_patient' %}">Patient</a>
+            </div>
+        </div>
+        <div class="footer">
+            Have a problem? Don't hesitate to <a href="#">contact us</a>.
+        </div>
+    </div>
+</body>
+</html>

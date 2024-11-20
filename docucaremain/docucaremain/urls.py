@@ -17,9 +17,10 @@ Including another URLconf
 # docucaremain/urls.py
 from django.contrib import admin
 from django.urls import path, include 
-from profileandbilling import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('profileandbilling.urls')),  # Include the app URLs
+    # path('', include('profileandbilling.urls')),  # Include the app URLs
+    path('', include('core.urls')),  # Unified app for shared views
+
 ]

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register Doctor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="register-box">
+        <h4>WELCOME</h4>
+        <h2>Register a New Account</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="{{ user_form.username.id_for_label }}">Username:</label>
+            <div class="input-field">
+                {{ user_form.username }}
+            </div>
+            {% if user_form.username.errors %}
+                <div class="error">{{ user_form.username.errors }}</div>
+            {% endif %}
+
+            <label for="{{ user_form.email.id_for_label }}">Email:</label>
+            <div class="input-field">
+                {{ user_form.email }}
+            </div>
+            {% if user_form.email.errors %}
+                <div class="error">{{ user_form.email.errors }}</div>
+            {% endif %}
+
+            <label for="{{ user_form.password1.id_for_label }}">Password:</label>
+            <div class="input-field">
+                {{ user_form.password1 }}
+                <img src="{% static 'resources/show_pass.png' %}" class="show-hide-icon" alt="Show" id="togglePassword1" onclick="togglePassword('id_password1')">
+            </div>
+            {% if user_form.password1.errors %}
+                <div class="error">{{ user_form.password1.errors }}</div>
+            {% endif %}
+
+            <label for="{{ user_form.password2.id_for_label }}">Password confirmation:</label>
+            <div class="input-field">
+                {{ user_form.password2 }}
+                <img src="{% static 'resources/show_pass.png' %}" class="show-hide-icon" alt="Show" id="togglePassword2" onclick="togglePassword('id_password2')">
+            </div>
+            {% if user_form.password2.errors %}
+                <div class="error">{{ user_form.password2.errors }}</div>
+            {% endif %}
+
+            <label for="{{ doctor_form.name.id_for_label }}">Name:</label>
+            <div class="input-field">
+                {{ doctor_form.name }}
+            </div>
+            {% if doctor_form.name.errors %}
+                <div class="error">{{ doctor_form.name.errors }}</div>
+            {% endif %}
+
+            <label for="{{ doctor_form.specialization.id_for_label }}">Specialization:</label>
+            <div class="input-field">
+                {{ doctor_form.specialization }}
+            </div>
+            {% if doctor_form.specialization.errors %}
+                <div class="error">{{ doctor_form.specialization.errors }}</div>
+            {% endif %}
+
+            <label for="{{ doctor_form.contact_info.id_for_label }}">Contact Info:</label>
+            <div class="input-field">
+                {{ doctor_form.contact_info }}
+            </div>
+            {% if doctor_form.contact_info.errors %}
+                <div class="error">{{ doctor_form.contact_info.errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="btn-primary">Register</button>
+        </form>
+        <div class="register-link">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+    <div class="promo-box">
+        <h2>Building the Future...</h2>
+        <p>DocuCare here for you!</p>
+    </div>
+</div>
+{% endblock %}
