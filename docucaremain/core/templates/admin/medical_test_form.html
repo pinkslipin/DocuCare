@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ form.instance.pk|yesno:"Update Medical Test,Create Medical Test" }}</title>
+</head>
+<body>
+    <h1>{{ form.instance.pk|yesno:"Update Medical Test,Create Medical Test" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'medical_test_management' %}">Cancel</a>
+</body>
+</html>

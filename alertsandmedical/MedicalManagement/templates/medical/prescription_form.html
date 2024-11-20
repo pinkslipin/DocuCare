@@ -1,0 +1,31 @@
+<!-- templates/medical/prescription_form.html -->
+{% extends 'medical/base.html' %}
+
+{% block title %}Add a New Prescription{% endblock %}
+
+{% block content %}
+<h1>Add a New Prescription</h1>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    
+    <label for="id_appt_id">Appt ID:</label>
+    {{ form.appt_id }}
+
+    <label for="id_patient_name">Patient:</label>
+    {{ form.patient_name }}
+
+    <label for="id_date">Date:</label>
+    {{ form.date }}
+
+    <label for="id_time">Time:</label>
+    {{ form.time }}
+
+    <label for="id_medication">Medication:</label>
+    {{ form.medication }}
+
+    <button type="submit" class="button save">Save Prescription</button>
+    <a href="{% url 'medical:prescription_list' %}">Back to Prescription List</a>
+</form>
+
+{% endblock %}

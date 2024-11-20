@@ -9,16 +9,27 @@ from .models import BillingRecord, PatientProfile, Payment
 from .forms import BillingRecordForm, PaymentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import logout
+from django.shortcuts import render, redirect
 import logging
 
 
 # Home page view
-
-@login_required
 def home(request):
-    # Check if the user is a staff member
-    can_create_billing = request.user.is_staff
-    return render(request, 'home.html', {'can_create_billing': can_create_billing})
+    # If the user is logged in and is staff, redirect to the admin home page
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('admin_home')
+    elif request.user.is_authenticated:
+        return redirect('user_home')  # Redirect regular logged-in users to their user home
+
+    # If not authenticated, show the general home page
+    return render(request, 'home.html')
+
+# Admin home page view (restricted to staff only)
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def admin_home(request):
+    return render(request, 'admin_home.html')
 
 # Registration view
 def register(request):
@@ -52,20 +63,16 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Logged in successfully!')
-            return render(request, 'login_success.html')
+            if user.is_staff:
+                return redirect('admin_home')  # Redirect staff to billing records
+            else:
+                return redirect('user_home')  # Redirect patients
         else:
             messages.error(request, 'Invalid username or password')
             return render(request, 'login.html')
     return render(request, 'login.html')
 
 logger = logging.getLogger(__name__)
-# View to list all billing records for a user
-@login_required
-def billing_records(request):
-    records = BillingRecord.objects.filter(user=request.user)
-    today = date.today() 
-    logger.info(f"User: {request.user}, Billing Records: {records}")
-    return render(request, 'billing_records.html', {'records': records, 'today': today})
 
 # Only allow staff users to create billing records
 @user_passes_test(lambda u: u.is_staff)
@@ -74,34 +81,40 @@ def create_billing_record(request):
         form = BillingRecordForm(request.POST)
         if form.is_valid():
             billing_record = form.save(commit=False)
-            billing_record.user = request.user  # Assign the logged-in user
-            billing_record.save()
-            messages.success(request, 'Billing record created successfully.')
-            return redirect('billing_records')
+            billing_record.save()  # Save the billing record
+            messages.success(request, f'Billing record created successfully for {billing_record.user.username}.')
+            return redirect('create_billing_record')  # Reload the same page
     else:
         form = BillingRecordForm()
     return render(request, 'create_billing_record.html', {'form': form})
 
 
 # View to process a payment
+# Make this view accessible to both patients and staff
 @login_required
 def process_payment(request, record_id):
-    billing_record = get_object_or_404(BillingRecord, id=record_id, user=request.user)
+    billing_record = get_object_or_404(BillingRecord, id=record_id)
+    # Ensure only the owner (patient) or staff can access
+    if request.user != billing_record.user and not request.user.is_staff:
+        return redirect('home')  # Redirect unauthorized users
+
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
             payment = form.save(commit=False)
             payment.billing_record = billing_record
             billing_record.paid_amount += payment.payment_amount
-            billing_record.update_status()  # Update the payment status
+            billing_record.update_status()
             payment.save()
             messages.success(request, 'Payment processed successfully.')
-            return redirect('billing_records')
+            return redirect('patient_billing_records')  # Redirect back to patient billing records
         else:
             messages.error(request, 'There was an issue with your payment.')
     else:
         form = PaymentForm()
     return render(request, 'process_payment.html', {'form': form, 'billing_record': billing_record})
+
+
 
 ##patient stuff
 
@@ -119,20 +132,29 @@ def view_patient(request, patient_id):
 @login_required
 def update_patient(request, patient_id):
     patient_profile = get_object_or_404(PatientProfile, user__id=patient_id)
+    
     if request.method == 'POST':
         form = PatientProfileForm(request.POST, instance=patient_profile)
         if form.is_valid():
             form.save()
             messages.success(request, 'Patient profile updated successfully.')
-            return redirect('list_patients')
+            return redirect('list_patients')  # Redirect to patient list for admins
         else:
             messages.error(request, 'There were errors in your form. Please correct them.')
-
     else:
         form = PatientProfileForm(instance=patient_profile)
 
     return render(request, 'update_patient.html', {'form': form, 'patient': patient_profile})
 
+@login_required
+def cancel_update_patient(request, patient_id):
+    patient_profile = get_object_or_404(PatientProfile, user__id=patient_id)
+    
+    if request.user.is_staff:
+        return redirect('list_patients')  # Redirect to patient list for staff
+    else:
+        return redirect('view_own_profile')  # Redirect to own profile for patients
+    
 @login_required
 def delete_patient(request, patient_id):
     patient = get_object_or_404(User, id=patient_id)
@@ -141,3 +163,33 @@ def delete_patient(request, patient_id):
         messages.success(request, 'Patient profile deleted successfully.')
         return redirect('list_patients')
     return render(request, 'delete_patient.html', {'patient': patient})
+
+@login_required
+def patient_billing_records(request):
+    records = BillingRecord.objects.filter(user=request.user).exclude(status='Paid')
+    
+    # Update the status based on amounts
+    for record in records:
+        if record.paid_amount > 0 and record.balance_due > 0:
+            record.status = 'Partially Paid'
+        elif record.balance_due == 0:
+            record.status = 'Paid'
+        else:
+            record.status = 'Unpaid'
+    
+    return render(request, 'patient_billing_records.html', {'records': records})
+
+@login_required
+def user_home(request):
+    return render(request, 'user_home.html')
+
+@login_required
+def view_own_profile(request):
+    patient_profile = get_object_or_404(PatientProfile, user=request.user)
+    return render(request, 'view_own_profile.html', {'patient': patient_profile})
+
+@login_required
+def logout_view(request):
+    logout(request)  # This logs out the user
+    messages.success(request, 'You have been logged out successfully.')
+    return redirect('login')  # Redirect to the login page or home page

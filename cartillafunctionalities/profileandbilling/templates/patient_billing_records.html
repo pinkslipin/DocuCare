@@ -1,0 +1,37 @@
+<!-- patient_billing_records.html -->
+{% extends 'base.html' %}
+
+{% block title %}Your Billing Records{% endblock %}
+
+{% block content %}
+<h1>Your Billing Records</h1>
+<a class="btn btn-secondary" href="{% url 'user_home' %}">Back to Home</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Service Description</th>
+            <th>Amount Due</th>
+            <th>Paid Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.service_description }}</td>
+            <td>{{ record.amount_due }}</td>
+            <td>{{ record.paid_amount }}</td>
+            <td>{{ record.status }}</td>
+            <td>
+                {% if record.status != 'Paid' %}
+                    <a class="btn btn-success btn-sm" href="{% url 'process_payment' record.id %}">Pay</a>
+                {% else %}
+                    Paid
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

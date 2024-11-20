@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from .models import Doctor, MedicalTest
 
+from django import forms
+from .models import Consultation, Doctor, MedicalTest
+
 class DoctorForm(forms.ModelForm):
     class Meta:
         model = Doctor
@@ -71,9 +74,6 @@ class MedicalTestForm(forms.ModelForm):
     class Meta:
         model = MedicalTest
         fields = ['name', 'description', 'price', 'availability']
-
-        from django import forms
-from .models import Consultation
 
 class ConsultationForm(forms.ModelForm):
     class Meta:

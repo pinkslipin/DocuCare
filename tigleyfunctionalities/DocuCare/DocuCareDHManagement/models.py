@@ -5,7 +5,7 @@ class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     specialization = models.CharField(max_length=100)
-    contact_info = models.TextField()
+    contact_info = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -29,8 +29,8 @@ class Consultation(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     date = models.DateTimeField()
-    notes = models.TextField()
-    description = models.TextField()  # Add description field
+    notes = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000)  # Add description field
 
     def __str__(self):
         return f"Consultation on {self.date} with {self.doctor}"

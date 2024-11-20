@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+# URL where users are redirected to log in if they aren't authenticated
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/user-home/' # Redirect users to this URL after login
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
