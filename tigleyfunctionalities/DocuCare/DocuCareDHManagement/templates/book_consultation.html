@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Consultation</title>
+    <title>Book a Consultation</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -26,12 +26,12 @@
             padding: 20px 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
-            height: 115%; /* Matches the content dynamically */
+            height: 115%; /* Sidebar height dynamically matches the content */
         }
 
         .sidebar img {
             max-width: 150px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 20px auto; /* Center logo and add spacing below */
         }
 
         .sidebar a {
@@ -66,19 +66,20 @@
             justify-content: space-between;
             padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 60px; 
+
+            height: 70px; /* Increased height */
+
             flex-shrink: 0;
         }
 
-        .top-panel div {
-            display: flex;
-            align-items: center;
+        .top-panel div:last-child {
+            margin-right: 30px; /* Ensure logout button is aligned further to the right */
         }
 
         .content {
             display: flex;
             flex-grow: 1;
-            align-items: flex-start;
+            align-items: flex-start; /* Align sidebar and content at the top */
         }
 
         .main-content {
@@ -104,30 +105,48 @@
             gap: 15px;
         }
 
-        button {
+        .input-field {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .input-field input, .input-field select, .input-field textarea {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
             background-color: #6482AD;
             color: white;
             border: none;
+            padding: 10px;
+            width: 100%;
             border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
             cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #7FA1C3;
-        }
-
-        a {
-            color: #6482AD;
-            text-decoration: none;
-            font-weight: 500;
             margin-top: 20px;
-            display: inline-block;
         }
 
-        a:hover {
-            color: #7FA1C3;
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+
+        .alert.alert-danger {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-text.text-muted {
+            font-size: 12px;
+            color: #666;
         }
     </style>
 </head>
@@ -138,7 +157,7 @@
         <a href="{% url 'homepage' %}">Dashboard</a>
         <a href="{% url 'doctor_list' %}">Doctor List</a>
         <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
-        <a href="{% url 'book_consultation' %}" class="active">Book Consultation</a> <!-- Active link -->
+        <a href="{% url 'book_consultation' %}" class="active">Book Consultation</a>
         <a href="{% url 'consultation_list' %}">Consultation List</a>
         <a href="{% url 'edit_profile' %}">Profile</a>
     </div>
@@ -157,11 +176,40 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        {{ form.as_p }}
+                        <label for="{{ form.patient.id_for_label }}">Patient:</label>
+                        <div class="input-field">
+                            {{ form.patient }}
+                        </div>
+                        {% if form.patient.errors %}
+                            <div class="alert alert-danger">{{ form.patient.errors }}</div>
+                        {% endif %}
+
+                        <label for="{{ form.doctor.id_for_label }}">Doctor:</label>
+                        <div class="input-field">
+                            {{ form.doctor }}
+                        </div>
+                        {% if form.doctor.errors %}
+                            <div class="alert alert-danger">{{ form.doctor.errors }}</div>
+                        {% endif %}
+
+                        <label for="{{ form.date.id_for_label }}">Date:</label>
+                        <div class="input-field">
+                            {{ form.date }}
+                        </div>
+                        {% if form.date.errors %}
+                            <div class="alert alert-danger">{{ form.date.errors }}</div>
+                        {% endif %}
+
+                        <label for="{{ form.description.id_for_label }}">Description:</label>
+                        <div class="input-field">
+                            {{ form.description }}
+                        </div>
+                        {% if form.description.errors %}
+                            <div class="alert alert-danger">{{ form.description.errors }}</div>
+                        {% endif %}
                     </div>
-                    <button type="submit">Book</button>
+                    <button type="submit" class="btn-primary">Book</button>
                 </form>
-                <a href="{% url 'homepage' %}">Cancel</a>
             </div>
         </div>
     </div>

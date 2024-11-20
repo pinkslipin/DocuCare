@@ -103,13 +103,63 @@
             margin-bottom: 10px;
         }
 
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-field {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .input-field input, .input-field select, .input-field textarea {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+
+        .alert.alert-danger {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-text.text-muted {
+            font-size: 12px;
+            color: #666;
+        }
+
         .doctor-list ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .doctor-list li {
+        .doctor-item {
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
@@ -142,11 +192,10 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        
+
         form button:hover {
             background-color: #7FA1C3;
         }
-
     </style>
 </head>
 <body>
@@ -178,9 +227,56 @@
                 <form id="doctor-form" method="post" action="{% url 'doctor_list' %}">
                     {% csrf_token %}
                     <input type="hidden" id="doctor-id" name="doctor_id" value="">
-                    {{ user_form.as_p }}
-                    {{ doctor_form.as_p }}
-                    <button type="submit">Save</button>
+                    
+                    <label for="{{ user_form.username.id_for_label }}">Username:</label>
+                    <div class="input-field">
+                        {{ user_form.username }}
+                    </div>
+                    {% if user_form.username.errors %}
+                        <div class="alert alert-danger">{{ user_form.username.errors }}</div>
+                    {% endif %}
+
+                    <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                    <div class="input-field">
+                        {{ user_form.email }}
+                    </div>
+                    {% if user_form.email.errors %}
+                        <div class="alert alert-danger">{{ user_form.email.errors }}</div>
+                    {% endif %}
+
+                    <label for="{{ user_form.password.id_for_label }}">Password:</label>
+                    <div class="input-field">
+                        {{ user_form.password }}
+                    </div>
+                    {% if user_form.password.errors %}
+                        <div class="alert alert-danger">{{ user_form.password.errors }}</div>
+                    {% endif %}
+
+                    <label for="{{ doctor_form.name.id_for_label }}">Name:</label>
+                    <div class="input-field">
+                        {{ doctor_form.name }}
+                    </div>
+                    {% if doctor_form.name.errors %}
+                        <div class="alert alert-danger">{{ doctor_form.name.errors }}</div>
+                    {% endif %}
+
+                    <label for="{{ doctor_form.specialization.id_for_label }}">Specialization:</label>
+                    <div class="input-field">
+                        {{ doctor_form.specialization }}
+                    </div>
+                    {% if doctor_form.specialization.errors %}
+                        <div class="alert alert-danger">{{ doctor_form.specialization.errors }}</div>
+                    {% endif %}
+
+                    <label for="{{ doctor_form.contact_info.id_for_label }}">Contact Info:</label>
+                    <div class="input-field">
+                        {{ doctor_form.contact_info }}
+                    </div>
+                    {% if doctor_form.contact_info.errors %}
+                        <div class="alert alert-danger">{{ doctor_form.contact_info.errors }}</div>
+                    {% endif %}
+
+                    <button type="submit" class="btn-primary">Save</button>
                 </form>
 
                 <!-- List of Doctors -->

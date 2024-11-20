@@ -108,27 +108,32 @@ def doctor_delete(request, pk):
 
 @login_required
 def edit_profile(request):
-    user = request.user
-    doctor = user.doctor  # Assumes a OneToOne relationship between User and Doctor
+    user = request.user  # This refers to the User instance
+    doctor = get_object_or_404(Doctor, user=user)
 
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, user=user, instance=doctor)
-        if form.is_valid():
-            # Save the form and update the User model if necessary
-            form.save(commit=False)  # Save the Doctor model changes
-            user.username = form.cleaned_data['username']
-            user.email = form.cleaned_data['email']
-            if form.cleaned_data['password']:
-                user.set_password(form.cleaned_data['password'])  # Update the password
-                update_session_auth_hash(request, user)  # Keep user logged in
-            user.save()  # Save User model changes
-            doctor.save()  # Save Doctor model changes
+        user_form = EditProfileForm(request.POST, user=user, instance=doctor)
+        doctor_form = DoctorForm(request.POST, instance=doctor)
+        if user_form.is_valid() and doctor_form.is_valid():
+            # Save user-related fields
+            updated_user = user_form.save(commit=False)  # Save user-related fields without committing
+            user.username = user_form.cleaned_data['username']
+            user.email = user_form.cleaned_data['email']
+            if user_form.cleaned_data['password']:
+                user.set_password(user_form.cleaned_data['password'])  # Set password on the User object
+                update_session_auth_hash(request, user)  # Maintain session after password change
+            user.save()
+
+            # Save doctor-related fields
+            doctor_form.save()
             messages.success(request, 'Profile updated successfully.')
             return redirect('edit_profile')
     else:
-        form = EditProfileForm(instance=doctor, user=user)
+        user_form = EditProfileForm(instance=doctor, user=user)
+        doctor_form = DoctorForm(instance=doctor)
 
-    return render(request, 'edit_profile.html', {'form': form})
+    return render(request, 'edit_profile.html', {'user_form': user_form, 'doctor_form': doctor_form})
+
 
 @login_required
 def medical_test_management(request):
