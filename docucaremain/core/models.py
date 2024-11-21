@@ -20,7 +20,7 @@ class PatientProfile(models.Model):
     date_of_birth = models.DateField()
     address = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=15)
-    medical_history = models.TextField(blank=True)
+    medical_history = models.CharField(max_length=1000)
     email = models.EmailField(max_length=254, unique=True,null=True, blank=True)  # New email field
 
 

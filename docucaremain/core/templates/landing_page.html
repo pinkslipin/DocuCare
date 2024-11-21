@@ -4,58 +4,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to DocuCare</title>
+    <title>Landing Page - DocuCare</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             font-family: 'Poppins', sans-serif;
-            background-color: #f9f9f9;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
+            background-size: cover;
         }
 
-        .container {
-            text-align: center;
+        .top-panel {
+            width: 100%;
+            background-color: rgba(100, 130, 173, 0.9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            flex-shrink: 0;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 600;
-            color: #125B9A;
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 60px;
+            width: 180px;
+            margin-right: 10px;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container h2 {
+            font-size: 45px;
+            color: #6482AD;
+            margin-bottom: 50px;
+            opacity: 0.6;
         }
 
         .options {
             display: flex;
-            justify-content: center;
-            gap: 50px;
+            gap: 40px;
+            margin-bottom: 20px;
         }
 
         .option {
-            background: #ffffff;
+            background-color: rgba(255, 255, 255, 0.9);
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 60px;
             text-align: center;
-            width: 150px;
+            width: 400px;
+            height: 300px;
             cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .option:hover {
+            transform: scale(1.1);
         }
 
         .option img {
-            width: 80px;
-            height: 80px;
+            width: 150px;
+            height: 150px;
         }
 
         .option a {
             text-decoration: none;
-            font-size: 16px;
+            font-size: 24px;
             color: #333;
-            margin-top: 10px;
+            margin-top: 20px;
             display: inline-block;
+            opacity: 0.5;
         }
 
         .footer {
@@ -71,22 +114,45 @@
     </style>
 </head>
 <body>
+    <div class="top-panel">
+        <div class="logo">
+            <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
+        </div>
+    </div>
     <div class="container">
-        <div class="logo">DocuCare</div>
         <h2>Tell us what you are:</h2>
         <div class="options">
-            <div class="option">
-                <img src="{% static 'resources/doctor_icon.png' %}" alt="Doctor">
-                <a href="{% url 'login' %}">Doctor</a>
+            <div class="option" id="doctor-option">
+                <img src="{% static 'resources/doctor_i.png' %}" alt="Doctor">
+                <a href="#">Doctor</a>
             </div>
-            <div class="option">
-                <img src="{% static 'resources/patient_icon.png' %}" alt="Patient">
-                <a href="{% url 'register_patient' %}">Patient</a>
+            <div class="option" id="patient-option">
+                <img src="{% static 'resources/patient_i.png' %}" alt="Patient">
+                <a href="#">Patient</a>
             </div>
         </div>
         <div class="footer">
             Have a problem? Don't hesitate to <a href="#">contact us</a>.
         </div>
     </div>
+
+    <!-- Add your JavaScript code here -->
+    <script>
+        // Wait for the DOM to fully load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Select the elements by their IDs
+            const doctorOption = document.getElementById('doctor-option');
+            const patientOption = document.getElementById('patient-option');
+
+            // Attach event listeners to handle the redirection
+            doctorOption.addEventListener('click', function() {
+                window.location.href = "{% url 'login' %}";
+            });
+
+            patientOption.addEventListener('click', function() {
+                window.location.href = "{% url 'register_patient' %}";
+            });
+        });
+    </script>
 </body>
 </html>

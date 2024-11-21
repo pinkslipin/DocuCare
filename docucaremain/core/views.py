@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -57,12 +57,14 @@ def user_home(request):
 # Patient Registration View
 def register_patient(request):
     if request.method == 'POST':
+        user_form = UserCreationForm(request.POST)
         form = PatientRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Patient account created successfully!')
             return redirect('login')
     else:
+        user_form = UserCreationForm()
         form = PatientRegistrationForm()
     return render(request, 'register_patient.html', {'form': form})
 
@@ -156,19 +158,32 @@ def medical_test_delete(request, test_id):
 
 # Doctor Profile Edit (Admin-Only)
 @login_required
-@user_passes_test(lambda u: u.is_staff)
 def edit_profile(request):
-    user = request.user
+    user = request.user  # This refers to the User instance
     doctor = get_object_or_404(Doctor, user=user)
+
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=doctor, user=user)
-        if form.is_valid():
-            form.save()
+        user_form = EditProfileForm(request.POST, user=user, instance=doctor)
+        doctor_form = DoctorForm(request.POST, instance=doctor)
+        if user_form.is_valid() and doctor_form.is_valid():
+            # Save user-related fields
+            updated_user = user_form.save(commit=False)  # Save user-related fields without committing
+            user.username = user_form.cleaned_data['username']
+            user.email = user_form.cleaned_data['email']
+            if user_form.cleaned_data['password']:
+                user.set_password(user_form.cleaned_data['password'])  # Set password on the User object
+                update_session_auth_hash(request, user)  # Maintain session after password change
+            user.save()
+
+            # Save doctor-related fields
+            doctor_form.save()
             messages.success(request, 'Profile updated successfully.')
-            return redirect('admin_home')
+            return redirect('edit_profile')
     else:
-        form = EditProfileForm(instance=doctor, user=user)
-    return render(request, 'admin/edit_profile.html', {'form': form})
+        user_form = EditProfileForm(instance=doctor, user=user)
+        doctor_form = DoctorForm(instance=doctor)
+
+    return render(request, 'admin/edit_profile.html', {'user_form': user_form, 'doctor_form': doctor_form})
 
 # Medical Test Management (Admin-Only)
 @login_required
