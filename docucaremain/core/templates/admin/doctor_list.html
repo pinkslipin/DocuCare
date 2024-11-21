@@ -168,7 +168,7 @@
     <!-- Main Content -->
     <div class="container">
         <div class="top-panel">
-            <div>Welcome, Craig!</div>
+            <div>Welcome, {{ user.username }}!</div>
             <div>
                 <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
             </div>

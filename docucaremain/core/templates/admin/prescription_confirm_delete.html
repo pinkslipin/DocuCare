@@ -133,7 +133,7 @@
     <!-- Main Content -->
     <div class="container">
         <div class="top-panel">
-            <div>Welcome, Admin!</div>
+            <div>Welcome, {{ user.username }}!</div>
             <div>
                 <a href="{% url 'logout' %}" style="color: rgb(0, 0, 0); text-decoration: none;">Logout</a>
             </div>
