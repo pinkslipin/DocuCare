@@ -17,7 +17,7 @@ class PatientRegistrationForm(UserCreationForm):
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     address = forms.CharField(max_length=255, required=True)
     contact_number = forms.CharField(max_length=15, required=True)
-    medical_history = forms.CharField(widget=forms.Textarea, required=False)
+    medical_history = forms.CharField(max_length=1000, required=False)
     email = forms.EmailField(required=True)  # New email field
 
     class Meta:

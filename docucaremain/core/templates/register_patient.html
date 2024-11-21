@@ -1,64 +1,281 @@
-<!-- register_patient.html -->
-{% extends 'base.html' %}
-
-{% block title %}Register Patient{% endblock %}
-
-{% block content %}
-<h1>Create a Patient Profile Account</h1>
-<form method="post">
-    {% csrf_token %}
-    
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Patient</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center;
+            background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .top-panel {
+            width: 100%;
+            background-color: rgba(100, 130, 173, 0.9);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            position: relative; /* Adjust position for z-index */
+            z-index: 1; /* Ensure it stays above other elements */
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo img {
+            height: 70px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        .container {
+            width: 200%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px; /* Add space between header and content */
+        }
+        .register-box { /* Changed from login-box to register-box */
+            width: 50%; /* Increased width for registration box */
+            padding: 40px; /* Increased padding for a bigger box */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .register-box h4 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+            opacity: 0.5;
+        }
+        .register-box h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .register-box label {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #333;
+        }
+        .input-field {
+            position: relative; /* For positioning the icon */
+            width: 190%;
+            margin-top: 5px;
+        }
+        .input-field input, .input-field textarea {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            padding-right: 40px; /* Space for the icon */
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+        .input-field textarea {
+            height: 100px; /* Fixed height for textarea */
+            resize: none; /* Disable resizing */
+        }
+        .show-hide-icon {
+            width: 20px; /* Adjusted size for icons */
+            height: 20px;
+            cursor: pointer;
+            position: absolute;
+            right: -30px; /* Align to the right edge inside the input */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust vertical alignment */
+        }
+        .input-field input[type="date"]::-webkit-calendar-picker-indicator {
+            position: absolute;
+            right: -30px; /* Align to the right edge inside the input */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust vertical alignment */
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .btn-primary {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 210%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+        .promo-box {
+            width: 50%; /* Increased width for promotional box */
+            background-color: rgba(100, 130, 173, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .promo-box h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .promo-box p {
+            font-size: 16px;
+        }
+        .register-link {
+            font-size: 14px;
+            color: black;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .register-link a {
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-panel">
+        <div class="logo">
+            <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
         </div>
-    {% endif %}
+        <h2></h2>
+    </div>
+    <div class="container">
+        <div class="register-box"> <!-- Changed from login-box to register-box -->
+            <h4>WELCOME</h4>
+            <h2>Register a New Patient Account</h2>
+            <form method="post">
+                {% csrf_token %}
+                
+                <label for="username">Username:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="username" id="username" required>
+                </div>
+                {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors }}</div>
+                {% endif %}
 
-    <div class="form-group">
-        <label for="username">Username:</label>
-        <input class="form-control" type="text" name="username" id="username" required>
-    </div>
-    <div class="form-group">
-        <label for="email">Email:</label>
-        <input class="form-control" type="email" name="email" id="email" required>
-    </div>
-    <div class="form-group">
-        <label for="password1">Password:</label>
-        <input class="form-control" type="password" name="password1" id="password1" required>
-    </div>
-    <div class="form-group">
-        <label for="password2">Confirm Password:</label>
-        <input class="form-control" type="password" name="password2" id="password2" required>
-    </div>
-    <div class="form-group">
-        <label for="full_name">Full Name:</label>
-        <input class="form-control" type="text" name="full_name" id="full_name" required>
-    </div>
-    <div class="form-group">
-        <label for="date_of_birth">Date of Birth:</label>
-        <input class="form-control" type="date" name="date_of_birth" id="date_of_birth" required>
-    </div>
-    <div class="form-group">
-        <label for="address">Address:</label>
-        <input class="form-control" type="text" name="address" id="address" required>
-    </div>
-    <div class="form-group">
-        <label for="contact_number">Contact Number:</label>
-        <input class="form-control" type="tel" name="contact_number" id="contact_number" required>
-    </div>
-    <div class="form-group">
-        <label for="medical_history">Medical History:</label>
-        <textarea class="form-control" name="medical_history" id="medical_history"></textarea>
+                <label for="email">Email:</label>
+                <div class="input-field">
+                    <input class="form-control" type="email" name="email" id="email" required>
+                </div>
+                {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                {% endif %}
+
+                <label for="password1">Password:</label>
+                <div class="input-field">
+                    <input class="form-control" type="password" name="password1" id="password1" required>
+                    <img src="{% static 'resources/show_pass.png' %}" class="show-hide-icon" alt="Show" id="togglePassword1" onclick="togglePassword('password1')">
+                </div>
+                {% if form.password1.errors %}
+                    <div class="error">{{ form.password1.errors }}</div>
+                {% endif %}
+
+                <label for="password2">Confirm Password:</label>
+                <div class="input-field">
+                    <input class="form-control" type="password" name="password2" id="password2" required>
+                    <img src="{% static 'resources/show_pass.png' %}" class="show-hide-icon" alt="Show" id="togglePassword2" onclick="togglePassword('password2')">
+                </div>
+                {% if form.password2.errors %}
+                    <div class="error">{{ form.password2.errors }}</div>
+                {% endif %}
+
+                <label for="full_name">Full Name:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="full_name" id="full_name" required>
+                </div>
+                {% if form.full_name.errors %}
+                    <div class="error">{{ form.full_name.errors }}</div>
+                {% endif %}
+
+                <label for="date_of_birth">Date of Birth:</label>
+                <div class="input-field">
+                    <input class="form-control" type="date" name="date_of_birth" id="date_of_birth" required>
+                </div>
+                {% if form.date_of_birth.errors %}
+                    <div class="error">{{ form.date_of_birth.errors }}</div>
+                {% endif %}
+
+                <label for="address">Address:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="address" id="address" required>
+                </div>
+                {% if form.address.errors %}
+                    <div class="error">{{ form.address.errors }}</div>
+                {% endif %}
+
+                <label for="contact_number">Contact Number:</label>
+                <div class="input-field">
+                    <input class="form-control" type="tel" name="contact_number" id="contact_number" required>
+                </div>
+                {% if form.contact_number.errors %}
+                    <div class="error">{{ form.contact_number.errors }}</div>
+                {% endif %}
+
+                <label for="medical_history">Medical History:</label>
+                <div class="input-field">
+                    <textarea class="form-control" name="medical_history" id="medical_history"></textarea>
+                </div>
+                {% if form.medical_history.errors %}
+                    <div class="error">{{ form.medical_history.errors }}</div>
+                {% endif %}
+
+                <button type="submit" class="btn-primary">Register</button>
+            </form>
+            <div class="register-link">
+                <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+        <div class="promo-box">
+            <h2>Building the Future...</h2>
+            <p>DocuCare here for you!</p>
+        </div>
     </div>
 
-    <button class="btn btn-primary" type="submit">Register</button>
-    <a class="btn btn-secondary" href="{% url 'home' %}">Back to Home</a>
-</form>
-{% endblock %}
+    <script>
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const icon = document.getElementById(fieldId === 'password1' ? 'togglePassword1' : 'togglePassword2');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.src = "{% static 'resources/hide_pass.png' %}"; // Change to hide icon
+            } else {
+                passwordField.type = 'password';
+                icon.src = "{% static 'resources/show_pass.png' %}"; // Change to show icon
+            }
+        }
+    </script>
+</body>
+</html>

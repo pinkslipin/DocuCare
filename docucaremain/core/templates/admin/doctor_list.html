@@ -177,14 +177,6 @@
             <div class="main-content">
                 <h1>Doctor Management</h1>
 
-                <!-- Create Doctor Form -->
-                <h2>Create Doctor</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Save</button>
-                </form>
-
                 <!-- List of Doctors -->
                 <div class="doctor-list">
                     <h2>Doctor List</h2>
