@@ -1,232 +1,47 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book a Consultation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
-            background-size: cover;
-        }
+{% extends 'base.html' %}
 
-        .sidebar {
-            width: 250px;
-            background-color: #E2DAD6;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            height: 115%; /* Sidebar height dynamically matches the content */
-        }
+{% block title %}Book a Consultation{% endblock %}
 
-        .sidebar img {
-            max-width: 150px;
-            margin: 0 auto 20px auto; /* Center logo and add spacing below */
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            color: #6482AD;
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            display: block;
-            border-radius: 5px;
-            font-weight: 500;
-        }
-
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #6482AD;
-            color: white;
-        }
-
-        .container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .top-panel {
-            width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 60px;
-            flex-shrink: 0;
-        }
-
-        .top-panel div:last-child {
-            margin-right: 30px; /* Ensure logout button is aligned further to the right */
-        }
-
-        .content {
-            display: flex;
-            flex-grow: 1;
-            align-items: flex-start; /* Align sidebar and content at the top */
-        }
-
-        .main-content {
-            flex-grow: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content h1 {
-            font-size: 28px;
-            color: #6482AD;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .input-field {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
-        }
-
-        .input-field input, .input-field select, .input-field textarea {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        .btn-primary {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .btn-primary:hover {
-            background-color: #4f6fbf;
-        }
-
-        .alert.alert-danger {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .form-text.text-muted {
-            font-size: 12px;
-            color: #666;
-        }
-
-        a {
-            color: #6482AD;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-        a:hover {
-            color: #7FA1C3;
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
-        <a href="{% url 'admin_home' %}">Dashboard</a>
-        <a href="{% url 'doctor_list' %}">Doctor List</a>
-        <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
-        <a href="{% url 'list_patients' %}">View Patients</a>
-        <a href="{% url 'book_consultation' %}" class="active">Book Consultation</a>
-        <a href="{% url 'consultation_list' %}">Consultation List</a>
-        <a href="{% url 'edit_profile' %}">Profile</a>
-        <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
-        <a href="{% url 'register_doctor' %}">Create an Account</a>
-        <a href="{% url 'prescription_list' %}">Manage Prescriptions</a>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="top-panel">
-            <div>Welcome, {{ user.username }}!</div>
-            <div>
-                <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
+{% block content %}
+<div class="main-content">
+    <h1>Book a Consultation</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.patient.id_for_label }}">Patient:</label>
+            <div class="input-field">
+                {{ form.patient }}
             </div>
-        </div>
-        <div class="content">
-            <div class="main-content">
-                <h1>Book a Consultation</h1>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="{{ form.patient.id_for_label }}">Patient:</label>
-                        <div class="input-field">
-                            {{ form.patient }}
-                        </div>
-                        {% if form.patient.errors %}
-                            <div class="alert alert-danger">{{ form.patient.errors }}</div>
-                        {% endif %}
+            {% if form.patient.errors %}
+                <div class="alert alert-danger">{{ form.patient.errors }}</div>
+            {% endif %}
 
-                        <label for="{{ form.doctor.id_for_label }}">Doctor:</label>
-                        <div class="input-field">
-                            {{ form.doctor }}
-                        </div>
-                        {% if form.doctor.errors %}
-                            <div class="alert alert-danger">{{ form.doctor.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ form.date.id_for_label }}">Date:</label>
-                        <div class="input-field">
-                            {{ form.date }}
-                        </div>
-                        {% if form.date.errors %}
-                            <div class="alert alert-danger">{{ form.date.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ form.description.id_for_label }}">Description:</label>
-                        <div class="input-field">
-                            {{ form.description }}
-                        </div>
-                        {% if form.description.errors %}
-                            <div class="alert alert-danger">{{ form.description.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <button type="submit" class="btn-primary">Book</button>
-                </form>
-                <a href="{% url 'home' %}">Cancel</a>
+            <label for="{{ form.doctor.id_for_label }}">Doctor:</label>
+            <div class="input-field">
+                {{ form.doctor }}
             </div>
+            {% if form.doctor.errors %}
+                <div class="alert alert-danger">{{ form.doctor.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.date.id_for_label }}">Date:</label>
+            <div class="input-field">
+                {{ form.date }}
+            </div>
+            {% if form.date.errors %}
+                <div class="alert alert-danger">{{ form.date.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.description.id_for_label }}">Description:</label>
+            <div class="input-field">
+                {{ form.description }}
+            </div>
+            {% if form.description.errors %}
+                <div class="alert alert-danger">{{ form.description.errors }}</div>
+            {% endif %}
         </div>
-    </div>
-</body>
-</html>
+        <button type="submit" class="btn-primary">Book</button>
+    </form>
+    <a href="{% url 'home' %}">Cancel</a>
+</div>
+{% endblock %}

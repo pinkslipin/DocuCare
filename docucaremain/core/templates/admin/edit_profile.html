@@ -1,274 +1,76 @@
+
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Doctor Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            background: url("{% static 'DocuCareDHManagement/resources/loginbg.jpg' %}") no-repeat center center fixed;
-            background-size: cover;
-        }
+{% block title %}Edit Doctor Profile{% endblock %}
 
-        .sidebar {
-            width: 250px;
-            background-color: #E2DAD6;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            height: 115%; /* Sidebar height dynamically matches the content */
-        }
+{% block content %}
+<div class="main-content">
+    <h1>Doctor Profile</h1>
 
-        .sidebar img {
-            max-width: 150px;
-            margin: 0 auto 20px auto; /* Center logo and add spacing below */
-        }
+    <!-- Edit Doctor Profile Form -->
+    <div class="form-container">
+        <h2>Edit Your Profile</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="{{ doctor_form.name.id_for_label }}">Name:</label>
+            <div class="input-field">
+                {{ doctor_form.name }}
+            </div>
+            {% if doctor_form.name.errors %}
+                <div class="error">{{ doctor_form.name.errors }}</div>
+            {% endif %}
 
-        .sidebar a {
-            text-decoration: none;
-            color: #6482AD;
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            display: block;
-            border-radius: 5px;
-            font-weight: 500;
-        }
+            <label for="{{ user_form.username.id_for_label }}">Username:</label>
+            <div class="input-field">
+                {{ user_form.username }}
+            </div>
+            {% if user_form.username.errors %}
+                <div class="error">{{ user_form.username.errors }}</div>
+            {% endif %}
 
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #6482AD;
-            color: white;
-        }
+            <label for="{{ user_form.email.id_for_label }}">Email:</label>
+            <div class="input-field">
+                {{ user_form.email }}
+            </div>
+            {% if user_form.email.errors %}
+                <div class="error">{{ user_form.email.errors }}</div>
+            {% endif %}
 
-        .container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+            <label for="{{ doctor_form.specialization.id_for_label }}">Specialization:</label>
+            <div class="input-field">
+                {{ doctor_form.specialization }}
+            </div>
+            {% if doctor_form.specialization.errors %}
+                <div class="error">{{ doctor_form.specialization.errors }}</div>
+            {% endif %}
 
-        .top-panel {
-            width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 60px;
-            flex-shrink: 0;
-        }
+            <label for="{{ doctor_form.contact_info.id_for_label }}">Contact Info:</label>
+            <div class="input-field">
+                {{ doctor_form.contact_info }}
+            </div>
+            {% if doctor_form.contact_info.errors %}
+                <div class="error">{{ doctor_form.contact_info.errors }}</div>
+            {% endif %}
 
-        .top-panel div:last-child {
-            margin-right: 30px; /* Ensure logout button is aligned further to the right */
-        }
+            <label for="{{ user_form.password.id_for_label }}">Password:</label>
+            <div class="input-field">
+                {{ user_form.password }}
+            </div>
+            {% if user_form.password.errors %}
+                <div class="error">{{ user_form.password.errors }}</div>
+            {% endif %}
 
-        .content {
-            display: flex;
-            flex-grow: 1;
-            align-items: flex-start; /* Align sidebar and content at the top */
-        }
+            <label for="{{ user_form.password_confirmation.id_for_label }}">Password confirmation:</label>
+            <div class="input-field">
+                {{ user_form.password_confirmation }}
+            </div>
+            {% if user_form.password_confirmation.errors %}
+                <div class="error">{{ user_form.password_confirmation.errors }}</div>
+            {% endif %}
 
-        .main-content {
-            flex-grow: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content h1 {
-            font-size: 28px;
-            color: #6482AD;
-            margin-bottom: 20px;
-        }
-
-        .main-content h2 {
-            font-size: 22px;
-            color: #7FA1C3;
-            margin-bottom: 10px;
-        }
-
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-            padding: 20px;
-        }
-
-        .form-box {
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            color: #333;
-        }
-
-        .form-box label {
-            font-size: 14px;
-            margin-top: 10px;
-            color: #333;
-        }
-
-        .input-field {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
-        }
-
-        .input-field input {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        .btn-primary {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .btn-primary:hover {
-            background-color: #4f6fbf;
-        }
-
-        .show-hide-icon {
-        width: 20px; /* Adjusted size for icons */
-        height: 20px;
-        cursor: pointer;
-        position: absolute;
-        right: 10px; /* Align to the right edge inside the input */
-        top: 50%; /* Center vertically */
-        transform: translateY(-50%); /* Adjust vertical alignment */
-    }
-
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <img src="{% static 'DocuCareDHManagement/resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
-        <a href="{% url 'admin_home' %}">Dashboard</a>
-        <a href="{% url 'doctor_list' %}">Doctor List</a>
-        <a href="{% url 'medical_test_management' %}">Manage Medical Tests</a>
-        <a href="{% url 'list_patients' %}">View Patients</a>
-        <a href="{% url 'book_consultation' %}">Book Consultation</a>
-        <a href="{% url 'consultation_list' %}">Consultation List</a>
-        <a href="{% url 'edit_profile' %}" class="active">Profile</a>
-        <a href="{% url 'create_billing_record' %}">Create Billing Record</a>
-        <a href="{% url 'register_doctor' %}">Create an Account</a>
-        <a href="{% url 'prescription_list' %}">Manage Prescriptions</a>
+            <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
     </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="top-panel">
-            <div>Welcome, {{ user.username }}!</div>
-            <div>
-                <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
-            </div>
-        </div>
-        <div class="content">
-            <div class="main-content">
-                <h1>Doctor Profile</h1>
-        
-                <!-- Edit Doctor Profile Form -->
-                <div class="form-container">
-                    <h2>Edit Your Profile</h2>
-                    <form method="post">
-                        {% csrf_token %}
-                        
-                        <label for="{{ doctor_form.name.id_for_label }}">Name:</label>
-                        <div class="input-field">
-                            {{ doctor_form.name }}
-                        </div>
-                        {% if doctor_form.name.errors %}
-                            <div class="error">{{ doctor_form.name.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ user_form.username.id_for_label }}">Username:</label>
-                        <div class="input-field">
-                            {{ user_form.username }}
-                        </div>
-                        {% if user_form.username.errors %}
-                            <div class="error">{{ user_form.username.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ user_form.email.id_for_label }}">Email:</label>
-                        <div class="input-field">
-                            {{ user_form.email }}
-                        </div>
-                        {% if user_form.email.errors %}
-                            <div class="error">{{ user_form.email.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ doctor_form.specialization.id_for_label }}">Specialization:</label>
-                        <div class="input-field">
-                            {{ doctor_form.specialization }}
-                        </div>
-                        {% if doctor_form.specialization.errors %}
-                            <div class="error">{{ doctor_form.specialization.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ doctor_form.contact_info.id_for_label }}">Contact Info:</label>
-                        <div class="input-field">
-                            {{ doctor_form.contact_info }}
-                        </div>
-                        {% if doctor_form.contact_info.errors %}
-                            <div class="error">{{ doctor_form.contact_info.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ user_form.password.id_for_label }}">Password:</label>
-                        <div class="input-field">
-                            {{ user_form.password }}
-                            <img src="{% static 'DocuCareDHManagement/resources/show_pass.png' %}" class="show-hide-icon" alt="Show" id="togglePassword1" onclick="togglePassword('id_password1')">
-                        </div>
-                        {% if user_form.password.errors %}
-                            <div class="error">{{ user_form.password.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ user_form.password_confirmation.id_for_label }}">Password confirmation:</label>
-                        <div class="input-field">
-                            {{ user_form.password_confirmation }}
-                            <img src="{% static 'DocuCareDHManagement/resources/show_pass.png' %}" class="show-hide-icon" alt="Show" id="togglePassword2" onclick="togglePassword('id_password2')">
-                        </div>
-                        {% if user_form.password_confirmation.errors %}
-                            <div class="error">{{ user_form.password_confirmation.errors }}</div>
-                        {% endif %}
-
-                        <button type="submit" class="btn-primary">Save Changes</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        </div>
-</body>
-</html>
+</div>
+{% endblock %}

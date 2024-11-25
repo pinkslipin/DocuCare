@@ -1,0 +1,8 @@
+{% load static %}
+<div class="sidebar">
+    <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
+    <a href="{% url 'user_home' %}" class="{% if request.resolver_match.url_name == 'user_home' %}active{% endif %}">Dashboard</a>
+    <a href="{% url 'view_own_profile' %}" class="{% if request.resolver_match.url_name == 'view_own_profile' %}active{% endif %}">View Profile</a>
+    <a href="{% url 'patient_billing_records' %}" class="{% if request.resolver_match.url_name == 'patient_billing_records' %}active{% endif %}">View Billing Records</a>
+    <a href="{% url 'logout' %}">Log Out</a>
+</div>
