@@ -4,14 +4,28 @@
 {% block title %}Process Payment{% endblock %}
 
 {% block content %}
-<h2>Process Payment for {{ record.service_description }}</h2>
-<p>Amount Due: {{ record.balance_due }}</p>
-<form id="paymentForm" method="post" onsubmit="return validatePayment()">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Submit Payment</button>
-    <a class="btn btn-secondary" href="{% url 'patient_billing_records' %}">Back to Billing Records</a>
-</form>
+<div class="main-content">
+    <h1>Process Payment for {{ record.service_description }}</h1>
+    <p>Amount Due: {{ record.balance_due }}</p>
+    <form id="paymentForm" method="post" onsubmit="return validatePayment()">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Submit Payment</button>
+        <a class="btn btn-secondary" href="{% url 'patient_billing_records' %}">Back to Billing Records</a>
+    </form>
+</div>
+<style>
+    .main-content form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .main-content form .btn {
+        width: auto;
+        align-self: start;
+    }
+</style>
 <script>
     function validatePayment() {
         const paymentAmount = parseFloat(document.querySelector('input[name="payment_amount"]').value);
