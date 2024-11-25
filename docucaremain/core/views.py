@@ -78,6 +78,7 @@ def register_doctor(request):
         if user_form.is_valid() and doctor_form.is_valid():
             user = user_form.save(commit=False)
             user.is_staff = True
+            user.email = doctor_form.cleaned_data['email']  # Save email in User model
             user.save()
             doctor = doctor_form.save(commit=False)
             doctor.user = user

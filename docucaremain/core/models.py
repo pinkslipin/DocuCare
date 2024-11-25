@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 # Doctor model (Admin-Specific)
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=254, unique=True, null=True, blank=True)  # Provide a default value
     name = models.CharField(max_length=100)
     specialization = models.CharField(max_length=100)
     contact_info = models.CharField(max_length=100)
-    email = models.EmailField(max_length=254, unique=True,null=True, blank=True)  # New email field
 
     def __str__(self):
         return self.name
@@ -21,8 +21,7 @@ class PatientProfile(models.Model):
     address = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=15)
     medical_history = models.CharField(max_length=1000)
-    email = models.EmailField(max_length=254, unique=True,null=True, blank=True)  # New email field
-
+    email = models.EmailField(max_length=254, unique=True, null=True, blank=True)  # New email field
 
     def __str__(self):
         return self.full_name

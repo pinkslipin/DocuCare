@@ -175,12 +175,12 @@
                     <div class="error">{{ user_form.username.errors }}</div>
                 {% endif %}
 
-                <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                <label for="{{ doctor_form.email.id_for_label }}">Email:</label>
                 <div class="input-field">
                     {{ doctor_form.email }}
                 </div>
-                {% if user_form.email.errors %}
-                    <div class="error">{{ user_form.email.errors }}</div>
+                {% if doctor_form.email.errors %}
+                    <div class="error">{{ doctor_form.email.errors }}</div>
                 {% endif %}
 
                 <label for="{{ user_form.password1.id_for_label }}">Password:</label>

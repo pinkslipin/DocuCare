@@ -78,15 +78,15 @@ class PaymentForm(forms.ModelForm):
 
 # Doctor Registration Form (Admin-Only)
 class DoctorForm(forms.ModelForm):
-    email = forms.EmailField(required=True)  # New email field
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = Doctor
-        fields = ['name', 'specialization', 'contact_info', 'email']  # Include email field
+        fields = ['email', 'name', 'specialization', 'contact_info']
 
     def save(self, commit=True):
         doctor = super().save(commit=False)
-        doctor.email = self.cleaned_data['email']  # Save email in Doctor
+        doctor.email = self.cleaned_data['email']
         if commit:
             doctor.save()
         return doctor
