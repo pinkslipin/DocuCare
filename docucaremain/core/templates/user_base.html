@@ -100,12 +100,6 @@
             margin-bottom: 20px;
         }
 
-        .main-content h2 {
-            font-size: 22px;
-            color: #7FA1C3;
-            margin-bottom: 10px;
-        }
-
         .form-group {
             display: flex;
             flex-direction: column;
@@ -161,219 +155,19 @@
             color: #666;
         }
 
-        a {
-            color: #6482AD;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-        a:hover {
-            color: #7FA1C3;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .consultation-item {
-            background-color: #F5EDED;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-        }
-
-        .consultation-item h2 {
-            font-size: 18px;
-            color: #6482AD;
-            margin: 0;
-        }
-
-        .doctor-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .doctor-list li {
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #F5EDED;
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .doctor-actions a, .doctor-actions button {
-            margin-left: 10px;
-            color: #6482AD;
-            text-decoration: none;
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .doctor-actions a:hover, .doctor-actions button:hover {
-            color: #7FA1C3;
-        }
-
-        form button {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        form button:hover {
-            background-color: #7FA1C3;
-        }
-
-        .test-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .test-item {
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #F5EDED;
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .test-actions a, .test-actions button {
-            margin-left: 10px;
-            color: #6482AD;
-            text-decoration: none;
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .test-actions a:hover, .test-actions button:hover {
-            color: #7FA1C3;
-        }
-
-        .patient-item {
-            background-color: #F5EDED;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .patient-item h2 {
-            font-size: 18px;
-            color: #6482AD;
-            margin: 0;
-        }
-
-        .patient-actions a, .patient-actions button {
-            margin-left: 10px;
-            color: #6482AD;
-            text-decoration: none;
-            background: none;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .patient-actions a:hover, .patient-actions button:hover {
-            color: #7FA1C3;
-        }
-
-        .show-hide-icon {
-            width: 20px; /* Adjusted size for icons */
-            height: 20px;
-            cursor: pointer;
-            position: absolute;
-            right: 10px; /* Align to the right edge inside the input */
-            top: 50%; /* Center vertically */
-            transform: translateY(-50%); /* Adjust vertical alignment */
-        }
-
-        .button.delete {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .button.delete:hover {
-            background-color: #c82333;
-        }
-
-        .button.cancel {
+        .btn-secondary {
             background-color: #6c757d;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .button.cancel:hover {
-            background-color: #5a6268;
-        }
-
-        .button.save {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .button.save:hover {
-            background-color: #6482AD;
-        }
-
-        .prescription-table {
+            padding: 10px;
             width: 100%;
-            background: white;
-            border-radius: 8px;
-            border-collapse: collapse;
-        }
-
-        .prescription-table th,
-        .prescription-table td {
-            padding: 15px;
-            text-align: left;
-        }
-
-        .button.add-prescription {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
 
-        .button.add-prescription:hover {
-            background-color: #0056b3;
+        .btn-secondary:hover {
+            background-color: #5a6268;
         }
 
         .card {
@@ -405,12 +199,11 @@
         .btn-warning:hover, .btn-info:hover {
             opacity: 0.9;
         }
-        
     </style>
 </head>
 <body>
     <!-- Include Sidebar -->
-    {% include 'sidebar.html' %}
+    {% include 'user_sidebar.html' %}
 
     <!-- Main Content -->
     <div class="container">

@@ -1,251 +1,64 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Patient - {{ patient.username }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
-            background-size: cover;
-        }
+{% extends 'user_base.html' %}
 
-        .sidebar {
-            width: 250px;
-            background-color: #E2DAD6;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            height: 115%; /* Matches the content dynamically */
-        }
+{% block title %}Update Patient{% endblock %}
 
-        .sidebar img {
-            max-width: 150px;
-            margin: 0 auto 20px auto; /* Center logo and add spacing */
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            color: #6482AD;
-            font-size: 16px;
-            margin: 10px 0;
-            padding: 10px;
-            display: block;
-            border-radius: 5px;
-            font-weight: 500;
-        }
-
-        .sidebar a:hover, .sidebar a.active {
-            background-color: #6482AD;
-            color: white;
-        }
-
-        .container {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .top-panel {
-            width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 60px;
-            flex-shrink: 0;
-        }
-
-        .top-panel div:last-child {
-            margin-right: 30px; /* Align logout button further to the right */
-        }
-
-        .content {
-            display: flex;
-            flex-grow: 1;
-            align-items: flex-start;
-        }
-
-        .main-content {
-            flex-grow: 1;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content h1 {
-            font-size: 28px;
-            color: #6482AD;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .input-field {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
-        }
-
-        .input-field input, .input-field select, .input-field textarea {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        .input-field textarea {
-            height: 100px; /* Fixed height for textarea */
-            resize: none; /* Disable resizing */
-        }
-
-        .btn-primary {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .btn-primary:hover {
-            background-color: #4f6fbf;
-        }
-
-        .alert.alert-danger {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .form-text.text-muted {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
-        <a href="{% url 'user_home' %}">Dashboard</a>
-        <a href="{% url 'view_own_profile' %}">View Profile</a>
-        <a href="{% url 'patient_billing_records' %}">View Billing Records</a>
-        <a href="{% url 'logout' %}">Log Out</a>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="top-panel">
-            <div>Welcome, {{ user.username }}!</div>
-            <div>
-                <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
+{% block content %}
+<div class="main-content">
+    <h1>Update Patient: {{ patient.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.full_name.id_for_label }}">Full Name:</label>
+            <div class="input-field">
+                {{ form.full_name }}
             </div>
-        </div>
-        <div class="content">
-            <div class="main-content">
-                <h1>Update Patient: {{ patient.username }}</h1>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="{{ form.full_name.id_for_label }}">Full Name:</label>
-                        <div class="input-field">
-                            {{ form.full_name }}
-                        </div>
-                        {% if form.full_name.errors %}
-                            <div class="alert alert-danger">{{ form.full_name.errors }}</div>
-                        {% endif %}
+            {% if form.full_name.errors %}
+                <div class="alert alert-danger">{{ form.full_name.errors }}</div>
+            {% endif %}
 
-                        <label for="{{ form.date_of_birth.id_for_label }}">Date of Birth:</label>
-                        <div class="input-field">
-                            {{ form.date_of_birth }}
-                        </div>
-                        {% if form.date_of_birth.errors %}
-                            <div class="alert alert-danger">{{ form.date_of_birth.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ form.address.id_for_label }}">Address:</label>
-                        <div class="input-field">
-                            {{ form.address }}
-                        </div>
-                        {% if form.address.errors %}
-                            <div class="alert alert-danger">{{ form.address.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ form.contact_number.id_for_label }}">Contact Number:</label>
-                        <div class="input-field">
-                            {{ form.contact_number }}
-                        </div>
-                        {% if form.contact_number.errors %}
-                            <div class="alert alert-danger">{{ form.contact_number.errors }}</div>
-                        {% endif %}
-
-                        <label for="{{ form.medical_history.id_for_label }}">Medical History:</label>
-                        <div class="input-field">
-                            {{ form.medical_history }}
-                        </div>
-                        {% if form.medical_history.errors %}
-                            <div class="alert alert-danger">{{ form.medical_history.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <button type="submit" class="btn-primary">Update Patient</button>
-                </form>
-
-                {% if user.is_staff %}
-                    <a class="btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Admin Cancel -->
-                {% else %}
-                    <a class="btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Patient Cancel -->
-                {% endif %}
-
-                {% if form.non_field_errors %}
-                    <div class="alert alert-danger">{{ form.non_field_errors }}</div>
-                {% endif %}
+            <label for="{{ form.date_of_birth.id_for_label }}">Date of Birth:</label>
+            <div class="input-field">
+                {{ form.date_of_birth }}
             </div>
+            {% if form.date_of_birth.errors %}
+                <div class="alert alert-danger">{{ form.date_of_birth.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.address.id_for_label }}">Address:</label>
+            <div class="input-field">
+                {{ form.address }}
+            </div>
+            {% if form.address.errors %}
+                <div class="alert alert-danger">{{ form.address.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.contact_number.id_for_label }}">Contact Number:</label>
+            <div class="input-field">
+                {{ form.contact_number }}
+            </div>
+            {% if form.contact_number.errors %}
+                <div class="alert alert-danger">{{ form.contact_number.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.medical_history.id_for_label }}">Medical History:</label>
+            <div class="input-field">
+                {{ form.medical_history }}
+            </div>
+            {% if form.medical_history.errors %}
+                <div class="alert alert-danger">{{ form.medical_history.errors }}</div>
+            {% endif %}
         </div>
-    </div>
-</body>
-</html>
+        <button type="submit" class="btn-primary">Update Patient</button>
+    </form>
+
+    {% if user.is_staff %}
+        <a class="btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Admin Cancel -->
+    {% else %}
+        <a class="btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Patient Cancel -->
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+</div>
+{% endblock %}
