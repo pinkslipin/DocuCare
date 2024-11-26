@@ -185,7 +185,7 @@ def edit_profile(request):
         doctor_form = DoctorForm(instance=doctor)
 
     return render(request, 'admin/edit_profile.html', {'user_form': user_form, 'doctor_form': doctor_form})
-
+#tests comment
 # Medical Test Management (Admin-Only)
 @login_required
 @user_passes_test(lambda u: u.is_staff)
