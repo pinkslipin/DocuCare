@@ -463,6 +463,7 @@ class PrescriptionDeleteView(DeleteView):
 # Apply for Medical Test (User-Specific)
 @login_required
 def apply_medical_test(request):
+    tests = MedicalTest.objects.all()
     if request.method == 'POST':
         form = MedicalTestApplicationForm(request.POST)
         if form.is_valid():
@@ -482,7 +483,8 @@ def apply_medical_test(request):
             return redirect('user_home')
     else:
         form = MedicalTestApplicationForm()
-    return render(request, 'user/apply_medical_test.html', {'form': form})
+    return render(request, 'user/apply_medical_test.html', {'form': form, 'tests': tests})
+
 
 # View Medical Test Applications (Admin-Only)
 @login_required
@@ -515,3 +517,8 @@ def add_notes(request, consultation_id):
         form = AddNotesForm(instance=consultation)
 
     return render(request, 'admin/add_notes.html', {'form': form, 'consultation': consultation})
+
+@login_required
+def view_consultations(request):
+    consultations = Consultation.objects.filter(patient__user=request.user)
+    return render(request, 'user/view_consultations.html', {'consultations': consultations})

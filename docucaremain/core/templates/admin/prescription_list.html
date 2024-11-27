@@ -9,7 +9,6 @@
     <table class="prescription-table">
         <thead>
             <tr>
-                <th>Appt. ID</th>
                 <th>Patient Name</th>
                 <th>Date</th>
                 <th>Time</th>
@@ -20,8 +19,7 @@
         <tbody>
             {% for prescription in prescriptions %}
             <tr>
-                <td>{{ prescription.appt_id }}</td>
-                <td>{{ prescription.patient.name }}</td>
+                <td>{{ prescription.patient.full_name }}</td>
                 <td>{{ prescription.date|date:"d.m.Y" }}</td>
                 <td>{{ prescription.time|time:"H:i" }}</td>
                 <td>{{ prescription.medication }}</td>

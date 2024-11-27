@@ -1,15 +1,129 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ form.instance.pk|yesno:"Update Medical Test,Create Medical Test" }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}{{ form.instance.pk|yesno:"Update Medical Test,Create Medical Test" }}{% endblock %}
+
+{% block content %}
+<div class="main-content">
     <h1>{{ form.instance.pk|yesno:"Update Medical Test,Create Medical Test" }}</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Name:</label>
+            <div class="input-field">
+                {{ form.name }}
+            </div>
+            {% if form.name.errors %}
+                <div class="alert alert-danger">{{ form.name.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.description.id_for_label }}">Description:</label>
+            <div class="input-field">
+                {{ form.description }}
+            </div>
+            {% if form.description.errors %}
+                <div class="alert alert-danger">{{ form.description.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.price.id_for_label }}">Price:</label>
+            <div class="input-field">
+                {{ form.price }}
+            </div>
+            {% if form.price.errors %}
+                <div class="alert alert-danger">{{ form.price.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.availability.id_for_label }}">Availability:</label>
+            <div class="input-field">
+                {{ form.availability }}
+            </div>
+            {% if form.availability.errors %}
+                <div class="alert alert-danger">{{ form.availability.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn-primary">Save</button>
+        <a href="{% url 'medical_test_management' %}" class="btn-secondary">Cancel</a>
     </form>
-    <a href="{% url 'medical_test_management' %}">Cancel</a>
-</body>
-</html>
+</div>
+{% endblock %}
+
+<style>
+    .main-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content h1 {
+        font-size: 28px;
+        color: #6482AD;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .input-field {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 5px;
+        width: 100%;
+    }
+
+    .input-field input, .input-field select, .input-field textarea {
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .input-field textarea {
+        height: 100px; /* Fixed height for textarea */
+        resize: none; /* Disable resizing */
+    }
+
+    .btn-primary {
+        background-color: #6482AD;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .btn-primary:hover {
+        background-color: #4f6fbf;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .alert.alert-danger {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>

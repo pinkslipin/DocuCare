@@ -6,4 +6,5 @@
     <a href="{% url 'book_consultation' %}" class="{% if request.resolver_match.url_name == 'book_consultation' %}active{% endif %}">Book Consultation</a>
     <a href="{% url 'apply_medical_test' %}" class="{% if request.resolver_match.url_name == 'apply_medical_test' %}active{% endif %}">Apply for Medical Test</a>
     <a href="{% url 'view_prescriptions' %}" class="{% if request.resolver_match.url_name == 'view_prescriptions' %}active{% endif %}">View Prescriptions</a>
+    <a href="{% url 'view_consultations' %}" class="{% if request.resolver_match.url_name == 'view_consultations' %}active{% endif %}">View Consultations</a>
 </div>

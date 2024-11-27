@@ -1,11 +1,127 @@
-
 {% extends "user_base.html" %}
 
+{% block title %}Apply for Medical Test{% endblock %}
+
 {% block content %}
-  <h2>Apply for Medical Test</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Apply</button>
-  </form>
+<div class="main-content">
+    <h1>Apply for Medical Test</h1>
+    <form method="post" id="apply-medical-test-form">
+        {% csrf_token %}
+        <table class="prescription-table">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                <tr>
+                    <td>{{ test.name }}</td>
+                    <td>{{ test.description }}</td>
+                    <td>{{ test.price }}</td>
+                    <td>{{ test.availability|yesno:"Available,Not Available" }}</td>
+                    <td class="actions-cell">
+                        {% if test.availability %}
+                            <a href="javascript:void(0);" class="button apply" onclick="confirmApply({{ test.id }})">Apply</a>
+                        {% else %}
+                            <a>Not Available</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No medical tests available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="hidden" name="test_id" id="test-id-input">
+    </form>
+</div>
+
+<script>
+    function confirmApply(testId) {
+        if (confirm("Do you want to book this medical test?")) {
+            document.getElementById('test-id-input').value = testId;
+            document.getElementById('apply-medical-test-form').submit();
+            alert("Successfully booked.");
+        }
+    }
+</script>
 {% endblock %}
+
+<style>
+    .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content h1 {
+        font-size: 28px;
+        color: #6482AD;
+        margin-bottom: 20px;
+    }
+
+    .prescription-table {
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        border-collapse: collapse;
+    }
+
+    .prescription-table th,
+    .prescription-table td {
+        padding: 15px;
+        text-align: left;
+        vertical-align: middle; /* Ensure vertical alignment */
+    }
+
+    .prescription-table th {
+        background-color: #6482AD;
+        color: white;
+    }
+
+    .prescription-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .prescription-table tr:hover {
+        background-color: #ddd;
+    }
+
+    .actions-cell {
+        text-align: center; /* Center align the actions cell */
+        vertical-align: middle; /* Ensure vertical alignment */
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 500;
+        margin-top: 0; /* Remove top margin */
+    }
+
+    .button.apply {
+        background-color: #28a745;
+    }
+
+    .button.apply[disabled] {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .button:hover {
+        opacity: 0.9;
+    }
+</style>
