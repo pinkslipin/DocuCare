@@ -163,6 +163,11 @@ def doctor_list(request):
     return render(request, 'admin/doctor_list.html', {'form': form, 'doctors': doctors})
 
 @login_required
+def view_doctor(request, pk):
+    doctor = get_object_or_404(Doctor, pk=pk)
+    return render(request, 'admin/view_doctor.html', {'doctor': doctor})
+
+@login_required
 def medical_test_update(request, test_id):
     test = get_object_or_404(MedicalTest, id=test_id)
     form = MedicalTestForm(request.POST or None, instance=test)

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}View Doctor - {{ doctor.user.username }}{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Doctor Profile: {{ doctor.user.username }}</h1>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Email:</strong> {{ doctor.user.email }}</p>
+            <p><strong>Name:</strong> {{ doctor.name }}</p>
+            <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+            <p><strong>Contact Info:</strong> {{ doctor.contact_info }}</p>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        {% if request.user == doctor.user or request.user.is_staff %}
+            <a class="btn btn-warning" href="{% url 'doctor_update' doctor.id %}">Edit</a>
+            <a class="btn btn-warning" href="{% url 'doctor_delete' doctor.id %}">Delete</a>
+            <a class="btn btn-warning" href="{% url 'doctor_list' %}">Back to Doctor List</a>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

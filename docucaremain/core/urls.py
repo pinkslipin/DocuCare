@@ -13,6 +13,7 @@ urlpatterns = [
 
     # Admin-Specific Routes
     path('admin-home/', views.admin_home, name='admin_home'),  # Admin Home
+        path('doctors/<int:pk>/', views.view_doctor, name='view_doctor'), # View Doctor Details
     path('doctors/', views.doctor_list, name='doctor_list'),  # List of Doctors
     path('doctors/<int:pk>/edit/', views.doctor_update, name='doctor_update'),  # Edit Doctor
     path('doctors/<int:pk>/delete/', views.doctor_delete, name='doctor_delete'),  # Delete Doctor
@@ -37,7 +38,7 @@ urlpatterns = [
     path('billing-records/delete/<int:record_id>/', views.delete_billing_record, name='delete_billing_record'),  # Delete Billing Record
     path('apply-medical-test/', views.apply_medical_test, name='apply_medical_test'),
     path('consultation/success/', views.consultation_success, name='consultation_success'),
-    path('consultation/', views.view_consultations, name='view_consultations'),
+    path('consultation/view/', views.view_consultations, name='view_consultations'),
     # Patient Management (Admin-Specific)
     path('patients/', views.list_patients, name='list_patients'),  # List Patients
     path('patients/<int:patient_id>/', views.view_patient, name='view_patient'),  # View Patient Details
