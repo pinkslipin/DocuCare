@@ -148,7 +148,7 @@ class EditProfileForm(forms.ModelForm):
 class ConsultationForm(forms.ModelForm):
     class Meta:
         model = Consultation
-        fields = ['patient', 'doctor', 'date', 'description']
+        fields = ['doctor', 'date', 'description']  # Exclude the patient field
         widgets = {
             'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
