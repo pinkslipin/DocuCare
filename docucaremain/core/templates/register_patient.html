@@ -7,7 +7,6 @@
     <title>Register Patient</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* Keep existing body and html styles */
         body, html {
             margin: 0;
             padding: 0;
@@ -20,13 +19,11 @@
             background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
             padding-top: 60px;
-            min-width: 1000px; /* Reduced from 1200px */
+            box-sizing: border-box;
         }
         
-        /* Keep existing top-panel styles */
         .top-panel {
             width: 100%;
-            min-width: 1000px; /* Reduced from 1200px */
             background-color: #e8dcd4;
             color: white;
             display: flex;
@@ -42,7 +39,6 @@
             z-index: 1000;
         }
 
-        /* Existing logo styles */
         .logo {
             display: flex;
             align-items: center;
@@ -54,29 +50,27 @@
             width: 180px;
         }
         
-        /* Modified container size */
         .container {
             display: flex;
-            width: 1000px; /* Reduced from 1200px */
-            height: 900px; /* Reduced from 1000px */
-            min-height: 600px; /* Reduced from 800px */
+            width: 90%;
+            max-width: 1200px;
+            height: auto;
             margin: 20px auto;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             overflow: hidden;
             flex-shrink: 0;
+            background-color: rgba(255, 255, 255, 0.9);
         }
         
-        /* Modified box sizes */
         .register-box {
-            width: 500px;
-            background-color: rgba(255, 255, 255, 0.9);
+            flex: 1;
             padding: 30px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Change from center to flex-start */
+            justify-content: flex-start;
             color: #333;
-            position: relative; /* Add this */
+            position: relative;
         }
 
         .register-box .back-button {
@@ -87,32 +81,30 @@
             border-radius: 4px;
             font-size: 13px;
             cursor: pointer;
-            margin: 0 0 20px 0; /* Add margin bottom instead of margin-top */
-            width: fit-content; /* Make button width fit content */
+            margin-bottom: 20px;
+            width: fit-content;
         }
-        .register-box  .back-button:hover {
+        .register-box .back-button:hover {
             background-color: #4f6fbf;
         }
         
-        /* Adjusted text sizes */
         .register-box h4 {
-            font-size: 12px; /* Reduced from 14px */
+            font-size: 12px;
             color: #666;
             margin-bottom: 4px;
         }
         
         .register-box h2 {
-            font-size: 20px; /* Reduced from 22px */
+            font-size: 20px;
             margin-bottom: 15px;
         }
         
         .register-box label {
-            font-size: 11px; /* Reduced from 12px */
+            font-size: 11px;
             margin-top: 8px;
             color: #333;
         }
         
-        /* Adjusted input fields */
         .input-field {
             display: flex;
             align-items: center;
@@ -128,51 +120,48 @@
             border: none;
             outline: none;
             flex: 1;
-            padding: 8px; /* Reduced from 10px */
-            font-size: 13px; /* Reduced from 14px */
+            padding: 8px;
+            font-size: 13px;
             width: 100%;
             box-sizing: border-box;
         }
         
         .input-field textarea {
-            height: 60px; /* Reduced from 80px */
+            height: 60px;
             resize: none;
         }
         
-        /* Keep icon styles */
         .show-hide-icon {
             position: absolute;
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            height: 18px; /* Reduced from 20px */
+            height: 18px;
             width: auto;
         }
         
-        /* Adjusted promo box */
         .promo-box {
-            width: 500px; /* Reduced from 600px */
+            flex: 1;
             background-color: rgba(100, 130, 173, 0.8);
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px; /* Reduced from 40px */
+            padding: 30px;
             text-align: center;
         }
         
         .promo-box h2 {
-            font-size: 20px; /* Reduced from 22px */
+            font-size: 20px;
             margin-bottom: 6px;
         }
         
         .promo-box p {
-            font-size: 12px; /* Reduced from 13px */
+            font-size: 12px;
         }
         
-        /* Rest of the styles remain the same */
         .error {
             color: red;
             font-size: 11px;
@@ -225,9 +214,9 @@
             font-size: 10px;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
-            top: 30px; /* Position higher */
-            left: 25px; /* Position to the left */
-            width: fit-content; /* Make button width fit content */
+            top: 30px;
+            left: 25px;
+            width: fit-content;
         }
 
         @media screen and (min-width: 1920px) {
@@ -237,7 +226,6 @@
         }
     </style>
 </head>
-<!-- Rest of the HTML remains the same -->
 <body>
     <div class="top-panel">
         <div class="logo">
@@ -325,6 +313,78 @@
                 </div>
                 {% if form.medical_history.errors %}
                     <div class="error">{{ form.medical_history.errors }}</div>
+                {% endif %}
+
+                <label for="blood_type">Blood Type:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="blood_type" id="blood_type" required>
+                </div>
+                {% if form.blood_type.errors %}
+                    <div class="error">{{ form.blood_type.errors }}</div>
+                {% endif %}
+
+                <label for="height">Height:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="height" id="height" required>
+                </div>
+                {% if form.height.errors %}
+                    <div class="error">{{ form.height.errors }}</div>
+                {% endif %}
+
+                <label for="weight">Weight:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="weight" id="weight" required>
+                </div>
+                {% if form.weight.errors %}
+                    <div class="error">{{ form.weight.errors }}</div>
+                {% endif %}
+
+                <label for="allergies">Allergies:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="allergies" id="allergies" required>
+                </div>
+                {% if form.allergies.errors %}
+                    <div class="error">{{ form.allergies.errors }}</div>
+                {% endif %}
+
+                <label for="sex">Sex:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="sex" id="sex" required>
+                </div>
+                {% if form.sex.errors %}
+                    <div class="error">{{ form.sex.errors }}</div>
+                {% endif %}
+
+                <label for="age">Age:</label>
+                <div class="input-field">
+                    <input class="form-control" type="number" name="age" id="age" required>
+                </div>
+                {% if form.age.errors %}
+                    <div class="error">{{ form.age.errors }}</div>
+                {% endif %}
+
+                <label for="occupation">Occupation:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="occupation" id="occupation" required>
+                </div>
+                {% if form.occupation.errors %}
+                    <div class="error">{{ form.occupation.errors }}</div>
+                {% endif %}
+
+                <label for="marital_status">Marital Status:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="marital_status" id="marital_status" required>
+                </div>
+                {% if form.marital_status.errors %}
+                    <div class="error">{{ form.marital_status.errors }}</div>
+                {% endif %}
+
+                <label for="emergency_contact">Emergency Contact:</label>
+                <div class="input-field">
+                    <input class="form-control" type="text" name="emergency_contact" id="emergency_contact" required>
+                </div>
+                {% if form.emergency_contact.errors %}
+                    <div class="error">{{ form.emergency_contact.errors }}</div>
                 {% endif %}
 
                 <button type="submit" class="btn-primary">Register</button>

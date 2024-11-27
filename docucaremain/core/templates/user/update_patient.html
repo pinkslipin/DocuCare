@@ -47,6 +47,78 @@
             {% if form.medical_history.errors %}
                 <div class="alert alert-danger">{{ form.medical_history.errors }}</div>
             {% endif %}
+
+            <label for="{{ form.blood_type.id_for_label }}">Blood Type:</label>
+            <div class="input-field">
+                {{ form.blood_type }}
+            </div>
+            {% if form.blood_type.errors %}
+                <div class="alert alert-danger">{{ form.blood_type.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.height.id_for_label }}">Height:</label>
+            <div class="input-field">
+                {{ form.height }}
+            </div>
+            {% if form.height.errors %}
+                <div class="alert alert-danger">{{ form.height.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.weight.id_for_label }}">Weight:</label>
+            <div class="input-field">
+                {{ form.weight }}
+            </div>
+            {% if form.weight.errors %}
+                <div class="alert alert-danger">{{ form.weight.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.allergies.id_for_label }}">Allergies:</label>
+            <div class="input-field">
+                {{ form.allergies }}
+            </div>
+            {% if form.allergies.errors %}
+                <div class="alert alert-danger">{{ form.allergies.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.sex.id_for_label }}">Sex:</label>
+            <div class="input-field">
+                {{ form.sex }}
+            </div>
+            {% if form.sex.errors %}
+                <div class="alert alert-danger">{{ form.sex.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.age.id_for_label }}">Age:</label>
+            <div class="input-field">
+                {{ form.age }}
+            </div>
+            {% if form.age.errors %}
+                <div class="alert alert-danger">{{ form.age.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.occupation.id_for_label }}">Occupation:</label>
+            <div class="input-field">
+                {{ form.occupation }}
+            </div>
+            {% if form.occupation.errors %}
+                <div class="alert alert-danger">{{ form.occupation.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.marital_status.id_for_label }}">Marital Status:</label>
+            <div class="input-field">
+                {{ form.marital_status }}
+            </div>
+            {% if form.marital_status.errors %}
+                <div class="alert alert-danger">{{ form.marital_status.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.emergency_contact.id_for_label }}">Emergency Contact:</label>
+            <div class="input-field">
+                {{ form.emergency_contact }}
+            </div>
+            {% if form.emergency_contact.errors %}
+                <div class="alert alert-danger">{{ form.emergency_contact.errors }}</div>
+            {% endif %}
         </div>
         <button type="submit" class="btn-primary">Update Patient</button>
     </form>

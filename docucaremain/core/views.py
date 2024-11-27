@@ -490,7 +490,6 @@ def apply_medical_test(request):
         form = MedicalTestApplicationForm()
     return render(request, 'user/apply_medical_test.html', {'form': form, 'tests': tests})
 
-
 # View Medical Test Applications (Admin-Only)
 @login_required
 @user_passes_test(lambda u: u.is_staff)

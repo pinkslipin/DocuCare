@@ -39,6 +39,15 @@ class PatientRegistrationForm(UserCreationForm):
     contact_number = forms.CharField(max_length=15, required=True)
     medical_history = forms.CharField(max_length=1000, required=False)
     email = forms.EmailField(required=True)  # New email field
+    blood_type = forms.CharField(max_length=3, required=False)
+    height = forms.CharField(max_length=10, required=False)
+    weight = forms.CharField(max_length=10, required=False)
+    allergies = forms.CharField(max_length=255, required=False)
+    sex = forms.CharField(max_length=10, required=False)
+    age = forms.IntegerField(required=False)
+    occupation = forms.CharField(max_length=100, required=False)
+    marital_status = forms.CharField(max_length=50, required=False)
+    emergency_contact = forms.CharField(max_length=255, required=False)
 
     class Meta:
         model = User
@@ -57,7 +66,16 @@ class PatientRegistrationForm(UserCreationForm):
                 address=self.cleaned_data['address'],
                 contact_number=self.cleaned_data['contact_number'],
                 medical_history=self.cleaned_data.get('medical_history', ''),
-                email=self.cleaned_data['email']  # Save email in PatientProfile
+                email=self.cleaned_data['email'],  # Save email in PatientProfile
+                blood_type=self.cleaned_data.get('blood_type', ''),
+                height=self.cleaned_data.get('height', ''),
+                weight=self.cleaned_data.get('weight', ''),
+                allergies=self.cleaned_data.get('allergies', ''),
+                sex=self.cleaned_data.get('sex', ''),
+                age=self.cleaned_data.get('age', None),
+                occupation=self.cleaned_data.get('occupation', ''),
+                marital_status=self.cleaned_data.get('marital_status', ''),
+                emergency_contact=self.cleaned_data.get('emergency_contact', '')
             )
         return user
 
@@ -68,7 +86,11 @@ class PatientProfileForm(forms.ModelForm):
 
     class Meta:
         model = PatientProfile
-        fields = ['full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history']
+        fields = [
+            'full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history',
+            'blood_type', 'height', 'weight', 'allergies', 'sex', 'age', 'occupation',
+            'marital_status', 'emergency_contact'
+        ]
 
 
 # Billing Record Form (Admin-Only)
