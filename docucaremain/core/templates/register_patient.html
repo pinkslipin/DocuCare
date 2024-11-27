@@ -59,7 +59,7 @@
         .container {
             display: flex;
             width: 1000px; /* Reduced from 1200px */
-            height: 870px; /* Reduced from 1000px */
+            height: 900px; /* Reduced from 1000px */
             min-height: 600px; /* Reduced from 800px */
             margin: 20px auto;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -70,14 +70,31 @@
         
         /* Modified box sizes */
         .register-box {
-            width: 500px; /* Reduced from 600px */
+            width: 500px;
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px; /* Reduced from 40px */
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* Change from center to flex-start */
             color: #333;
             overflow-y: auto;
+            position: relative; /* Add this */
+        }
+
+        .register-box .back-button {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            position: relative; /* Change from absolute to relative */
+            margin: 0 0 20px 0; /* Add margin bottom instead of margin-top */
+            width: fit-content; /* Make button width fit content */
+        }
+        .register-box  .back-button:hover {
+            background-color: #4f6fbf;
         }
         
         /* Adjusted text sizes */
@@ -219,6 +236,7 @@
     </div>
     <div class="container">
         <div class="register-box">
+            <button type="button" class="back-button" onclick="window.location.href='{% url 'landing_page' %}'">◀ Go back</button>
             <h4>WELCOME</h4>
             <h2>Register a New Patient Account</h2>
             <form method="post">
