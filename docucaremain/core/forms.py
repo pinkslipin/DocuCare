@@ -155,14 +155,13 @@ class ConsultationForm(forms.ModelForm):
 
 # Prescription Form
 class PrescriptionForm(forms.ModelForm):
-    patient_name = forms.CharField(label="Patient", max_length=100)
+    patient = forms.ModelChoiceField(queryset=PatientProfile.objects.all(), label="Patient")
     date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
 
     class Meta:
         model = Prescription
-        fields = ['appt_id', 'patient_name', 'date', 'time', 'medication']
+        fields = ['patient', 'date', 'time', 'medication']
         widgets = {
-            'appt_id': forms.TextInput(attrs={'placeholder': 'Enter Appointment ID'}),
             'medication': forms.TextInput(attrs={'placeholder': 'Enter Medication'}),
         }

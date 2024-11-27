@@ -12,5 +12,5 @@ def update_medical_test_application_payment_status(sender, instance, **kwargs):
         ).first()
         if application:
             application.update_payment_status()
-            application.payment_completion_date = instance.date
+            application.payment_completion_date = instance.date_issued
             application.save()

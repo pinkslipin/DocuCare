@@ -420,14 +420,7 @@ class PrescriptionCreateView(CreateView):
     success_url = reverse_lazy('prescription_list')  # Redirect to the list after adding
 
     def form_valid(self, form):
-        # Get the patient name from the form input
-        patient_name = form.cleaned_data['patient_name']
-        
-        # Fetch or create a Patient instance by name
-        patient, created = Patient.objects.get_or_create(name=patient_name)
-        
-        # Assign the patient instance to the prescription before saving
-        form.instance.patient = patient
+        form.instance.patient = form.cleaned_data['patient']
         return super().form_valid(form)
 
 class PrescriptionUpdateView(UpdateView):
@@ -471,3 +464,8 @@ def apply_medical_test(request):
 def view_medical_test_applications(request):
     applications = MedicalTestApplication.objects.all()
     return render(request, 'admin/view_medical_test_applications.html', {'applications': applications})
+
+@login_required
+def view_prescriptions(request):
+    prescriptions = Prescription.objects.filter(patient__user=request.user)
+    return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions})

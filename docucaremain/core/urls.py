@@ -48,4 +48,5 @@ urlpatterns = [
     path('prescriptions/new/', PrescriptionCreateView.as_view(), name='prescription_create'),
     path('prescriptions/<int:pk>/edit/', PrescriptionUpdateView.as_view(), name='prescription_update'),
     path('prescriptions/<int:pk>/delete/', PrescriptionDeleteView.as_view(), name='prescription_delete'),
+    path('view-prescriptions/', views.view_prescriptions, name='view_prescriptions'),
 ]
