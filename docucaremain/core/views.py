@@ -18,7 +18,8 @@ from .forms import (
     MedicalTestForm,
     ConsultationForm,
     PrescriptionForm,
-    MedicalTestApplicationForm
+    MedicalTestApplicationForm,
+    EmailAuthenticationForm,
 )
 from .models import (
     BillingRecord,
@@ -96,25 +97,17 @@ def register_doctor(request):
 # Login View
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = EmailAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
-            )
-            if user:
-                login(request, user)
-                if user.is_staff:
-                    return redirect('admin_home')
-                else:
-                    return redirect('user_home')
-        messages.error(request, 'Invalid username or password')
+            login(request, form.get_user())
+            if request.user.is_staff:
+                return redirect('admin_home')
+            else:
+                return redirect('user_home')
     else:
-        form = AuthenticationForm()
+        form = EmailAuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
-# Logout View
-@login_required
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have been logged out successfully.')

@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 from .models import (
     Doctor,
     PatientProfile,
@@ -11,6 +13,23 @@ from .models import (
     Prescription,
     MedicalTestApplication
 )
+
+class EmailAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(label='Email', max_length=254)
+
+    def clean(self):
+        email = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if email and password:
+            try:
+                user = User.objects.get(email=email)
+                self.user_cache = authenticate(username=user.username, password=password)
+                if self.user_cache is None:
+                    raise ValidationError('Invalid email or password')
+            except User.DoesNotExist:
+                raise ValidationError('Invalid email or password')
+        return self.cleaned_data
 
 # Patient Registration Form
 class PatientRegistrationForm(UserCreationForm):
