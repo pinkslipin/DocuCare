@@ -24,6 +24,7 @@ urlpatterns = [
     path('consultations/', views.consultation_list, name='consultation_list'),  # List Consultations
     path('consultations/book/', views.book_consultation, name='book_consultation'),  # Book Consultation
     path('view-medical-test-applications/', views.view_medical_test_applications, name='view_medical_test_applications'),
+    path('consultations/<int:consultation_id>/add_notes/', views.add_notes, name='add_notes'),
 
     # User-Specific Routes
     path('user-home/', views.user_home, name='user_home'),  # User Home

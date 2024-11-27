@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 
 from .forms import (
+    AddNotesForm,
     PatientProfileForm,
     PatientRegistrationForm,
     BillingRecordForm,
@@ -494,3 +495,23 @@ def view_medical_test_applications(request):
 def view_prescriptions(request):
     prescriptions = Prescription.objects.filter(patient__user=request.user)
     return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions})
+
+@login_required
+def add_notes(request, consultation_id):
+    consultation = get_object_or_404(Consultation, id=consultation_id)
+    doctor = get_object_or_404(Doctor, user=request.user)
+    
+    if consultation.doctor != doctor:
+        messages.error(request, 'You are not authorized to add notes to this consultation.')
+        return redirect('consultation_list')
+    
+    if request.method == 'POST':
+        form = AddNotesForm(request.POST, instance=consultation)
+        if form.is_valid() and consultation.can_add_notes():
+            form.save()
+            messages.success(request, 'Notes added successfully. Consultation marked as complete.')
+            return redirect('consultation_list')
+    else:
+        form = AddNotesForm(instance=consultation)
+
+    return render(request, 'admin/add_notes.html', {'form': form, 'consultation': consultation})

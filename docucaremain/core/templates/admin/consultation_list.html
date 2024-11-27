@@ -5,15 +5,44 @@
 {% block content %}
 <div class="main-content">
     <h1>Consultation List</h1>
-    <ul>
-        {% for consultation in consultations %}
-            <li class="consultation-item">
-                <h2>{{ consultation.date }} - {{ consultation.patient.name }} with Dr. {{ consultation.doctor.name }}</h2>
-                <p><strong>Description:</strong> {{ consultation.description }}</p>
-                <p><strong>Notes:</strong> {{ consultation.notes }}</p>
-            </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'home' %}">Go to Homepage</a>
+    <a href="{% url 'book_consultation' %}" class="button add-consultation">Book New Consultation</a>
+    <table class="prescription-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consultation in consultations %}
+            <tr>
+                <td>{{ consultation.date|date:"d.m.Y" }}</td>
+                <td>{{ consultation.patient.full_name }}</td>
+                <td>{{ consultation.doctor.name }}</td>
+                <td>{{ consultation.description }}</td>
+                <td>{{ consultation.notes }}</td>
+                <td>{{ consultation.get_status_display }}</td>
+                <td class="actions-cell">
+                    {% if consultation.status == 'complete' %}
+                        <span class="status-text">DONE</span>
+                    {% elif consultation.can_add_notes and consultation.doctor.user == user %}
+                        <a href="{% url 'add_notes' consultation.id %}" >Add Notes</a>
+                    {% else %}
+                        <span class="status-text">To be Done</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No consultations available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

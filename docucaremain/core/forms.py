@@ -162,15 +162,26 @@ class EditProfileForm(forms.ModelForm):
             user.save()
         return super().save(commit)
 
+class AddNotesForm(forms.ModelForm):
+    class Meta:
+        model = Consultation
+        fields = ['notes']
+        widgets = {
+            'notes': forms.Textarea(attrs={'rows': 4}),
+        }
 
 # Consultation Form (Shared)
 class ConsultationForm(forms.ModelForm):
     class Meta:
         model = Consultation
-        fields = ['doctor', 'date', 'description']  # Exclude the patient field
+        fields = ['doctor', 'date', 'description']
         widgets = {
-            'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['doctor'].queryset = Doctor.objects.all()
 
 # Prescription Form
 class PrescriptionForm(forms.ModelForm):
