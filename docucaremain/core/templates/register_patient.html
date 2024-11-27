@@ -7,6 +7,7 @@
     <title>Register Patient</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* Keep existing body and html styles */
         body, html {
             margin: 0;
             padding: 0;
@@ -18,10 +19,15 @@
             align-items: center;
             background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
-            padding-top: 60px; /* Add padding-top to prevent content from hiding behind the fixed top panel */
+            padding-top: 60px;
+            min-width: 1000px; /* Reduced from 1200px */
+            overflow-x: auto;
         }
+        
+        /* Keep existing top-panel styles */
         .top-panel {
             width: 100%;
+            min-width: 1000px; /* Reduced from 1200px */
             background-color: #e8dcd4;
             color: white;
             display: flex;
@@ -31,61 +37,74 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             height: 60px;
             border: 2px solid #ccc;
-            position: fixed; /* Fix the panel to the top */
-            top: 0; /* Ensure it stays at the top */
-            left: 0; /* Ensure it spans the full width */
-            z-index: 1000; /* Make sure it's on top of other elements */
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
+
+        /* Existing logo styles */
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+        
         .logo img {
             height: 60px;
             width: 180px;
         }
+        
+        /* Modified container size */
         .container {
             display: flex;
-            width: 80%;
-            max-width: 1200px;
-            height: calc(100% - 50px);
+            width: 1000px; /* Reduced from 1200px */
+            height: 870px; /* Reduced from 1000px */
+            min-height: 600px; /* Reduced from 800px */
+            margin: 20px auto;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             overflow: hidden;
+            flex-shrink: 0;
         }
+        
+        /* Modified box sizes */
         .register-box {
-            width: 50%;
+            width: 500px; /* Reduced from 600px */
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 40px;
+            padding: 30px; /* Reduced from 40px */
             display: flex;
             flex-direction: column;
             justify-content: center;
             color: #333;
+            overflow-y: auto;
         }
         
+        /* Adjusted text sizes */
         .register-box h4 {
-            font-size: 14px;
+            font-size: 12px; /* Reduced from 14px */
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         
         .register-box h2 {
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: 20px; /* Reduced from 22px */
+            margin-bottom: 15px;
         }
         
         .register-box label {
-            font-size: 12px;
-            margin-top: 10px;
+            font-size: 11px; /* Reduced from 12px */
+            margin-top: 8px;
             color: #333;
         }
+        
+        /* Adjusted input fields */
         .input-field {
             display: flex;
             align-items: center;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-top: 5px;
+            border-radius: 4px;
+            margin-top: 4px;
             width: 100%;
             position: relative;
         }
@@ -95,77 +114,78 @@
             border: none;
             outline: none;
             flex: 1;
-            padding: 10px;
-            font-size: 14px;
+            padding: 8px; /* Reduced from 10px */
+            font-size: 13px; /* Reduced from 14px */
             width: 100%;
             box-sizing: border-box;
         }
         
         .input-field textarea {
-            height: 80px;
+            height: 60px; /* Reduced from 80px */
             resize: none;
         }
         
+        /* Keep icon styles */
         .show-hide-icon {
             position: absolute;
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            height: 20px;
+            height: 18px; /* Reduced from 20px */
             width: auto;
         }
-        .input-field input[type="date"]::-webkit-calendar-picker-indicator {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-        .error {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        .btn-primary {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-size: 14px;
-        }
         
-        .btn-primary:hover {
-            background-color: #4f6fbf;
-        }
-        
+        /* Adjusted promo box */
         .promo-box {
-            width: 50%;
+            width: 500px; /* Reduced from 600px */
             background-color: rgba(100, 130, 173, 0.8);
             color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 30px; /* Reduced from 40px */
             text-align: center;
         }
+        
         .promo-box h2 {
-            font-size: 22px;
-            margin-bottom: 8px;
+            font-size: 20px; /* Reduced from 22px */
+            margin-bottom: 6px;
         }
+        
         .promo-box p {
+            font-size: 12px; /* Reduced from 13px */
+        }
+        
+        /* Rest of the styles remain the same */
+        .error {
+            color: red;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+        
+        .btn-primary {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 8px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
             font-size: 13px;
         }
+        
+        .btn-primary:hover {
+            background-color: #4f6fbf;
+        }
+        
         .register-link {
-            font-size: 12px;
+            font-size: 11px;
             color: black;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 12px;
         }
         
         .register-link a {
@@ -177,11 +197,19 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+        
         form {
             width: 100%;
         }
+
+        @media screen and (min-width: 1920px) {
+            body {
+                zoom: 1;
+            }
+        }
     </style>
 </head>
+<!-- Rest of the HTML remains the same -->
 <body>
     <div class="top-panel">
         <div class="logo">
