@@ -19,6 +19,7 @@
             align-items: center;
             background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
+            padding-top: 60px; /* Add padding-top to prevent content from hiding behind the fixed top panel */
         }
 
         .container {
@@ -31,7 +32,7 @@
 
         .top-panel {
             width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
+            background-color: #e8dcd4;
             color: white;
             display: flex;
             align-items: center;
@@ -39,33 +40,28 @@
             padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             height: 60px;
+            border: 2px solid #ccc;
+            position: fixed; /* Fix the panel to the top */
+            top: 0; /* Ensure it stays at the top */
+            left: 0; /* Ensure it spans the full width */
+            z-index: 1000; /* Make sure it's on top of other elements */
         }
-
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
         .logo img {
             height: 60px;
             width: 180px;
-        }
-
-        .back-button {
-            background-color: transparent;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
         }
 
         .content {
             display: flex;
             width: 80%;
             max-width: 1200px;
-            margin-top: 20px;
-            height: calc(100% - 60px);
+            margin-top: 30px;
+            height: calc(100% - 160px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             overflow: hidden;
@@ -79,6 +75,30 @@
             flex-direction: column;
             justify-content: center;
             color: #333;
+            position: relative;
+        }
+
+        .login-box .back-button {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-right: 100px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 15px;
+            cursor: pointer;
+            position: absolute;
+            top: 1px;
+            left: 10px;
+        }
+        .login-box .back-button:hover {
+            background-color: #4f6fbf;
+        }
+
+        .login-box .back-button i {
+            margin-right: 1px;
         }
 
         .login-box h4 {
@@ -146,16 +166,6 @@
             background-color: #4f6fbf;
         }
 
-        .btn-google, .btn-facebook, .btn-apple {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px; 
-        }
-
         .promo-box {
             width: 50%;
             background-color: rgba(100, 130, 173, 0.8);
@@ -221,8 +231,10 @@
 
     <!-- Main Content -->
     <div class="content">
+        
         <!-- Login Box -->
         <div class="login-box">
+            <button type="button" class="back-button" onclick="window.location.href='{% url 'landing_page' %}'"></i> ◀ Go back</button>
             <h4>WELCOME BACK</h4>
             <h2>Log In to your Account</h2>
             
@@ -244,12 +256,6 @@
                     <a href="#">Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn-primary">Continue</button>
-                
-                <p>Or</p>
-                
-                <button class="btn-google">Log In with Google</button>
-                <button class="btn-facebook">Log In with Facebook</button>
-                <button class="btn-apple">Log In with Apple</button>
                 
                 <div class="register-link">
                     <p>New User? <a href="{% url 'register_patient' %}">Create an account</a></p>

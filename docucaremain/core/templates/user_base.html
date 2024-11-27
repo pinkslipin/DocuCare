@@ -20,13 +20,16 @@
 
         .sidebar {
             width: 250px;
-            background-color: #E2DAD6;
+            background-color: #e8dcd4;
             display: flex;
             flex-direction: column;
             padding: 20px 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
-            height: 115%; /* Matches the content dynamically */
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border: 2px solid #ccc;
         }
 
         .sidebar img {
@@ -36,7 +39,7 @@
 
         .sidebar a {
             text-decoration: none;
-            color: #6482AD;
+            color: black;
             font-size: 16px;
             margin: 10px 0;
             padding: 10px;
@@ -58,9 +61,8 @@
         }
 
         .top-panel {
-            width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
-            color: white;
+            background-color: #f8ecec ;
+            color: black;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -68,10 +70,77 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             height: 60px;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border: 2px solid #ccc;
         }
 
         .top-panel div:last-child {
             margin-right: 30px; /* Align logout button further to the right */
+        }
+
+        .top-panel .user-profile {
+            display: flex;
+            align-items: center;
+            margin-right: 20px; /* Adjust the right margin */
+            margin-bottom: 5px;
+        }
+
+        .top-panel .user-profile img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: 10px; /* Adjust the left margin */
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 4rem;
+            right: 2.5rem; /* Moved the dropdown a bit to the left */
+            left: 2.5; /* Added a left property to align the dropdown to the left */
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 15rem;
+            z-index: 1000;
+        }
+
+        .dropdownDivider {
+            border-top: 1px solid #e0e0e0;
+            margin: 0.5rem 0;
+        }
+
+        .dropdown ul {
+            list-style: none;
+            padding: 0.5rem 0;
+            margin: 0;
+        }
+
+        .dropdownItemLabel {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: black;
+        }
+
+        .dropdownItem {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            color: black;
+        }
+
+        .dropdownItem:hover {
+            background-color: #5d7aa1;
+            cursor: pointer;
+            color: white;
         }
 
         .content {
@@ -208,14 +277,44 @@
     <!-- Main Content -->
     <div class="container">
         <div class="top-panel">
-            <div>Welcome, {{ user.username }}!</div>
-            <div>
-                <a href="{% url 'logout' %}" style="color: white; text-decoration: none;">Logout</a>
+            <div><h2><b>Welcome, {{ user.username }}!</b></h2></div>
+            <div class="user-profile">
+                <img src="{% static 'resources/userpfp2.png' %}" alt="User Profile Picture" class="user-profile-image">
+                <div class="dropdown" id="userDropdown" style="display: none;">
+                    <ul>
+                        {% if user.is_superuser %}
+                            <li class="dropdownItemLabel">Account</li>
+                            <li class="dropdownItem" onclick="window.location.href='{% url 'logout' %}'">Logout</li>
+                        {% else %}
+                            <li class="dropdownItemLabel">Account</li>
+                            <li class="dropdownItem" onclick="window.location.href='{% url 'view_own_profile' %}'">View Profile</li>
+                            <li class="dropdownDivider"></li>
+                            <li class="dropdownItem" onclick="window.location.href='{% url 'logout' %}'">Logout</li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="content">
             {% block content %}{% endblock %}
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const userProfileImage = document.querySelector('.user-profile-image');
+            const userDropdown = document.getElementById('userDropdown');
+
+            userProfileImage.addEventListener('click', () => {
+                userDropdown.style.display = userDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!userProfileImage.contains(event.target) && !userDropdown.contains(event.target)) {
+                    userDropdown.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

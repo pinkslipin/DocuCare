@@ -14,14 +14,15 @@
             height: 100%;
             font-family: 'Poppins', sans-serif;
             display: flex;
-            flex-direction: column; /* Stack elements vertically */
+            flex-direction: column;
             align-items: center;
             background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
+            padding-top: 60px; /* Add padding-top to prevent content from hiding behind the fixed top panel */
         }
         .top-panel {
             width: 100%;
-            background-color: rgba(100, 130, 173, 0.9);
+            background-color: #e8dcd4;
             color: white;
             display: flex;
             align-items: center;
@@ -29,8 +30,11 @@
             padding: 10px 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             height: 60px;
-            position: relative; /* Adjust position for z-index */
-            z-index: 1; /* Ensure it stays above other elements */
+            border: 2px solid #ccc;
+            position: fixed; /* Fix the panel to the top */
+            top: 0; /* Ensure it stays at the top */
+            left: 0; /* Ensure it spans the full width */
+            z-index: 1000; /* Make sure it's on top of other elements */
         }
         .logo {
             display: flex;
@@ -38,66 +42,85 @@
             gap: 10px;
         }
         .logo img {
-            height: 70px;
-            width: 200px;
-            margin-right: 10px;
+            height: 60px;
+            width: 180px;
         }
         .container {
-            width: 200%;
-            max-width: 1200px;
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px; /* Add space between header and content */
+            width: 80%;
+            max-width: 1200px;
+            height: calc(100% - 50px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
         }
-        .register-box { /* Changed from login-box to register-box */
-            width: 50%; /* Increased width for registration box */
-            padding: 40px; /* Increased padding for a bigger box */
+        .register-box {
+            width: 50%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
             color: #333;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+        
         .register-box h4 {
             font-size: 14px;
             color: #666;
             margin-bottom: 5px;
-            opacity: 0.5;
         }
+        
         .register-box h2 {
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 20px;
         }
+        
         .register-box label {
-            font-size: 14px;
+            font-size: 12px;
             margin-top: 10px;
             color: #333;
         }
         .input-field {
-            position: relative; /* For positioning the icon */
-            width: 190%;
-            margin-top: 5px;
-        }
-        .input-field input {
+            display: flex;
+            align-items: center;
             border: 1px solid #ddd;
             border-radius: 5px;
-            padding: 10px;
-            padding-right: 40px; /* Space for the icon */
-            font-size: 16px;
+            margin-top: 5px;
             width: 100%;
-            outline: none;
+            position: relative;
         }
+        
+        .input-field input,
+        .input-field textarea {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .input-field textarea {
+            height: 80px;
+            resize: none;
+        }
+        
         .show-hide-icon {
-            width: 20px; /* Adjusted size for icons */
-            height: 20px;
-            cursor: pointer;
             position: absolute;
-            right: -30px; /* Align to the right edge inside the input */
-            top: 50%; /* Center vertically */
-            transform: translateY(-50%); /* Adjust vertical alignment */
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            height: 20px;
+            width: auto;
+        }
+        .input-field input[type="date"]::-webkit-calendar-picker-indicator {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
         .error {
             color: red;
@@ -109,16 +132,19 @@
             color: white;
             border: none;
             padding: 10px;
-            width: 210%;
+            width: 100%;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 20px;
+            font-size: 14px;
         }
+        
         .btn-primary:hover {
             background-color: #4f6fbf;
         }
+        
         .promo-box {
-            width: 50%; /* Increased width for promotional box */
+            width: 50%;
             background-color: rgba(100, 130, 173, 0.8);
             color: white;
             display: flex;
@@ -127,29 +153,32 @@
             align-items: center;
             padding: 40px;
             text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .promo-box h2 {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 22px;
+            margin-bottom: 8px;
         }
         .promo-box p {
-            font-size: 16px;
+            font-size: 13px;
         }
         .register-link {
-            font-size: 14px;
+            font-size: 12px;
             color: black;
             text-align: center;
             margin-top: 15px;
         }
+        
         .register-link a {
             font-weight: bold;
             color: #333;
             text-decoration: none;
         }
+        
         .register-link a:hover {
             text-decoration: underline;
+        }
+        form {
+            width: 100%;
         }
     </style>
 </head>

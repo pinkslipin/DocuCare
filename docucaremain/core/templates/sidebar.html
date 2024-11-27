@@ -1,4 +1,5 @@
 {% load static %}
+
 <div class="sidebar">
     <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
     <a href="{% url 'admin_home' %}" class="{% if request.resolver_match.url_name == 'admin_home' %}active{% endif %}">Dashboard</a>
@@ -7,8 +8,9 @@
     <a href="{% url 'list_patients' %}" class="{% if request.resolver_match.url_name == 'list_patients' %}active{% endif %}">View Patients</a>
     <a href="{% url 'book_consultation' %}" class="{% if request.resolver_match.url_name == 'book_consultation' %}active{% endif %}">Book Consultation</a>
     <a href="{% url 'consultation_list' %}" class="{% if request.resolver_match.url_name == 'consultation_list' %}active{% endif %}">Consultation List</a>
-    <a href="{% url 'edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">Profile</a>
     <a href="{% url 'create_billing_record' %}" class="{% if request.resolver_match.url_name == 'create_billing_record' %}active{% endif %}">Create Billing Record</a>
+    {% if user.is_authenticated and user.is_superuser %}
     <a href="{% url 'register_doctor' %}" class="{% if request.resolver_match.url_name == 'register_doctor' %}active{% endif %}">Create an Account</a>
+    {% endif %}
     <a href="{% url 'prescription_list' %}" class="{% if request.resolver_match.url_name == 'prescription_list' %}active{% endif %}">Manage Prescriptions</a>
 </div>
