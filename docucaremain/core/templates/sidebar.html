@@ -1,7 +1,6 @@
 {% load static %}
 
 <div class="sidebar">
-    <img src="{% static 'resources/DocuCareLogo.png' %}" alt="DocuCare Logo">
     <a href="{% url 'admin_home' %}" class="{% if request.resolver_match.url_name == 'admin_home' %}active{% endif %}">Dashboard</a>
     <a href="{% url 'doctor_list' %}" class="{% if request.resolver_match.url_name == 'doctor_list' %}active{% endif %}">Doctor List</a>
     <a href="{% url 'medical_test_management' %}" class="{% if request.resolver_match.url_name == 'medical_test_management' %}active{% endif %}">Manage Medical Tests</a>
