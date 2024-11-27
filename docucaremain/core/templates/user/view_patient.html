@@ -17,7 +17,9 @@
     </div>
     
     <div class="mt-4">
-        <a class="btn btn-warning" href="{% url 'update_patient' patient.id %}">Edit</a>
+        {% if request.user == patient.user %}
+            <a class="btn btn-warning" href="{% url 'update_patient' patient.id %}">Edit</a>
+        {% endif %}
         <a class="btn btn-warning" href="{% url 'delete_patient' patient.user.id %}">Delete Patient</a>
         <a class="btn btn-warning" href="{% url 'list_patients' %}">Back to Patient List</a>
     </div>
