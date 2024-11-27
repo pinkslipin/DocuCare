@@ -23,6 +23,7 @@ urlpatterns = [
     path('medical-tests/<int:test_id>/delete/', views.medical_test_delete, name='medical_test_delete'),  # Delete Medical Test
     path('consultations/', views.consultation_list, name='consultation_list'),  # List Consultations
     path('consultations/book/', views.book_consultation, name='book_consultation'),  # Book Consultation
+    path('view-medical-test-applications/', views.view_medical_test_applications, name='view_medical_test_applications'),
 
     # User-Specific Routes
     path('user-home/', views.user_home, name='user_home'),  # User Home
@@ -33,6 +34,7 @@ urlpatterns = [
     path('process-payment/<int:record_id>/', views.process_payment, name='process_payment'),  # Process Payment
     path('billing-records/', views.billing_records, name='billing_records'),  # Billing Records
     path('billing-records/delete/<int:record_id>/', views.delete_billing_record, name='delete_billing_record'),  # Delete Billing Record
+    path('apply-medical-test/', views.apply_medical_test, name='apply_medical_test'),
 
     # Patient Management (Admin-Specific)
     path('patients/', views.list_patients, name='list_patients'),  # List Patients

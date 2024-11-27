@@ -18,6 +18,7 @@ from .forms import (
     MedicalTestForm,
     ConsultationForm,
     PrescriptionForm,
+    MedicalTestApplicationForm
 )
 from .models import (
     BillingRecord,
@@ -28,7 +29,9 @@ from .models import (
     Consultation,
     Prescription,
     Patient,
+    MedicalTestApplication
 )
+from datetime import timedelta
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -437,3 +440,34 @@ class PrescriptionDeleteView(DeleteView):
     model = Prescription
     template_name = 'admin/prescription_confirm_delete.html'
     success_url = reverse_lazy('prescription_list')
+
+# Apply for Medical Test (User-Specific)
+@login_required
+def apply_medical_test(request):
+    if request.method == 'POST':
+        form = MedicalTestApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.patient = request.user.patientprofile
+            application.save()
+            
+            # Create a billing record for the medical test
+            BillingRecord.objects.create(
+                patient=application.patient,
+                service_description=f"Medical Test: {application.medical_test.name}",
+                amount_due=application.medical_test.price,
+                due_date=application.application_date + timedelta(days=30)  # Example due date
+            )
+            
+            messages.success(request, 'Applied for medical test successfully.')
+            return redirect('user_home')
+    else:
+        form = MedicalTestApplicationForm()
+    return render(request, 'user/apply_medical_test.html', {'form': form})
+
+# View Medical Test Applications (Admin-Only)
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def view_medical_test_applications(request):
+    applications = MedicalTestApplication.objects.all()
+    return render(request, 'admin/view_medical_test_applications.html', {'applications': applications})

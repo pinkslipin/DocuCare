@@ -1,0 +1,11 @@
+
+{% extends "user_base.html" %}
+
+{% block content %}
+  <h2>Apply for Medical Test</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Apply</button>
+  </form>
+{% endblock %}

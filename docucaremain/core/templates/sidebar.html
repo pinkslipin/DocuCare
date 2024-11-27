@@ -8,6 +8,7 @@
     <a href="{% url 'list_patients' %}" class="{% if request.resolver_match.url_name == 'list_patients' %}active{% endif %}">View Patients</a>
     <a href="{% url 'consultation_list' %}" class="{% if request.resolver_match.url_name == 'consultation_list' %}active{% endif %}">Consultation List</a>
     <a href="{% url 'create_billing_record' %}" class="{% if request.resolver_match.url_name == 'create_billing_record' %}active{% endif %}">Create Billing Record</a>
+    <a href="{% url 'view_medical_test_applications' %}" class="{% if request.resolver_match.url_name == 'view_medical_test_applications' %}active{% endif %}">View Medical Test Applications</a>
     {% if user.is_authenticated and user.is_superuser %}
     <a href="{% url 'register_doctor' %}" class="{% if request.resolver_match.url_name == 'register_doctor' %}active{% endif %}">Create an Account</a>
     {% endif %}

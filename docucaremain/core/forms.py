@@ -8,7 +8,8 @@ from .models import (
     Payment,
     MedicalTest,
     Consultation,
-    Prescription
+    Prescription,
+    MedicalTestApplication
 )
 
 # Patient Registration Form
@@ -96,6 +97,13 @@ class MedicalTestForm(forms.ModelForm):
     class Meta:
         model = MedicalTest
         fields = ['name', 'description', 'price', 'availability']
+
+
+# Medical Test Application Form
+class MedicalTestApplicationForm(forms.ModelForm):
+    class Meta:
+        model = MedicalTestApplication
+        fields = ['medical_test']
 
 
 # Edit Profile Form (Admin-Only)
