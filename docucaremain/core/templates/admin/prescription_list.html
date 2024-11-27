@@ -15,7 +15,6 @@
                 <th>Time</th>
                 <th>Prescription</th>
                 <th>Actions</th>
-                <th>Contact</th>
             </tr>
         </thead>
         <tbody>
@@ -29,12 +28,8 @@
                 <td>
                     <a href="{% url 'prescription_update' prescription.pk %}" class="button edit">Edit</a>
                     <a href="{% url 'prescription_delete' prescription.pk %}" class="button delete">Delete</a>
-                    <button class="button print">Print</button>
                 </td>
-                <td>
-                    <button class="button message">Send Msg.</button>
-                </td>
-            </tr>
+                </tr>
             {% empty %}
             <tr>
                 <td colspan="7">No prescriptions available.</td>
