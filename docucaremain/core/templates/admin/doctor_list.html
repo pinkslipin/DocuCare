@@ -6,18 +6,20 @@
 <div class="main-content">
     <h1>Doctor Management</h1>
 
+    <!-- Create/Update Doctor Form -->
+
     <!-- List of Doctors -->
     <div class="doctor-list">
         <h2>Doctor List</h2>
         <ul>
             {% for doctor in doctors %}
                 <li class="doctor-item">
-                    {{ doctor.name }} - {{ doctor.specialization }}
+                    {{ doctor.name }} - {{ doctor.specialization }} - {{ doctor.user.username }}
                     <div class="doctor-actions">
-                        <a href="{% url 'doctor_update' doctor.pk %}">Edit</a>
+                        <a href="{% url 'view_doctor' doctor.pk %}">View</a>
                         <form method="post" action="{% url 'doctor_delete' doctor.pk %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit">Delete</button>
+                            <a>Delete</a>
                         </form>
                     </div>
                 </li>

@@ -13,7 +13,7 @@
                     <a href="{% url 'view_patient' patient.id %}">View</a>
                     <form method="post" action="{% url 'delete_patient' patient.id %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit">Delete</button>
+                        <a >Delete</a>
                     </form>
                 </div>
             </li>

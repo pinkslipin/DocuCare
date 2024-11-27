@@ -5,7 +5,7 @@
 {% block content %}
 <div class="main-content">
     <h1>Your Billing Records</h1>
-    <table>
+    <table class="prescription-table">
         <thead>
             <tr>
                 <th>Service Description</th>
@@ -24,19 +24,94 @@
                 <td>{{ record.paid_amount }}</td>
                 <td>{{ record.balance_due }}</td>
                 <td>{{ record.status }}</td>
-                <td>
-                    {% if record.status == 'Completed' %}
+                <td class="actions-cell">
+                    {% if record.status == 'Paid' %}
                         <form method="post" action="{% url 'delete_billing_record' record.id %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="submit" class="button delete">Delete</button>
                         </form> 
                     {% else %}
-                        <a class="btn btn-success btn-sm" href="{% url 'process_payment' record.id %}">Pay</a>
+                        <a class="button pay" href="{% url 'process_payment' record.id %}">Pay</a>
                     {% endif %}
                 </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No billing records available.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 {% endblock %}
+
+<style>
+    .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content h1 {
+        font-size: 28px;
+        color: #6482AD;
+        margin-bottom: 20px;
+    }
+
+    .prescription-table {
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        border-collapse: collapse;
+    }
+
+    .prescription-table th,
+    .prescription-table td {
+        padding: 15px;
+        text-align: left;
+        vertical-align: middle; /* Ensure vertical alignment */
+    }
+
+    .prescription-table th {
+        background-color: #6482AD;
+        color: white;
+    }
+
+    .prescription-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .prescription-table tr:hover {
+        background-color: #ddd;
+    }
+
+    .actions-cell {
+        text-align: center; /* Center align the actions cell */
+        vertical-align: middle; /* Ensure vertical alignment */
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        color: rgb(35, 111, 198);
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 500;
+        margin-top: 0; /* Remove top margin */
+    }
+
+    .button.pay {
+        background-color: #28a745;
+    }
+
+    .button.delete {
+        background-color: #dc3545;
+    }
+
+    .button:hover {
+        opacity: 0.9;
+    }
+</style>

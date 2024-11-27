@@ -9,17 +9,18 @@
     <table class="prescription-table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Time</th>
                 <th>Medication</th>
+                <th>Time</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
             {% for prescription in prescriptions %}
             <tr>
-                <td>{{ prescription.date|date:"d.m.Y" }}</td>
-                <td>{{ prescription.time|time:"H:i" }}</td>
                 <td>{{ prescription.medication }}</td>
+                <td>{{ prescription.time|time:"H:i" }}</td>
+                <td>{{ prescription.date|date:"d.m.Y" }}</td>
+
             </tr>
             {% empty %}
             <tr>

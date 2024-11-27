@@ -189,3 +189,17 @@ def book_consultation(request):
 def consultation_list(request):
     consultations = Consultation.objects.all()
     return render(request, 'consultation_list.html', {'consultations': consultations})
+
+@login_required
+def add_notes(request, consultation_id):
+    consultation = get_object_or_404(Consultation, id=consultation_id)
+    if request.method == 'POST':
+        form = AddNotesForm(request.POST, instance=consultation)
+        if form.is_valid() and consultation.can_add_notes():
+            form.save()
+            messages.success(request, 'Notes added successfully. Consultation marked as complete.')
+            return redirect('consultation_list')
+    else:
+        form = AddNotesForm(instance=consultation)
+
+    return render(request, 'add_notes.html', {'form': form, 'consultation': consultation})

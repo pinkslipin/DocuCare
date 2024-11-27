@@ -134,9 +134,9 @@
         }
 
         .dropdownItem:hover {
-            background-color: #5d7aa1;
+            background-color: #f2f2f2;
             cursor: pointer;
-            color: white;
+            color: #6482AD;
         }
 
         .content {
@@ -232,7 +232,7 @@
             text-decoration: none;
             font-weight: 500;
             display: inline-block;
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
         a:hover {
@@ -424,6 +424,20 @@
         .prescription-table td {
             padding: 15px;
             text-align: left;
+            vertical-align: middle; /* Ensure vertical alignment */
+        }
+
+        .prescription-table th {
+            background-color: #e8dcd4;
+            color: black;
+        }
+
+        .prescription-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .prescription-table tr:hover {
+            background-color: #ddd;
         }
 
         .button.add-prescription {
@@ -439,7 +453,7 @@
         }
 
         .button.add-prescription:hover {
-            background-color: #0056b3;
+            opacity: 0.8;
         }
 
         .card {

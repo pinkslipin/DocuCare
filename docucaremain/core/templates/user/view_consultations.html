@@ -1,0 +1,35 @@
+{% extends 'user_base.html' %}
+
+{% block title %}My Consultations{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>My Consultations</h1>
+    <table class="prescription-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Description</th>
+                <th>Notes</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consultation in consultations %}
+            <tr>
+                <td>{{ consultation.date|date:"d.m.Y" }}</td>
+                <td>{{ consultation.doctor.name }}</td>
+                <td>{{ consultation.description }}</td>
+                <td>{{ consultation.notes }}</td>
+                <td>{{ consultation.status }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No consultations available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

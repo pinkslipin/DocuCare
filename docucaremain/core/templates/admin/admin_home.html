@@ -4,7 +4,67 @@
 
 {% block content %}
 <div class="main-content">
-    <h1>Welcome to DocuCare</h1>
-    <p>Manage profiles of doctors and healthcare providers, assign doctors to patients, and maintain records of consultations and recommendations.</p>
+    <h1>Welcome to DocuCare Admin Dashboard</h1>
+    <h2>Overview</h2>
+    <div>
+        <h3>Doctors</h3>
+        {% if doctors %}
+            <ul>
+                {% for doctor in doctors %}
+                    <li>{{ doctor.name }} - {{ doctor.specialization }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No doctors available.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Patients</h3>
+        {% if patients %}
+            <ul>
+                {% for patient in patients %}
+                    <li>{{ patient.full_name }} - {{ patient.contact_number }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No patients available.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Billing Records</h3>
+        {% if billing_records %}
+            <ul>
+                {% for record in billing_records %}
+                    <li>{{ record.service_description }} - {{ record.status }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No billing records available.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Consultations</h3>
+        {% if consultations %}
+            <ul>
+                {% for consultation in consultations %}
+                    <li>{{ consultation.date }} - {{ consultation.doctor.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No consultations available.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Medical Tests</h3>
+        {% if medical_tests %}
+            <ul>
+                {% for test in medical_tests %}
+                    <li>{{ test.name }} - {{ test.price }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No medical tests available.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 
 from .forms import (
+    AddNotesForm,
     PatientProfileForm,
     PatientRegistrationForm,
     BillingRecordForm,
@@ -51,12 +52,37 @@ def home(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def admin_home(request):
-    return render(request, 'admin/admin_home.html')
+    doctors = Doctor.objects.all()
+    patients = PatientProfile.objects.all()
+    billing_records = BillingRecord.objects.all()
+    consultations = Consultation.objects.all()
+    medical_tests = MedicalTest.objects.all()
+
+    context = {
+        'doctors': doctors,
+        'patients': patients,
+        'billing_records': billing_records,
+        'consultations': consultations,
+        'medical_tests': medical_tests,
+    }
+    return render(request, 'admin/admin_home.html', context)
 
 # User Home Page
 @login_required
 def user_home(request):
-    return render(request, 'user/user_home.html')
+    user = request.user
+    patient_profile = get_object_or_404(PatientProfile, user=user)
+    billing_records = BillingRecord.objects.filter(patient=patient_profile)
+    prescriptions = Prescription.objects.filter(patient=patient_profile)
+    medical_tests = MedicalTestApplication.objects.filter(patient=patient_profile)
+
+    context = {
+        'patient_profile': patient_profile,
+        'billing_records': billing_records,
+        'prescriptions': prescriptions,
+        'medical_tests': medical_tests,
+    }
+    return render(request, 'user/user_home.html', context)
 
 # Patient Registration View
 def register_patient(request):
@@ -135,6 +161,11 @@ def doctor_list(request):
         form = DoctorForm()
     doctors = Doctor.objects.all()
     return render(request, 'admin/doctor_list.html', {'form': form, 'doctors': doctors})
+
+@login_required
+def view_doctor(request, pk):
+    doctor = get_object_or_404(Doctor, pk=pk)
+    return render(request, 'admin/view_doctor.html', {'doctor': doctor})
 
 @login_required
 def medical_test_update(request, test_id):
@@ -437,6 +468,7 @@ class PrescriptionDeleteView(DeleteView):
 # Apply for Medical Test (User-Specific)
 @login_required
 def apply_medical_test(request):
+    tests = MedicalTest.objects.all()
     if request.method == 'POST':
         form = MedicalTestApplicationForm(request.POST)
         if form.is_valid():
@@ -456,7 +488,8 @@ def apply_medical_test(request):
             return redirect('user_home')
     else:
         form = MedicalTestApplicationForm()
-    return render(request, 'user/apply_medical_test.html', {'form': form})
+    return render(request, 'user/apply_medical_test.html', {'form': form, 'tests': tests})
+
 
 # View Medical Test Applications (Admin-Only)
 @login_required
@@ -469,3 +502,28 @@ def view_medical_test_applications(request):
 def view_prescriptions(request):
     prescriptions = Prescription.objects.filter(patient__user=request.user)
     return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions})
+
+@login_required
+def add_notes(request, consultation_id):
+    consultation = get_object_or_404(Consultation, id=consultation_id)
+    doctor = get_object_or_404(Doctor, user=request.user)
+    
+    if consultation.doctor != doctor:
+        messages.error(request, 'You are not authorized to add notes to this consultation.')
+        return redirect('consultation_list')
+    
+    if request.method == 'POST':
+        form = AddNotesForm(request.POST, instance=consultation)
+        if form.is_valid() and consultation.can_add_notes():
+            form.save()
+            messages.success(request, 'Notes added successfully. Consultation marked as complete.')
+            return redirect('consultation_list')
+    else:
+        form = AddNotesForm(instance=consultation)
+
+    return render(request, 'admin/add_notes.html', {'form': form, 'consultation': consultation})
+
+@login_required
+def view_consultations(request):
+    consultations = Consultation.objects.filter(patient__user=request.user)
+    return render(request, 'user/view_consultations.html', {'consultations': consultations})

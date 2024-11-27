@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -82,14 +83,30 @@ class Payment(models.Model):
 
 # Consultation model (Shared between Admin and User)
 class Consultation(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('complete', 'Complete'),
+    ]
+
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    date = models.DateTimeField()
-    notes = models.CharField(max_length=1000)
-    description = models.CharField(max_length=1000)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='consultations')
+    date = models.DateField()
+    description = models.TextField()
+    notes = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    def save(self, *args, **kwargs):
+        if self.notes:
+            self.status = 'complete'
+        else:
+            self.status = 'pending'
+        super().save(*args, **kwargs)
+
+    def can_add_notes(self):
+        return self.date == date.today()
 
     def __str__(self):
-        return f"Consultation on {self.date} with {self.doctor}"
+        return f"Consultation with {self.doctor} on {self.date}"
 
 
 # Recommendation model (Admin-Specific)
