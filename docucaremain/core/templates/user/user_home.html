@@ -4,7 +4,43 @@
 
 {% block content %}
 <div class="main-content">
-    <h1>Welcome to DocuCare</h1>
-    <p>Manage your profile, view billing records, and more.</p>
+    <h1>Welcome, {{ patient_profile.full_name }}</h1>
+    <h2>Notifications</h2>
+    <div>
+        <h3>Billing Records</h3>
+        {% if billing_records %}
+            <ul>
+                {% for record in billing_records %}
+                    <li>{{ record.service_description }} - {{ record.status }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No billing records available.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Prescriptions</h3>
+        {% if prescriptions %}
+            <ul>
+                {% for prescription in prescriptions %}
+                    <li>{{ prescription.medication }} - {{ prescription.date }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No prescriptions available.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Medical Tests</h3>
+        {% if medical_tests %}
+            <ul>
+                {% for test in medical_tests %}
+                    <li>{{ test.medical_test.name }} - {{ test.payment_status }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No medical tests applied.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

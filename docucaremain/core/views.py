@@ -51,12 +51,37 @@ def home(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def admin_home(request):
-    return render(request, 'admin/admin_home.html')
+    doctors = Doctor.objects.all()
+    patients = PatientProfile.objects.all()
+    billing_records = BillingRecord.objects.all()
+    consultations = Consultation.objects.all()
+    medical_tests = MedicalTest.objects.all()
+
+    context = {
+        'doctors': doctors,
+        'patients': patients,
+        'billing_records': billing_records,
+        'consultations': consultations,
+        'medical_tests': medical_tests,
+    }
+    return render(request, 'admin/admin_home.html', context)
 
 # User Home Page
 @login_required
 def user_home(request):
-    return render(request, 'user/user_home.html')
+    user = request.user
+    patient_profile = get_object_or_404(PatientProfile, user=user)
+    billing_records = BillingRecord.objects.filter(patient=patient_profile)
+    prescriptions = Prescription.objects.filter(patient=patient_profile)
+    medical_tests = MedicalTestApplication.objects.filter(patient=patient_profile)
+
+    context = {
+        'patient_profile': patient_profile,
+        'billing_records': billing_records,
+        'prescriptions': prescriptions,
+        'medical_tests': medical_tests,
+    }
+    return render(request, 'user/user_home.html', context)
 
 # Patient Registration View
 def register_patient(request):
