@@ -73,7 +73,7 @@ def register_patient(request):
 
 # Doctor Registration View
 @login_required
-@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
 def register_doctor(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
@@ -374,12 +374,19 @@ def book_consultation(request):
     if request.method == 'POST':
         form = ConsultationForm(request.POST)
         if form.is_valid():
-            form.save()
+            consultation = form.save(commit=False)
+            consultation.patient = get_object_or_404(PatientProfile, user=request.user)
+            consultation.save()
             messages.success(request, 'Consultation booked successfully.')
-            return redirect('consultation_list')
+            return redirect('consultation_success')
     else:
         form = ConsultationForm()
+
     return render(request, 'admin/book_consultation.html', {'form': form})
+
+@login_required
+def consultation_success(request):
+    return render(request, 'admin/consultation_success.html')
 
 # List Consultations
 @login_required

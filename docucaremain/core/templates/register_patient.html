@@ -202,6 +202,20 @@
             width: 100%;
         }
 
+        .back-button {
+            background-color: #6482AD;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            top: 30px; /* Position higher */
+            left: 25px; /* Position to the left */
+            width: fit-content; /* Make button width fit content */
+        }
+
         @media screen and (min-width: 1920px) {
             body {
                 zoom: 1;
@@ -219,6 +233,7 @@
     </div>
     <div class="container">
         <div class="register-box">
+            <button type="button" class="back-button" onclick="window.location.href='{% url 'landing_page' %}'">◀ Go back</button>
             <h4>WELCOME</h4>
             <h2>Register a New Patient Account</h2>
             <form method="post">

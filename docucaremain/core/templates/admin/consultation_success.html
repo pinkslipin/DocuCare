@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Consultation Booked</title>
-</head>
-<body>
+{% extends 'user_base.html' %}
+
+{% block title %}Consultation Booked{% endblock %}
+
+{% block content %}
+<div class="main-content">
     <h1>Consultation Booked Successfully</h1>
-    <a href="{% url 'home' %}">Go to Homepage</a>
-</body>
-</html>
+    <a href="{% url 'home' %}" class="btn-primary">Go to Homepage</a>
+</div>
+{% endblock %}

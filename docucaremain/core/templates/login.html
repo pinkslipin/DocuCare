@@ -19,18 +19,15 @@
             align-items: center;
             background: url("{% static 'resources/loginbg.jpg' %}") no-repeat center center fixed;
             background-size: cover;
-            padding-top: 60px;
-            min-width: 1200px; /* Minimum width to prevent squishing */
-            overflow-x: auto; /* Allow horizontal scrolling if window is smaller */
         }
 
         .container {
-            width: 1200px; /* Fixed width */
-            height: 800px; /* Fixed height */
+            width: 100%;
+            height: 100%;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            flex-shrink: 0; /* Prevent container from shrinking */
+            flex-direction: column;
         }
 
         .top-panel {
@@ -44,16 +41,18 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             height: 60px;
             border: 2px solid #ccc;
-            position: fixed; /* Fix the panel to the top */
-            top: 0; /* Ensure it stays at the top */
-            left: 0; /* Ensure it spans the full width */
-            z-index: 1000; /* Make sure it's on top of other elements */
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
+
         .logo {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         .logo img {
             height: 60px;
             width: 180px;
@@ -61,41 +60,41 @@
 
         .content {
             display: flex;
-            width: 1200px; /* Fixed width */
-            height: 800px; /* Fixed height */
-            margin-top: 30px;
+            width: 80%;
+            max-width: 1200px;
+            margin-top: 80px; /* Adjusted margin to move content higher */
+            height: calc(100% - 140px); /* Adjusted height to account for top-panel */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
             border-radius: 10px;
             overflow: hidden;
-            flex-shrink: 0; /* Prevent content from shrinking */
+            flex-shrink: 0;
         }
 
         .login-box {
-            width: 600px; /* Fixed width (50% of content) */
+            width: 50%;
             background-color: rgba(255, 255, 255, 0.9);
             padding: 40px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             color: #333;
             position: relative;
-            overflow-y: auto; /* Allow vertical scrolling if needed */
+            
         }
 
-        .login-box .back-button {
+        .back-button {
             background-color: #6482AD;
             color: white;
             border: none;
             padding: 8px 15px;
             border-radius: 4px;
             font-size: 13px;
+            font-family: 'Poppins', sans-serif;
             cursor: pointer;
-            position: relative; /* Change from absolute to relative */
-            margin: 0 0 20px 0; /* Add margin bottom instead of margin-top */
+            position: absolute; /* Change to absolute */
+            top: 30px; /* Position higher */
+            left: 25px; /* Position to the left */
             width: fit-content; /* Make button width fit content */
-        }
-        .login-box  .back-button:hover {
-            background-color: #4f6fbf;
         }
 
         .login-box h4 {
@@ -127,8 +126,6 @@
             padding: 10px;
             font-size: 16px;
             padding-right: 40px;
-            width: 100%;
-            box-sizing: border-box;
         }
 
         .password-icon {
@@ -166,7 +163,7 @@
         }
 
         .promo-box {
-            width: 600px; /* Fixed width (50% of content) */
+            width: 50%;
             background-color: rgba(100, 130, 173, 0.8);
             color: white;
             display: flex;
@@ -203,13 +200,27 @@
             text-decoration: underline;
         }
 
-        /* Add media query for high-resolution displays */
         @media screen and (min-width: 1920px) {
             body {
-                zoom: 1; /* Force 100% zoom on large screens */
+                zoom: 1;
             }
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            let isPasswordVisible = false;
+
+            togglePassword.addEventListener('click', function() {
+                isPasswordVisible = !isPasswordVisible;
+                passwordInput.type = isPasswordVisible ? 'text' : 'password';
+                togglePassword.src = isPasswordVisible 
+                    ? "{% static 'resources/hide_pass.png' %}" 
+                    : "{% static 'resources/show_pass.png' %}";
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -226,10 +237,10 @@
         <!-- Login Box -->
         <div class="login-box">
             <button type="button" class="back-button" onclick="window.location.href='{% url 'landing_page' %}'">◀ Go back</button>
-            <h4>WELCOME BACK</h4>
-            <h2>Log In to your Account</h2>
+            <h4 style="margin-top: 100px;">WELCOME BACK</h4>
+            <h2 style="margin-top: 20px;">Log In to your Account</h2>
             
-            <form method="post">
+            <form method="post" style="margin-top: 15px;">
                 {% csrf_token %}
                 <label for="email">Email</label>
                 <div class="input-field">
@@ -261,21 +272,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const passwordInput = document.getElementById('password');
-        const togglePassword = document.getElementById('togglePassword');
-        let isPasswordVisible = false;
-
-        togglePassword.addEventListener('click', function() {
-            isPasswordVisible = !isPasswordVisible;
-            passwordInput.type = isPasswordVisible ? 'text' : 'password';
-            togglePassword.src = isPasswordVisible 
-                ? "{% static 'resources/hide_pass.png' %}" 
-                : "{% static 'resources/show_pass.png' %}";
-        });
-    });
-</script>
 </body>
 </html>
