@@ -8,7 +8,8 @@ from .models import (
     Payment,
     MedicalTest,
     Consultation,
-    Prescription
+    Prescription,
+    MedicalTestApplication
 )
 
 # Patient Registration Form
@@ -98,6 +99,13 @@ class MedicalTestForm(forms.ModelForm):
         fields = ['name', 'description', 'price', 'availability']
 
 
+# Medical Test Application Form
+class MedicalTestApplicationForm(forms.ModelForm):
+    class Meta:
+        model = MedicalTestApplication
+        fields = ['medical_test']
+
+
 # Edit Profile Form (Admin-Only)
 class EditProfileForm(forms.ModelForm):
     username = forms.CharField(max_length=150, required=True)
@@ -140,21 +148,20 @@ class EditProfileForm(forms.ModelForm):
 class ConsultationForm(forms.ModelForm):
     class Meta:
         model = Consultation
-        fields = ['patient', 'doctor', 'date', 'description']
+        fields = ['doctor', 'date', 'description']  # Exclude the patient field
         widgets = {
             'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
 
 # Prescription Form
 class PrescriptionForm(forms.ModelForm):
-    patient_name = forms.CharField(label="Patient", max_length=100)
+    patient = forms.ModelChoiceField(queryset=PatientProfile.objects.all(), label="Patient")
     date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
 
     class Meta:
         model = Prescription
-        fields = ['appt_id', 'patient_name', 'date', 'time', 'medication']
+        fields = ['patient', 'date', 'time', 'medication']
         widgets = {
-            'appt_id': forms.TextInput(attrs={'placeholder': 'Enter Appointment ID'}),
             'medication': forms.TextInput(attrs={'placeholder': 'Enter Medication'}),
         }

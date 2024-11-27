@@ -18,6 +18,7 @@ from .forms import (
     MedicalTestForm,
     ConsultationForm,
     PrescriptionForm,
+    MedicalTestApplicationForm
 )
 from .models import (
     BillingRecord,
@@ -28,7 +29,9 @@ from .models import (
     Consultation,
     Prescription,
     Patient,
+    MedicalTestApplication
 )
+from datetime import timedelta
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -70,7 +73,7 @@ def register_patient(request):
 
 # Doctor Registration View
 @login_required
-@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
 def register_doctor(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
@@ -371,12 +374,19 @@ def book_consultation(request):
     if request.method == 'POST':
         form = ConsultationForm(request.POST)
         if form.is_valid():
-            form.save()
+            consultation = form.save(commit=False)
+            consultation.patient = get_object_or_404(PatientProfile, user=request.user)
+            consultation.save()
             messages.success(request, 'Consultation booked successfully.')
-            return redirect('consultation_list')
+            return redirect('consultation_success')
     else:
         form = ConsultationForm()
+
     return render(request, 'admin/book_consultation.html', {'form': form})
+
+@login_required
+def consultation_success(request):
+    return render(request, 'admin/consultation_success.html')
 
 # List Consultations
 @login_required
@@ -417,14 +427,7 @@ class PrescriptionCreateView(CreateView):
     success_url = reverse_lazy('prescription_list')  # Redirect to the list after adding
 
     def form_valid(self, form):
-        # Get the patient name from the form input
-        patient_name = form.cleaned_data['patient_name']
-        
-        # Fetch or create a Patient instance by name
-        patient, created = Patient.objects.get_or_create(name=patient_name)
-        
-        # Assign the patient instance to the prescription before saving
-        form.instance.patient = patient
+        form.instance.patient = form.cleaned_data['patient']
         return super().form_valid(form)
 
 class PrescriptionUpdateView(UpdateView):
@@ -437,3 +440,39 @@ class PrescriptionDeleteView(DeleteView):
     model = Prescription
     template_name = 'admin/prescription_confirm_delete.html'
     success_url = reverse_lazy('prescription_list')
+
+# Apply for Medical Test (User-Specific)
+@login_required
+def apply_medical_test(request):
+    if request.method == 'POST':
+        form = MedicalTestApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.patient = request.user.patientprofile
+            application.save()
+            
+            # Create a billing record for the medical test
+            BillingRecord.objects.create(
+                patient=application.patient,
+                service_description=f"Medical Test: {application.medical_test.name}",
+                amount_due=application.medical_test.price,
+                due_date=application.application_date + timedelta(days=30)  # Example due date
+            )
+            
+            messages.success(request, 'Applied for medical test successfully.')
+            return redirect('user_home')
+    else:
+        form = MedicalTestApplicationForm()
+    return render(request, 'user/apply_medical_test.html', {'form': form})
+
+# View Medical Test Applications (Admin-Only)
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def view_medical_test_applications(request):
+    applications = MedicalTestApplication.objects.all()
+    return render(request, 'admin/view_medical_test_applications.html', {'applications': applications})
+
+@login_required
+def view_prescriptions(request):
+    prescriptions = Prescription.objects.filter(patient__user=request.user)
+    return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions})

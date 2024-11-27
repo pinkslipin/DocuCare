@@ -8,14 +8,6 @@
     <form method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="{{ form.patient.id_for_label }}">Patient:</label>
-            <div class="input-field">
-                {{ form.patient }}
-            </div>
-            {% if form.patient.errors %}
-                <div class="alert alert-danger">{{ form.patient.errors }}</div>
-            {% endif %}
-
             <label for="{{ form.doctor.id_for_label }}">Doctor:</label>
             <div class="input-field">
                 {{ form.doctor }}
@@ -42,6 +34,5 @@
         </div>
         <button type="submit" class="btn-primary">Book</button>
     </form>
-    <a href="{% url 'home' %}">Cancel</a>
 </div>
 {% endblock %}

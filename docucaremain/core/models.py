@@ -112,6 +112,29 @@ class MedicalTest(models.Model):
         return self.name
 
 
+# MedicalTestApplication model
+class MedicalTestApplication(models.Model):
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
+    medical_test = models.ForeignKey(MedicalTest, on_delete=models.CASCADE)
+    application_date = models.DateTimeField(auto_now_add=True)
+    payment_status = models.CharField(max_length=20, default='Unpaid')  # 'Unpaid', 'Partially Paid', 'Paid'
+    payment_completion_date = models.DateTimeField(null=True, blank=True)
+
+    def update_payment_status(self):
+        billing_record = BillingRecord.objects.filter(
+            patient=self.patient,
+            service_description=f"Medical Test: {self.medical_test.name}"
+        ).first()
+        if billing_record:
+            self.payment_status = billing_record.status
+            if billing_record.status == 'Paid':
+                self.payment_completion_date = billing_record.payment_set.latest('payment_date').payment_date
+            self.save()
+
+    def __str__(self):
+        return f"{self.patient.full_name} applied for {self.medical_test.name}"
+
+
 # Patient model
 class Patient(models.Model):
     name = models.CharField(max_length=100)
@@ -123,8 +146,7 @@ class Patient(models.Model):
 
 # Prescription model
 class Prescription(models.Model):
-    appt_id = models.CharField(max_length=20)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
     medication = models.CharField(max_length=200)
@@ -132,7 +154,7 @@ class Prescription(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Prescription for {self.patient.name} - {self.medication}"
+        return f"Prescription for {self.patient.full_name} - {self.medication}"
 
 
 # Appointment model

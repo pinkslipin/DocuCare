@@ -7,10 +7,11 @@
     <h1>Add a New Prescription</h1>
     <form method="post" novalidate>
         {% csrf_token %}
-        <label for="id_appt_id">Appt ID:</label>
-        {{ form.appt_id }}
-        <label for="id_patient_name">Patient:</label>
-        {{ form.patient_name }}
+        <!-- Remove Appt ID field -->
+        <!-- <label for="id_appt_id">Appt ID:</label> -->
+        <!-- {{ form.appt_id }} -->
+        <label for="id_patient">Patient:</label>
+        {{ form.patient }}
         <label for="id_date">Date:</label>
         {{ form.date }}
         <label for="id_time">Time:</label>
