@@ -1,0 +1,54 @@
+{% extends "user_base.html" %}
+
+{% block title %}Select Consultation{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Select Consultation</h1>
+    <form method="post" id="select-consultation-form">
+        {% csrf_token %}
+        <table class="prescription-table">
+            <thead>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Specialization</th>
+                    <th>Available Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                    {% for time in doctor.time_slots %}
+                        <tr>
+                            <td>{{ doctor.name }}</td>
+                            <td>{{ doctor.specialization }}</td>
+                            <td>{{ time }}</td>
+                            <td class="actions-cell">
+                                <a href="javascript:void(0);" class="button book" onclick="bookConsultation('{{ doctor.id }}', '{{ doctor.name }}', '{{ doctor.specialization }}', '{{ time }}')">Book</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No doctors available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input type="hidden" name="doctor_id" id="doctor-id-input">
+        <input type="hidden" name="doctor_name" id="doctor-name-input">
+        <input type="hidden" name="doctor_specialization" id="doctor-specialization-input">
+        <input type="hidden" name="time" id="time-input">
+    </form>
+</div>
+
+<script>
+    function bookConsultation(doctorId, doctorName, doctorSpecialization, time) {
+        document.getElementById('doctor-id-input').value = doctorId;
+        document.getElementById('doctor-name-input').value = doctorName;
+        document.getElementById('doctor-specialization-input').value = doctorSpecialization;
+        document.getElementById('time-input').value = time;
+        document.getElementById('select-consultation-form').submit();
+    }
+</script>
+{% endblock %}

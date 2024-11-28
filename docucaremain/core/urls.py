@@ -13,7 +13,7 @@ urlpatterns = [
 
     # Admin-Specific Routes
     path('admin-home/', views.admin_home, name='admin_home'),  # Admin Home
-        path('doctors/<int:pk>/', views.view_doctor, name='view_doctor'), # View Doctor Details
+    path('doctors/<int:pk>/', views.view_doctor, name='view_doctor'),  # View Doctor Details
     path('doctors/', views.doctor_list, name='doctor_list'),  # List of Doctors
     path('doctors/<int:pk>/edit/', views.doctor_update, name='doctor_update'),  # Edit Doctor
     path('doctors/<int:pk>/delete/', views.doctor_delete, name='doctor_delete'),  # Delete Doctor
@@ -24,6 +24,8 @@ urlpatterns = [
     path('medical-tests/<int:test_id>/delete/', views.medical_test_delete, name='medical_test_delete'),  # Delete Medical Test
     path('consultations/', views.consultation_list, name='consultation_list'),  # List Consultations
     path('consultations/book/', views.book_consultation, name='book_consultation'),  # Book Consultation
+    path('select_consultation/', views.select_consultation, name='select_consultation'),
+    path('book_consultation/<int:doctor_id>/<str:time>/', views.book_consultation, name='book_consultation'),
     path('view-medical-test-applications/', views.view_medical_test_applications, name='view_medical_test_applications'),
     path('consultations/<int:consultation_id>/add_notes/', views.add_notes, name='add_notes'),
 

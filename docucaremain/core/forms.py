@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+from django.forms import TextInput, DateInput
 from .models import (
     Doctor,
     PatientProfile,
@@ -193,18 +194,21 @@ class AddNotesForm(forms.ModelForm):
         }
 
 # Consultation Form (Shared)
+from django.forms import HiddenInput, DateInput, TextInput
+
 class ConsultationForm(forms.ModelForm):
     class Meta:
         model = Consultation
-        fields = ['doctor', 'date', 'description']
+        fields = ['doctor', 'date', 'time', 'description']
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'doctor': HiddenInput(),  # Hidden field for doctor
+            'time': TextInput(attrs={'readonly': 'readonly'}),  # Non-editable time field
+            'date': DateInput(attrs={'type': 'date'}),          # HTML5 datepicker
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['doctor'].queryset = Doctor.objects.all()
-
 # Prescription Form
 class PrescriptionForm(forms.ModelForm):
     patient = forms.ModelChoiceField(queryset=PatientProfile.objects.all(), label="Patient")

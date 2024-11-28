@@ -100,23 +100,23 @@ class Consultation(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='consultations')
     date = models.DateField()
+    time = models.TimeField()  # Add time field
     description = models.TextField()
     notes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
 
     def save(self, *args, **kwargs):
         if self.notes:
-            self.status = 'Complete' #if maguba ang code ig rerun i rechange ni to small caps
+            self.status = 'complete'
         else:
-            self.status = 'Pending'
+            self.status = 'pending'
         super().save(*args, **kwargs)
 
     def can_add_notes(self):
         return self.date == date.today()
 
     def __str__(self):
-        return f"Consultation with {self.doctor} on {self.date}"
-
+        return f"Consultation with {self.doctor} on {self.date} at {self.time}"
 
 # Recommendation model (Admin-Specific)
 class Recommendation(models.Model):

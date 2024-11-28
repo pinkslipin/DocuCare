@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Date</th>
+                <th>Time</th> <!-- Added Time Column -->
                 <th>Patient Name</th>
                 <th>Doctor Name</th>
                 <th>Description</th>
@@ -21,6 +22,7 @@
             {% for consultation in consultations %}
             <tr>
                 <td>{{ consultation.date|date:"d.m.Y" }}</td>
+                <td>{{ consultation.time|date:"H:i" }}</td> <!-- Display time here -->
                 <td>{{ consultation.patient.full_name }}</td>
                 <td>{{ consultation.doctor.name }}</td>
                 <td>{{ consultation.description }}</td>
@@ -38,7 +40,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="7">No consultations available.</td>
+                <td colspan="8">No consultations available.</td>
             </tr>
             {% endfor %}
         </tbody>

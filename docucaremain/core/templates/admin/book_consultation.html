@@ -10,6 +10,7 @@
         <div class="form-group">
             <label for="{{ form.doctor.id_for_label }}">Doctor:</label>
             <div class="input-field">
+                <p>{{ form.initial.doctor }}</p>
                 {{ form.doctor }}
             </div>
             {% if form.doctor.errors %}
@@ -24,6 +25,14 @@
                 <div class="alert alert-danger">{{ form.date.errors }}</div>
             {% endif %}
 
+            <label for="{{ form.time.id_for_label }}">Time:</label>
+            <div class="input-field">
+                {{ form.time }}
+            </div>
+            {% if form.time.errors %}
+                <div class="alert alert-danger">{{ form.time.errors }}</div>
+            {% endif %}
+
             <label for="{{ form.description.id_for_label }}">Description:</label>
             <div class="input-field">
                 {{ form.description }}
@@ -33,6 +42,48 @@
             {% endif %}
         </div>
         <button type="submit" class="btn-primary">Book</button>
+        <a href="{% url 'select_consultation' %}" class="btn-back">Back to Select Consultation</a> <!-- Added class 'btn-back' -->
     </form>
 </div>
 {% endblock %}
+
+<style>
+    .input-field input[readonly], .input-field select[readonly], .input-field textarea[readonly] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    /* Style for the Back to Select Consultation button */
+    .btn-back {
+        display: inline-block;        /* Makes it a block element, so it doesn’t overlap */
+        margin-top: 20px;              /* Adds some space from the Book button */
+        text-align: center;           /* Center-aligns the text */
+        padding: 10px 20px;           /* Adds padding for better look */
+        background-color: #f8f9fa;    /* Lighter background color */
+        border: 1px solid #ccc;       /* Border color */
+        text-decoration: none;        /* Removes underline */
+        color: #333;                  /* Text color */
+        border-radius: 5px;           /* Rounded corners */
+        font-size: 16px;              /* Font size */
+    }
+
+    .btn-back:hover {
+        background-color: #ddd;       /* Change background on hover */
+    }
+
+    .btn-primary {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
