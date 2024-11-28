@@ -108,8 +108,6 @@
             z-index: 1000;
         }
 
-
-
         .top-panel .user-profile img {
             height: 40px;
             width: 40px;
@@ -129,21 +127,16 @@
             right: 5.5rem; /* Moved the dropdown a bit to the left */
             left: 5.5; /* Added a left property to align the dropdown to the left */
             background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 0.5rem;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            width: 15rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: none;
             z-index: 1000;
-        }
-
-        .dropdownDivider {
-            border-top: 1px solid #e0e0e0;
-            margin: 0.5rem 0;
         }
 
         .dropdown ul {
             list-style: none;
-            padding: 0.5rem 0;
+            padding: 0;
             margin: 0;
         }
 
@@ -197,60 +190,96 @@
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
 
-        .input-field {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
-        }
+    .input-field {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px; /* Reduced padding */
+        margin-top: 5px;
+        width: 100%;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
 
-        .input-field input, .input-field select, .input-field textarea {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
+    .input-field input, .input-field select, .input-field textarea {
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 8px; /* Reduced padding */
+        font-size: 14px; /* Reduced font size */
+        background-color: transparent;
+        box-sizing: border-box; /* Ensure padding is included in the width */
+        margin-right: 10px; /* Add margin to the right */
+    }
 
-        .input-field textarea {
-            height: 100px; /* Fixed height for textarea */
-            resize: none; /* Disable resizing */
-        }
+    .input-field input[readonly], .input-field select[readonly], .input-field textarea[readonly] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
 
-        .btn-primary {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+    .input-field input:focus, .input-field select:focus, .input-field textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
 
-        .btn-primary:hover {
-            background-color: #4f6fbf;
-        }
+    .input-field textarea {
+        height: 80px; /* Reduced height for textarea */
+        resize: none; /* Disable resizing */
+    }
 
-        .alert.alert-danger {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
+    .btn-primary {
+        background-color: #6482AD;
+        color: white;
+        border: none;
+        padding: 12px 24px; /* Increased padding */
+        width: auto; /* Adjust width */
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px; /* Increased margin */
+        font-size: 16px; /* Increased font size */
+        font-weight: 600; /* Increased font weight */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .form-text.text-muted {
-            font-size: 12px;
-            color: #666;
-        }
+    .btn-primary:hover {
+        background-color: #4f6fbf;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    .alert.alert-danger {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .form-text.text-muted {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 10px; /* Reduced margin */
+        text-align: center;
+        padding: 8px 16px; /* Reduced padding */
+        text-decoration: none;
+        color: #333;
+        border-radius: 5px;
+        font-size: 14px; /* Reduced font size */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-back:hover {
+        background-color: #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
         .btn-secondary {
             background-color: #6c757d;
             color: white;
@@ -331,7 +360,7 @@
         .button {
             display: inline-block;
             padding: 10px 20px;
-            color: #6482AD;
+            color: #6482ad;
             text-decoration: none;
             border-radius: 5px;
             font-weight: 500;
@@ -347,19 +376,19 @@
         }
 
         .btn-back {
-        display: inline-block;       
-        margin-top: 20px;             
-        text-align: center;           
-        padding: 10px 20px;                
-        text-decoration: none;       
-        color: #333;                  
-        border-radius: 5px;           
-        font-size: 16px;              
-    }
+            display: inline-block;       
+            margin-top: 20px;             
+            text-align: center;           
+            padding: 10px 20px;                
+            text-decoration: none;       
+            color: #333;                  
+            border-radius: 5px;           
+            font-size: 16px;              
+        }
 
-    .btn-back:hover {
-        background-color: #ddd;       
-    }
+        .btn-back:hover {
+            background-color: #ddd;       
+        }
     </style>
 </head>
 <body>

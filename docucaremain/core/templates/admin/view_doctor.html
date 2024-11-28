@@ -16,8 +16,6 @@
     
     <div class="mt-4">
         {% if request.user == doctor.user or request.user.is_staff %}
-            <a class="btn btn-warning" href="{% url 'doctor_update' doctor.id %}">Edit</a>
-            <a class="btn btn-warning" href="{% url 'doctor_delete' doctor.id %}">Delete</a>
             <a class="btn btn-warning" href="{% url 'doctor_list' %}">Back to Doctor List</a>
         {% endif %}
 

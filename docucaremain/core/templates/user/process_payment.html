@@ -9,23 +9,35 @@
     <p>Amount Due: {{ record.balance_due }}</p>
     <form id="paymentForm" method="post" onsubmit="return validatePayment()">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary" type="submit">Submit Payment</button>
-        <a class="btn btn-secondary" href="{% url 'patient_billing_records' %}">Back to Billing Records</a>
+        <div class="form-group">
+            <label for="{{ form.billing_record.id_for_label }}">Billing Record:</label>
+            <div class="input-field">
+                {{ form.billing_record }}
+            </div>
+            {% if form.billing_record.errors %}
+                <div class="alert alert-danger">{{ form.billing_record.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.payment_amount.id_for_label }}">Payment Amount:</label>
+            <div class="input-field">
+                {{ form.payment_amount }}
+            </div>
+            {% if form.payment_amount.errors %}
+                <div class="alert alert-danger">{{ form.payment_amount.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.payment_method.id_for_label }}">Payment Method:</label>
+            <div class="input-field">
+                {{ form.payment_method }}
+            </div>
+            {% if form.payment_method.errors %}
+                <div class="alert alert-danger">{{ form.payment_method.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn-primary">Submit Payment</button>
+        <a href="{% url 'patient_billing_records' %}" class="btn-back">Back to Billing Records</a>
     </form>
 </div>
-<style>
-    .main-content form {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .main-content form .btn {
-        width: auto;
-        align-self: start;
-    }
-</style>
 <script>
     function validatePayment() {
         const paymentAmount = parseFloat(document.querySelector('input[name="payment_amount"]').value);

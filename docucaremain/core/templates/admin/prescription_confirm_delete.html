@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}Confirm Delete - DocuCare{% endblock %}
+{% block title %}Delete Prescription{% endblock %}
 
 {% block content %}
 <div class="main-content">
-    <h1>Confirm Delete</h1>
+    <h1>Delete Prescription</h1>
     <p>Are you sure you want to delete this prescription?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="button delete">Delete</button>
-        <a href="{% url 'prescription_list' %}" class="button cancel">Cancel</a>
+        <div class="form-group">
+            <label for="prescription-details">Prescription Details:</label>
+            <div class="input-field">
+                <p id="prescription-details">{{ prescription.medication }} for {{ prescription.patient.full_name }} on {{ prescription.date }}</p>
+            </div>
+        </div>
+        <button type="submit" class="btn-primary">Delete</button>
+        <a href="{% url 'prescription_list' %}" class="btn-back">Cancel</a>
     </form>
 </div>
 {% endblock %}

@@ -107,8 +107,6 @@
             z-index: 1000;
         }
 
-
-
         .top-panel .user-profile img {
             height: 40px;
             width: 40px;
@@ -133,6 +131,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             width: 15rem;
             z-index: 1000;
+            display: none;
         }
 
         .dropdownDivider {
@@ -188,7 +187,7 @@
             min-height: 700px;
             max-height: 2000px;
             overflow-y: auto;
-        }z
+        }
 
         .main-content h1 {
             font-size: 28px;
@@ -209,41 +208,62 @@
         }
 
         .input-field {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
-        }
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px; /* Reduced padding */
+        margin-top: 5px;
+        width: 100%;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
 
-        .input-field input, .input-field select, .input-field textarea {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
+    .input-field input, .input-field select, .input-field textarea {
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 8px; /* Reduced padding */
+        font-size: 14px; /* Reduced font size */
+        background-color: transparent;
+        box-sizing: border-box; /* Ensure padding is included in the width */
+        margin-right: 10px; /* Add margin to the right */
+    }
 
-        .input-field textarea {
-            height: 100px; /* Fixed height for textarea */
-            resize: none; /* Disable resizing */
-        }
+    .input-field input[readonly], .input-field select[readonly], .input-field textarea[readonly] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
 
-        .btn-primary {
-            background-color: #6482AD;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+    .input-field input:focus, .input-field select:focus, .input-field textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .input-field textarea {
+        height: 80px; /* Reduced height for textarea */
+        resize: none; /* Disable resizing */
+    }
+
+    .btn-primary {
+        background-color: #6482AD;
+        color: white;
+        border: none;
+        padding: 12px 24px; /* Increased padding */
+        width: auto; /* Adjust width */
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px; /* Increased margin */
+        font-size: 16px; /* Increased font size */
+        font-weight: 600; /* Increased font weight */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
 
         .btn-primary:hover {
             background-color: #4f6fbf;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .alert.alert-danger {
