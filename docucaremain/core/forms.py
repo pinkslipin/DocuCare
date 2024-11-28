@@ -173,6 +173,16 @@ class EditProfileForm(forms.ModelForm):
         if user:
             self.fields['username'].initial = user.username
             self.fields['email'].initial = user.email
+#if mag ka error ang code idelete ni nga function
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirmation = cleaned_data.get("password_confirmation")
+
+        if password and password != password_confirmation:
+            self.add_error('password_confirmation', "Passwords do not match.")
+
+        return cleaned_data
 
     def save(self, commit=True):
         user = User.objects.get(username=self.cleaned_data['username'])

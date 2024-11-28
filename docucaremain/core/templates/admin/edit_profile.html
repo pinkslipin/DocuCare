@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Edit Doctor Profile{% endblock %}
@@ -6,6 +5,13 @@
 {% block content %}
 <div class="main-content">
     <h1>Doctor Profile</h1>
+
+    <!-- Success and Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 
     <!-- Edit Doctor Profile Form -->
     <div class="form-container">
@@ -70,6 +76,7 @@
             {% endif %}
 
             <button type="submit" class="btn-primary">Save Changes</button>
+            <a class="btn btn-secondary" href="{% url 'view_own_doctor_profile' %}">Cancel</a>
         </form>
     </div>
 </div>

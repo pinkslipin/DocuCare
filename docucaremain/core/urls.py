@@ -42,6 +42,7 @@ urlpatterns = [
     path('view-medical-test-applications/', views.view_medical_test_applications, name='view_medical_test_applications'),
     path('consultation/success/', views.consultation_success, name='consultation_success'),
     path('consultation/view/', views.view_consultations, name='view_consultations'),
+    path('doctor/profile/', views.view_own_doctor_profile, name='view_own_doctor_profile'),
     # Patient Management (Admin-Specific)
     path('patients/', views.list_patients, name='list_patients'),  # List Patients
     path('patients/<int:patient_id>/', views.view_patient, name='view_patient'),  # View Patient Details

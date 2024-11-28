@@ -260,6 +260,20 @@
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .btn-secondary {
+        background-color: #5a6268;
+        color: white;
+        border: none;
+        padding: 12px 24px; /* Increased padding */
+        width: auto; /* Adjust width */
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px; /* Increased margin */
+        font-size: 16px; /* Increased font size */
+        font-weight: 600; /* Increased font weight */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
 
         .btn-primary:hover {
             background-color: #4f6fbf;
@@ -558,7 +572,7 @@
                             <li class="dropdownItem" onclick="window.location.href='{% url 'logout' %}'">Logout</li>
                         {% else %}
                             <li class="dropdownItemLabel">Account</li>
-                            <li class="dropdownItem" onclick="window.location.href='{% url 'edit_profile' %}'">View Profile</li>
+                            <li class="dropdownItem" onclick="window.location.href='{% url 'view_own_doctor_profile' %}'">View Profile</li>
                             <li class="dropdownDivider"></li>
                             <li class="dropdownItem" onclick="window.location.href='{% url 'logout' %}'">Logout</li>
                         {% endif %}

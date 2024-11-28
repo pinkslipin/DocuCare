@@ -559,3 +559,8 @@ def add_notes(request, consultation_id):
 def view_consultations(request):
     consultations = Consultation.objects.filter(patient__user=request.user)
     return render(request, 'user/view_consultations.html', {'consultations': consultations})
+
+@login_required
+def view_own_doctor_profile(request):
+    doctor_profile = get_object_or_404(Doctor, user=request.user)
+    return render(request, 'admin/view_own_doctor_profile.html', {'doctor': doctor_profile})
