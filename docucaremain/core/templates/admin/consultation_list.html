@@ -30,7 +30,7 @@
                 <td>{{ consultation.get_status_display }}</td>
                 <td class="actions-cell">
                     {% if consultation.status == 'complete' %}
-                        <span class="status-text">DONE</span>
+                        <span class="status-text">Done</span>
                     {% elif consultation.can_add_notes and consultation.doctor.user == user %}
                         <a href="{% url 'add_notes' consultation.id %}" >Add Notes</a>
                     {% else %}
