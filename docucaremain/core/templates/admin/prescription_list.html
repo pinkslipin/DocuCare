@@ -24,8 +24,8 @@
                 <td>{{ prescription.time|time:"H:i" }}</td>
                 <td>{{ prescription.medication }}</td>
                 <td>
-                    <a href="{% url 'prescription_update' prescription.pk %}" class="button edit">Edit</a>
-                    <a href="{% url 'prescription_delete' prescription.pk %}" class="button delete">Delete</a>
+                    <a href="{% url 'prescription_update' prescription.pk %}" >Edit</a>
+                    <a href="{% url 'prescription_delete' prescription.pk %}" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbspDelete</a>
                 </td>
                 </tr>
             {% empty %}

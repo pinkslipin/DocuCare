@@ -121,7 +121,7 @@
             {% endif %}
         </div>
         <div class="button-group">
-            <button type="submit" class="btn-primary">Update Patient</button>
+            <button type="submit" class="btn-primary">Save Changes</button>
             {% if user.is_staff %}
                 <a class="btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Admin Cancel -->
             {% else %}

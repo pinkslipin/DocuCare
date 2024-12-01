@@ -264,7 +264,7 @@
         background-color: #5a6268;
         color: white;
         border: none;
-        padding: 12px 24px; /* Increased padding */
+        padding: 12px 20px; /* Increased padding */
         width: auto; /* Adjust width */
         border-radius: 5px;
         cursor: pointer;
@@ -274,9 +274,32 @@
         transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .btn-back {
+            display: inline-block;
+            margin-top: 10px; /* Reduced margin */
+            text-align: center;
+            background-color: #e8dcd4;
+            padding: 8px 16px; /* Reduced padding */
+            text-decoration: none;
+            color: #6482AD;
+            border-radius: 5px;
+            font-size: 16.5px; /* Reduced font size */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
+        .btn-secondary:hover {
+            background-color: #4f555b;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background-color: #e2dad6;
+            opacity: 0.8;
+        }
         .btn-primary:hover {
-            background-color: #4f6fbf;
+            background-color: #e2dad6;
+            opacity: 0.;
+            color:#6482AD;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -297,10 +320,12 @@
             font-weight: 500;
             display: inline-block;
             margin-top: 0px;
+
         }
 
         a:hover {
-            color: #7FA1C3;
+            opacity: 0.8;
+            color: #6482AD;
         }
 
         ul {
@@ -350,7 +375,8 @@
         }
 
         .doctor-actions a:hover, .doctor-actions button:hover {
-            color: #7FA1C3;
+            color: #6482AD;
+            opacity: 0.8;
         }
 
         form button {

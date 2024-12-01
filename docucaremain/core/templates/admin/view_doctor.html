@@ -16,7 +16,7 @@
     
     <div class="mt-4">
         {% if request.user == doctor.user or request.user.is_staff %}
-            <a class="btn btn-warning" href="{% url 'doctor_list' %}">Back to Doctor List</a>
+            <a class="btn btn-secondary" href="{% url 'doctor_list' %}">Back to Doctor List</a>
         {% endif %}
 
     </div>
