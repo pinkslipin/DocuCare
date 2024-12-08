@@ -14,7 +14,7 @@
         <ul>
             {% for doctor in doctors %}
                 <li class="doctor-item">
-                    {{ doctor.name }} - {{ doctor.specialization }} - {{ doctor.user.username }}
+                    {{ doctor.name }} - {{ doctor.specialization }}
                     <div class="doctor-actions">
                         <a href="{% url 'view_doctor' doctor.pk %}">View</a>
                         <!-- <form method="post" action="{% url 'doctor_delete' doctor.pk %}" style="display:inline;">
