@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Billing Record{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Update Billing Record</h1>
+    <form id="updateBillingRecordForm" method="post" onsubmit="return validateSave()">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.patient.id_for_label }}">Patient:</label>
+            <div class="input-field">
+                {{ form.patient }}
+            </div>
+            {% if form.patient.errors %}
+                <div class="alert alert-danger">{{ form.patient.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.service_description.id_for_label }}">Service Description:</label>
+            <div class="input-field">
+                {{ form.service_description }}
+            </div>
+            {% if form.service_description.errors %}
+                <div class="alert alert-danger">{{ form.service_description.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.amount_due.id_for_label }}">Amount Due:</label>
+            <div class="input-field">
+                {{ form.amount_due }}
+            </div>
+            {% if form.amount_due.errors %}
+                <div class="alert alert-danger">{{ form.amount_due.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.due_date.id_for_label }}">Due Date:</label>
+            <div class="input-field">
+                {{ form.due_date }}
+            </div>
+            {% if form.due_date.errors %}
+                <div class="alert alert-danger">{{ form.due_date.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn-primary">Save Changes</button>
+    </form>
+
+    <!-- Snackbar -->
+    <div id="snackbar">
+        <span id="snackbar-message">Are you sure you want to save changes to this billing record?</span>
+        <div id="snackbar-buttons">
+            <button id="snackbar-yes" onclick="confirmSave()">Yes</button>
+            <button id="snackbar-no" onclick="hideSnackbar()">No</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateSave() {
+        showSnackbar("Are you sure you want to save changes to this billing record?", true, confirmSave);
+        return false;  // Prevent form submission until confirmed
+    }
+
+    function showSnackbar(message, showButtons, confirmAction) {
+        const snackbar = document.getElementById('snackbar');
+        const snackbarMessage = document.getElementById('snackbar-message');
+        const snackbarYes = document.getElementById('snackbar-yes');
+        const snackbarNo = document.getElementById('snackbar-no');
+        snackbarMessage.textContent = message;
+        snackbar.className = "show";
+        snackbarYes.style.display = showButtons ? "inline-block" : "none";
+        snackbarNo.style.display = showButtons ? "inline-block" : "none";
+        snackbarYes.onclick = confirmAction;
+    }
+
+    function hideSnackbar() {
+        const snackbar = document.getElementById('snackbar');
+        snackbar.className = snackbar.className.replace("show", "");
+    }
+
+    function confirmSave() {
+        document.getElementById('updateBillingRecordForm').submit();
+    }
+</script>
+{% endblock %}

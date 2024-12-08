@@ -61,10 +61,7 @@
                     {{ test.name }} - {{ test.description }} - Php {{ test.price }}
                     <div class="test-actions">
                         <a href="{% url 'medical_test_update' test.pk %}">Edit</a>
-                        <a href="javascript:void(0);" onclick="showDeleteSnackbar({{ test.pk }})">Delete</a>
-                        <form method="post" action="{% url 'medical_test_delete' test.pk %}" style="display:inline;" id="delete-form-{{ test.pk }}">
-                            {% csrf_token %}
-                        </form>
+                        <a href="{% url 'medical_test_delete' test.pk %}">Delete</a>
                     </div>
                 </li>
             {% endfor %}
@@ -109,4 +106,4 @@
         document.getElementById('delete-form-' + testId).submit();
     }
 </script>
-{% endblock %}
+{% endblock %} 

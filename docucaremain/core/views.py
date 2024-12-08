@@ -568,3 +568,36 @@ def view_consultations(request):
 def view_own_doctor_profile(request):
     doctor_profile = get_object_or_404(Doctor, user=request.user)
     return render(request, 'admin/view_own_doctor_profile.html', {'doctor': doctor_profile})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def billing_record_list(request):
+    records = BillingRecord.objects.all()
+    return render(request, 'admin/billing_record_list.html', {'records': records})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def update_billing_record(request, record_id):
+    record = get_object_or_404(BillingRecord, id=record_id)
+    if request.method == 'POST':
+        form = BillingRecordForm(request.POST, instance=record)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Billing record updated successfully.')
+            return redirect('billing_record_list')
+    else:
+        form = BillingRecordForm(instance=record)
+    return render(request, 'admin/update_billing_record.html', {'form': form, 'record': record})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def delete_billing_record_admin(request, record_id):
+    record = get_object_or_404(BillingRecord, id=record_id)
+    if request.method == 'POST':
+        try:
+            record.delete()
+            messages.success(request, 'Billing record deleted successfully.')
+        except Exception as e:
+            messages.error(request, f'Error deleting billing record: {e}')
+        return redirect('billing_record_list')
+    return render(request, 'admin/delete_billing_record.html', {'record': record})

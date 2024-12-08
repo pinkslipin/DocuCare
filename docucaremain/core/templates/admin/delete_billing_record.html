@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Billing Record{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Delete Billing Record</h1>
+    <p>Are you sure you want to delete this billing record?</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="billing-record-details">Billing Record Details:</label>
+            <div class="input-field">
+                <p id="billing-record-details">{{ record.service_description }} for {{ record.patient.full_name }} on {{ record.due_date }}</p>
+            </div>
+        </div>
+        <button type="submit" class="btn-primary">Delete</button>
+        <a href="{% url 'billing_record_list' %}" class="btn-back">Cancel</a>
+    </form>
+</div>
+{% endblock %}

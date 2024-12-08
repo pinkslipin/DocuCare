@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing Records{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h1>Billing Records</h1>
+    <table class="prescription-table">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Service Description</th>
+                <th>Amount Due</th>
+                <th>Paid Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.patient.full_name }}</td>
+                <td>{{ record.service_description }}</td>
+                <td>{{ record.amount_due }}</td>
+                <td>{{ record.paid_amount }}</td>
+                <td>{{ record.status }}</td>
+                <td>
+                    <div class="test-actions">
+                        <a href="{% url 'update_billing_record' record.id %}">Edit</a>
+                        <a href="{% url 'delete_billing_record_admin' record.id %}">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
