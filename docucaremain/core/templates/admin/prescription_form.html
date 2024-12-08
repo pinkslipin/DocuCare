@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Prescription Form{% endblock %}
+{% block title %}Add a New Prescription{% endblock %}
 
 {% block content %}
 <div class="main-content">
-    <h1>Prescription Form</h1>
+    <h1>Add a New Prescription</h1>
     <form id="prescriptionForm" method="post" onsubmit="return validatePrescription()">
         {% csrf_token %}
         <div class="form-group">
@@ -14,6 +14,22 @@
             </div>
             {% if form.patient.errors %}
                 <div class="alert alert-danger">{{ form.patient.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.date.id_for_label }}">Date:</label>
+            <div class="input-field">
+                {{ form.date }}
+            </div>
+            {% if form.date.errors %}
+                <div class="alert alert-danger">{{ form.date.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.time.id_for_label }}">Time:</label>
+            <div class="input-field">
+                {{ form.time }}
+            </div>
+            {% if form.time.errors %}
+                <div class="alert alert-danger">{{ form.time.errors }}</div>
             {% endif %}
 
             <label for="{{ form.medication.id_for_label }}">Medication:</label>
