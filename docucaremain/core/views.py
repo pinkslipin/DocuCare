@@ -30,7 +30,6 @@ from .models import (
     MedicalTest,
     Consultation,
     Prescription,
-    Patient,
     MedicalTestApplication
 )
 from datetime import date, datetime, timedelta
