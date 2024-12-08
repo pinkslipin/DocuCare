@@ -1,8 +1,5 @@
-
-{% extends 'user_base.html' %}
-
+{% extends "user_base.html" %}
 {% block title %}My Prescriptions{% endblock %}
-
 {% block content %}
 <div class="main-content">
     <h1>My Prescriptions</h1>
@@ -11,20 +8,27 @@
             <tr>
                 <th>Medication</th>
                 <th>Time</th>
-                <th>Date</th>
+                <th>End Date</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             {% for prescription in prescriptions %}
             <tr>
                 <td>{{ prescription.medication }}</td>
-                <td>{{ prescription.time|time:"H:i" }}</td>
+                <td>{{ prescription.time|time:"h:i A" }}</td>
                 <td>{{ prescription.date|date:"d.m.Y" }}</td>
-
+                <td>
+                    {% if prescription.date < today %}
+                        Complete
+                    {% else %}
+                        Ongoing
+                    {% endif %}
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3">No prescriptions available.</td>
+                <td colspan="4">No prescriptions available.</td>
             </tr>
             {% endfor %}
         </tbody>

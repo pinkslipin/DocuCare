@@ -23,6 +23,15 @@ class PatientProfile(models.Model):
     contact_number = models.CharField(max_length=15)
     medical_history = models.CharField(max_length=1000)
     email = models.EmailField(max_length=254, unique=True, null=True, blank=True)  # New email field
+    blood_type = models.CharField(max_length=3, null=True, blank=True)
+    height = models.CharField(max_length=10, null=True, blank=True)
+    weight = models.CharField(max_length=10, null=True, blank=True)
+    allergies = models.CharField(max_length=255, null=True, blank=True)
+    sex = models.CharField(max_length=10, null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
+    occupation = models.CharField(max_length=100, null=True, blank=True)
+    marital_status = models.CharField(max_length=50, null=True, blank=True)
+    emergency_contact = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.full_name
@@ -91,6 +100,7 @@ class Consultation(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='consultations')
     date = models.DateField()
+    time = models.TimeField()  # Add time field
     description = models.TextField()
     notes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
@@ -106,8 +116,7 @@ class Consultation(models.Model):
         return self.date == date.today()
 
     def __str__(self):
-        return f"Consultation with {self.doctor} on {self.date}"
-
+        return f"Consultation with {self.doctor} on {self.date} at {self.time}"
 
 # Recommendation model (Admin-Specific)
 class Recommendation(models.Model):

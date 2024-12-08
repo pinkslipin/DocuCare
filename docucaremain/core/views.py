@@ -33,7 +33,7 @@ from .models import (
     Patient,
     MedicalTestApplication
 )
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -75,12 +75,14 @@ def user_home(request):
     billing_records = BillingRecord.objects.filter(patient=patient_profile)
     prescriptions = Prescription.objects.filter(patient=patient_profile)
     medical_tests = MedicalTestApplication.objects.filter(patient=patient_profile)
+    consultations = Consultation.objects.filter(patient=patient_profile)
 
     context = {
         'patient_profile': patient_profile,
         'billing_records': billing_records,
         'prescriptions': prescriptions,
         'medical_tests': medical_tests,
+        'consultations': consultations,
     }
     return render(request, 'user/user_home.html', context)
 
@@ -393,19 +395,53 @@ def process_payment(request, record_id):
     return render(request, 'user/process_payment.html', {'form': form, 'record': record})
 
 # Book Consultation
+
 @login_required
-def book_consultation(request):
+def select_consultation(request):
+    doctors = Doctor.objects.all()
+
+    # Define the time slots for each doctor
+    doctor_timeslots = {
+        1: ['08:00', '09:00', '10:00', '11:00'],  # Doctor 1 (8 AM - 12 PM)
+        2: ['12:00', '13:00', '14:00', '15:00', '16:00'],  # Doctor 2 (12 PM - 5 PM)
+    }
+
+    # Attach time slots to each doctor
+    for doctor in doctors:
+        time_slots = doctor_timeslots.get(doctor.id, [])
+        formatted_time_slots = [{'original': time, 'formatted': datetime.strptime(time, '%H:%M').strftime('%I:%M %p').lstrip('0')} for time in time_slots]
+        doctor.time_slots = formatted_time_slots
+
+    if request.method == 'POST':
+        doctor_id = request.POST.get('doctor_id')
+        time = request.POST.get('time')
+        
+        # Ensure the time is valid for the selected doctor
+        if int(doctor_id) in doctor_timeslots and time in doctor_timeslots[int(doctor_id)]:
+            return redirect('book_consultation', doctor_id=doctor_id, time=time)
+        else:
+            messages.error(request, "Invalid time selected for this doctor.")
+            return redirect('select_consultation')
+
+    return render(request, 'user/select_consultation.html', {'doctors': doctors})
+
+@login_required
+def book_consultation(request, doctor_id=None, time=None):
     if request.method == 'POST':
         form = ConsultationForm(request.POST)
         if form.is_valid():
             consultation = form.save(commit=False)
-            consultation.patient = get_object_or_404(PatientProfile, user=request.user)
+            consultation.patient = request.user.patientprofile
             consultation.save()
-            messages.success(request, 'Consultation booked successfully.')
-            return redirect('consultation_success')
+            return redirect('view_consultations')
     else:
-        form = ConsultationForm()
-
+        initial_data = {}
+        if doctor_id:
+            doctor = get_object_or_404(Doctor, id=doctor_id)
+            initial_data['doctor'] = doctor
+        if time:
+            initial_data['time'] = time
+        form = ConsultationForm(initial=initial_data)
     return render(request, 'admin/book_consultation.html', {'form': form})
 
 @login_required
@@ -490,7 +526,6 @@ def apply_medical_test(request):
         form = MedicalTestApplicationForm()
     return render(request, 'user/apply_medical_test.html', {'form': form, 'tests': tests})
 
-
 # View Medical Test Applications (Admin-Only)
 @login_required
 @user_passes_test(lambda u: u.is_staff)
@@ -500,8 +535,10 @@ def view_medical_test_applications(request):
 
 @login_required
 def view_prescriptions(request):
-    prescriptions = Prescription.objects.filter(patient__user=request.user)
-    return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions})
+    patient_profile = get_object_or_404(PatientProfile, user=request.user)
+    prescriptions = Prescription.objects.filter(patient=patient_profile)
+    today = date.today()
+    return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions, 'today': today})
 
 @login_required
 def add_notes(request, consultation_id):
@@ -527,3 +564,8 @@ def add_notes(request, consultation_id):
 def view_consultations(request):
     consultations = Consultation.objects.filter(patient__user=request.user)
     return render(request, 'user/view_consultations.html', {'consultations': consultations})
+
+@login_required
+def view_own_doctor_profile(request):
+    doctor_profile = get_object_or_404(Doctor, user=request.user)
+    return render(request, 'admin/view_own_doctor_profile.html', {'doctor': doctor_profile})

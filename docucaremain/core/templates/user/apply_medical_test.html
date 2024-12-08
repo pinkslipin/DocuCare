@@ -28,7 +28,7 @@
                         {% if test.availability %}
                             <a href="javascript:void(0);" class="button apply" onclick="confirmApply({{ test.id }})">Apply</a>
                         {% else %}
-                            <a>Not Available</a>
+                            <a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp-&nbsp&nbsp&nbsp&nbsp&nbsp</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -39,7 +39,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <input type="hidden" name="test_id" id="test-id-input">
+        <input type="hidden" name="medical_test" id="test-id-input">
     </form>
 </div>
 
@@ -48,7 +48,6 @@
         if (confirm("Do you want to book this medical test?")) {
             document.getElementById('test-id-input').value = testId;
             document.getElementById('apply-medical-test-form').submit();
-            alert("Successfully booked.");
         }
     }
 </script>

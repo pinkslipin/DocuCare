@@ -5,21 +5,43 @@
 {% block content %}
 <div class="main-content">
     <h1>Add a New Prescription</h1>
-    <form method="post" novalidate>
+    <form method="post">
         {% csrf_token %}
-        <!-- Remove Appt ID field -->
-        <!-- <label for="id_appt_id">Appt ID:</label> -->
-        <!-- {{ form.appt_id }} -->
-        <label for="id_patient">Patient:</label>
-        {{ form.patient }}
-        <label for="id_date">Date:</label>
-        {{ form.date }}
-        <label for="id_time">Time:</label>
-        {{ form.time }}
-        <label for="id_medication">Medication:</label>
-        {{ form.medication }}
-        <button type="submit" class="button save">Save Prescription</button>
-        <a href="{% url 'prescription_list' %}">Back to Prescription List</a>
+        <div class="form-group">
+            <label for="{{ form.patient.id_for_label }}">Patient:</label>
+            <div class="input-field">
+                {{ form.patient }}
+            </div>
+            {% if form.patient.errors %}
+                <div class="alert alert-danger">{{ form.patient.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.date.id_for_label }}">Date:</label>
+            <div class="input-field">
+                {{ form.date }}
+            </div>
+            {% if form.date.errors %}
+                <div class="alert alert-danger">{{ form.date.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.time.id_for_label }}">Time:</label>
+            <div class="input-field">
+                {{ form.time }}
+            </div>
+            {% if form.time.errors %}
+                <div class="alert alert-danger">{{ form.time.errors }}</div>
+            {% endif %}
+
+            <label for="{{ form.medication.id_for_label }}">Medication:</label>
+            <div class="input-field">
+                {{ form.medication }}
+            </div>
+            {% if form.medication.errors %}
+                <div class="alert alert-danger">{{ form.medication.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn-primary">Save Prescription</button>
+        <a href="{% url 'prescription_list' %}" class="btn-back">Back to Prescription List</a>
     </form>
 </div>
 {% endblock %}

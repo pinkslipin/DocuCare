@@ -42,5 +42,17 @@
             <p>No medical tests applied.</p>
         {% endif %}
     </div>
+    <div>
+        <h3>Consultations</h3>
+        {% if consultations %}
+            <ul>
+                {% for consultation in consultations %}
+                    <li>{{ consultation.date|date:"d.m.Y" }} - {{ consultation.time|date:"H:i" }} with {{ consultation.doctor.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No consultations available.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

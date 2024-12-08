@@ -107,8 +107,6 @@
             z-index: 1000;
         }
 
-
-
         .top-panel .user-profile img {
             height: 40px;
             width: 40px;
@@ -133,6 +131,7 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             width: 15rem;
             z-index: 1000;
+            display: none;
         }
 
         .dropdownDivider {
@@ -188,7 +187,7 @@
             min-height: 700px;
             max-height: 2000px;
             overflow-y: auto;
-        }z
+        }
 
         .main-content h1 {
             font-size: 28px;
@@ -209,41 +208,99 @@
         }
 
         .input-field {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px; /* Reduced padding */
+        margin-top: 5px;
+        width: 100%;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
+
+    .input-field input, .input-field select, .input-field textarea {
+        border: none;
+        outline: none;
+        flex: 1;
+        padding: 8px; /* Reduced padding */
+        font-size: 14px; /* Reduced font size */
+        background-color: transparent;
+        box-sizing: border-box; /* Ensure padding is included in the width */
+        margin-right: 10px; /* Add margin to the right */
+    }
+
+    .input-field input[readonly], .input-field select[readonly], .input-field textarea[readonly] {
+        background-color: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    .input-field input:focus, .input-field select:focus, .input-field textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .input-field textarea {
+        height: 80px; /* Reduced height for textarea */
+        resize: none; /* Disable resizing */
+    }
+
+    .btn-primary {
+        background-color: #6482AD;
+        color: white;
+        border: none;
+        padding: 12px 24px; /* Increased padding */
+        width: auto; /* Adjust width */
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px; /* Increased margin */
+        font-size: 16px; /* Increased font size */
+        font-weight: 600; /* Increased font weight */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-secondary {
+        background-color: #5a6268;
+        color: white;
+        border: none;
+        padding: 12px 20px; /* Increased padding */
+        width: auto; /* Adjust width */
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px; /* Increased margin */
+        font-size: 16px; /* Increased font size */
+        font-weight: 600; /* Increased font weight */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-back {
+            display: inline-block;
+            margin-top: 10px; /* Reduced margin */
+            text-align: center;
+            background-color: #e8dcd4;
+            padding: 8px 16px; /* Reduced padding */
+            text-decoration: none;
+            color: #6482AD;
             border-radius: 5px;
-            padding: 10px;
-            margin-top: 5px;
-            width: 100%;
+            font-size: 16.5px; /* Reduced font size */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .input-field input, .input-field select, .input-field textarea {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        .input-field textarea {
-            height: 100px; /* Fixed height for textarea */
-            resize: none; /* Disable resizing */
-        }
-
-        .btn-primary {
-            background-color: #6482AD;
+        .btn-secondary:hover {
+            background-color: #4f555b;
             color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
         }
 
+        .btn-back:hover {
+            background-color: #e2dad6;
+            opacity: 0.8;
+        }
         .btn-primary:hover {
-            background-color: #4f6fbf;
+            background-color: #e2dad6;
+            opacity: 0.;
+            color:#6482AD;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .alert.alert-danger {
@@ -263,10 +320,12 @@
             font-weight: 500;
             display: inline-block;
             margin-top: 0px;
+
         }
 
         a:hover {
-            color: #7FA1C3;
+            opacity: 0.8;
+            color: #6482AD;
         }
 
         ul {
@@ -316,7 +375,8 @@
         }
 
         .doctor-actions a:hover, .doctor-actions button:hover {
-            color: #7FA1C3;
+            color: #6482AD;
+            opacity: 0.8;
         }
 
         form button {
@@ -538,7 +598,7 @@
                             <li class="dropdownItem" onclick="window.location.href='{% url 'logout' %}'">Logout</li>
                         {% else %}
                             <li class="dropdownItemLabel">Account</li>
-                            <li class="dropdownItem" onclick="window.location.href='{% url 'edit_profile' %}'">View Profile</li>
+                            <li class="dropdownItem" onclick="window.location.href='{% url 'view_own_doctor_profile' %}'">View Profile</li>
                             <li class="dropdownDivider"></li>
                             <li class="dropdownItem" onclick="window.location.href='{% url 'logout' %}'">Logout</li>
                         {% endif %}

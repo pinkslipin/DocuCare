@@ -13,15 +13,23 @@
             <p><strong>Address:</strong> {{ patient.address }}</p>
             <p><strong>Contact Number:</strong> {{ patient.contact_number }}</p>
             <p><strong>Medical History:</strong> {{ patient.medical_history }}</p>
+            <p><strong>Blood Type:</strong> {{ patient.blood_type }}</p>
+            <p><strong>Height:</strong> {{ patient.height }}</p>
+            <p><strong>Weight:</strong> {{ patient.weight }}</p>
+            <p><strong>Allergies:</strong> {{ patient.allergies }}</p>
+            <p><strong>Sex:</strong> {{ patient.sex }}</p>
+            <p><strong>Age:</strong> {{ patient.age }}</p>
+            <p><strong>Occupation:</strong> {{ patient.occupation }}</p>
+            <p><strong>Marital Status:</strong> {{ patient.marital_status }}</p>
+            <p><strong>Emergency Contact:</strong> {{ patient.emergency_contact }}</p>
         </div>
     </div>
     
     <div class="mt-4">
         {% if request.user == patient.user %}
-            <a class="btn btn-warning" href="{% url 'update_patient' patient.id %}">Edit</a>
         {% endif %}
-        <a class="btn btn-warning" href="{% url 'delete_patient' patient.user.id %}">Delete Patient</a>
-        <a class="btn btn-warning" href="{% url 'list_patients' %}">Back to Patient List</a>
+        <a class="btn btn-primary" href="{% url 'delete_patient' patient.user.id %}">Delete Patient</a>
+        <a class="btn btn-secondary" href="{% url 'list_patients' %}">Back to Patient List</a>
     </div>
 </div>
 {% endblock %}

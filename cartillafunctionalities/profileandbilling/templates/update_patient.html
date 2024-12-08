@@ -4,6 +4,14 @@
 
 {% block content %}
 <h2>Update Patient: {{ patient.username }}</h2>
+
+<!-- Success and Error Messages -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -14,6 +22,7 @@
     <a class="btn btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Admin Cancel -->
 {% else %}
     <a class="btn btn-secondary" href="{% url 'cancel_update_patient' patient.user.id %}">Cancel</a> <!-- Patient Cancel -->
+    <a class="btn btn-secondary" href="{% url 'view_own_profile' %}">Back to Profile</a>
 {% endif %}
 
 {% if form.non_field_errors %}

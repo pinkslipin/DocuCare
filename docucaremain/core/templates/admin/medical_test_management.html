@@ -57,7 +57,7 @@
                         <a href="{% url 'medical_test_update' test.pk %}">Edit</a>
                         <form method="post" action="{% url 'medical_test_delete' test.pk %}" style="display:inline;">
                             {% csrf_token %}
-                            <button type="submit">Delete</button>
+                            <a>Delete</a>
                         </form>
                     </div>
                 </li>

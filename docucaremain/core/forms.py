@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
+from django.forms import TextInput, DateInput
 from .models import (
     Doctor,
     PatientProfile,
@@ -39,6 +40,15 @@ class PatientRegistrationForm(UserCreationForm):
     contact_number = forms.CharField(max_length=15, required=True)
     medical_history = forms.CharField(max_length=1000, required=False)
     email = forms.EmailField(required=True)  # New email field
+    blood_type = forms.CharField(max_length=3, required=False)
+    height = forms.CharField(max_length=10, required=False)
+    weight = forms.CharField(max_length=10, required=False)
+    allergies = forms.CharField(max_length=255, required=False)
+    sex = forms.CharField(max_length=10, required=False)
+    age = forms.IntegerField(required=False)
+    occupation = forms.CharField(max_length=100, required=False)
+    marital_status = forms.CharField(max_length=50, required=False)
+    emergency_contact = forms.CharField(max_length=255, required=False)
 
     class Meta:
         model = User
@@ -57,7 +67,16 @@ class PatientRegistrationForm(UserCreationForm):
                 address=self.cleaned_data['address'],
                 contact_number=self.cleaned_data['contact_number'],
                 medical_history=self.cleaned_data.get('medical_history', ''),
-                email=self.cleaned_data['email']  # Save email in PatientProfile
+                email=self.cleaned_data['email'],  # Save email in PatientProfile
+                blood_type=self.cleaned_data.get('blood_type', ''),
+                height=self.cleaned_data.get('height', ''),
+                weight=self.cleaned_data.get('weight', ''),
+                allergies=self.cleaned_data.get('allergies', ''),
+                sex=self.cleaned_data.get('sex', ''),
+                age=self.cleaned_data.get('age', None),
+                occupation=self.cleaned_data.get('occupation', ''),
+                marital_status=self.cleaned_data.get('marital_status', ''),
+                emergency_contact=self.cleaned_data.get('emergency_contact', '')
             )
         return user
 
@@ -68,7 +87,11 @@ class PatientProfileForm(forms.ModelForm):
 
     class Meta:
         model = PatientProfile
-        fields = ['full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history']
+        fields = [
+            'full_name', 'date_of_birth', 'address', 'contact_number', 'medical_history',
+            'blood_type', 'height', 'weight', 'allergies', 'sex', 'age', 'occupation',
+            'marital_status', 'emergency_contact'
+        ]
 
 
 # Billing Record Form (Admin-Only)
@@ -150,6 +173,16 @@ class EditProfileForm(forms.ModelForm):
         if user:
             self.fields['username'].initial = user.username
             self.fields['email'].initial = user.email
+#if mag ka error ang code idelete ni nga function
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirmation = cleaned_data.get("password_confirmation")
+
+        if password and password != password_confirmation:
+            self.add_error('password_confirmation', "Passwords do not match.")
+
+        return cleaned_data
 
     def save(self, commit=True):
         user = User.objects.get(username=self.cleaned_data['username'])
@@ -171,18 +204,21 @@ class AddNotesForm(forms.ModelForm):
         }
 
 # Consultation Form (Shared)
+from django.forms import HiddenInput, DateInput, TextInput
+
 class ConsultationForm(forms.ModelForm):
     class Meta:
         model = Consultation
-        fields = ['doctor', 'date', 'description']
+        fields = ['doctor', 'date', 'time', 'description']
         widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'}),
+            'doctor': HiddenInput(),  # Hidden field for doctor
+            'time': TextInput(attrs={'readonly': 'readonly'}),  # Non-editable time field
+            'date': DateInput(attrs={'type': 'date'}),          # HTML5 datepicker
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['doctor'].queryset = Doctor.objects.all()
-
 # Prescription Form
 class PrescriptionForm(forms.ModelForm):
     patient = forms.ModelChoiceField(queryset=PatientProfile.objects.all(), label="Patient")

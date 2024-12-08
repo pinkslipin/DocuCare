@@ -1,9 +1,9 @@
 {% load static %}
 <div class="sidebar">
     <a href="{% url 'user_home' %}" class="{% if request.resolver_match.url_name == 'user_home' %}active{% endif %}">Dashboard</a>
-    <a href="{% url 'patient_billing_records' %}" class="{% if request.resolver_match.url_name == 'patient_billing_records' %}active{% endif %}">View Billing Records</a>
-    <a href="{% url 'book_consultation' %}" class="{% if request.resolver_match.url_name == 'book_consultation' %}active{% endif %}">Book Consultation</a>
+    <a href="{% url 'select_consultation' %}" class="{% if request.resolver_match.url_name == 'select_consultation' or request.resolver_match.url_name == 'book_consultation' %}active{% endif %}">Book Consultation</a>
     <a href="{% url 'apply_medical_test' %}" class="{% if request.resolver_match.url_name == 'apply_medical_test' %}active{% endif %}">Apply for Medical Test</a>
+    <a href="{% url 'patient_billing_records' %}" class="{% if request.resolver_match.url_name == 'patient_billing_records' or request.resolver_match.url_name == 'process_payment' %}active{% endif %}">View Billing Records</a>
     <a href="{% url 'view_prescriptions' %}" class="{% if request.resolver_match.url_name == 'view_prescriptions' %}active{% endif %}">View Prescriptions</a>
     <a href="{% url 'view_consultations' %}" class="{% if request.resolver_match.url_name == 'view_consultations' %}active{% endif %}">View Consultations</a>
 </div>
