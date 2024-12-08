@@ -1,24 +1,56 @@
 {% extends 'base.html' %}
 
-{% block title %}Patient List{% endblock %}
+{% block title %}Patient Management{% endblock %}
 
 {% block content %}
 <div class="main-content">
-    <h1>Patients</h1>
-    <ul>
-        {% for patient in patients %}
-            <li class="patient-item">
-                <h2>{{ patient.user.username }}</h2>
-                <div class="patient-actions">
-                    <a href="{% url 'view_patient' patient.id %}">View</a>
-                    <!-- <form method="post" action="{% url 'delete_patient' patient.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <a >Delete</a>
-                    </form> -->
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-    <!-- <a href="{% url 'admin_home' %}">Go to Homepage</a> -->
+    <h1>Patient Management</h1>
+
+    <!-- List of Patients -->
+    <div class="patient-list">
+        <h2>Patient List</h2>
+        <ul>
+            {% for patient in patients %}
+                <li class="patient-item">
+                    {{ patient.user.username }} - {{ patient.full_name }}
+                    <div class="patient-actions">
+                        <a href="{% url 'view_patient' patient.id %}">View</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
+
+<!-- Snackbar -->
+<div id="snackbar">
+    <span id="snackbar-message">Are you sure you want to delete this patient?</span>
+    <div id="snackbar-buttons">
+        <button id="snackbar-yes" onclick="confirmDelete()">Yes</button>
+        <button id="snackbar-no" onclick="hideSnackbar()">No</button>
+    </div>
+</div>
+
+<script>
+    function showSnackbar(message, showButtons, confirmAction) {
+        const snackbar = document.getElementById('snackbar');
+        const snackbarMessage = document.getElementById('snackbar-message');
+        const snackbarYes = document.getElementById('snackbar-yes');
+        const snackbarNo = document.getElementById('snackbar-no');
+        snackbarMessage.textContent = message;
+        snackbar.className = "show";
+        snackbarYes.style.display = showButtons ? "inline-block" : "none";
+        snackbarNo.style.display = showButtons ? "inline-block" : "none";
+        snackbarYes.onclick = confirmAction;
+    }
+
+    function hideSnackbar() {
+        const snackbar = document.getElementById('snackbar');
+        snackbar.className = snackbar.className.replace("show", "");
+    }
+
+    function confirmDelete(patientId) {
+        document.getElementById('delete-form-' + patientId).submit();
+    }
+</script>
 {% endblock %}
