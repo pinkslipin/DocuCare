@@ -1,7 +1,5 @@
 {% extends "user_base.html" %}
-
 {% block title %}Select Consultation{% endblock %}
-
 {% block content %}
 <div class="main-content">
     <h1>Select Consultation</h1>
@@ -22,15 +20,15 @@
                         <tr>
                             <td>{{ doctor.name }}</td>
                             <td>{{ doctor.specialization }}</td>
-                            <td>{{ time }}</td>
+                            <td data-original-time="{{ time.original }}">{{ time.formatted }}</td> <!-- Display time in 12-hour format without leading zero -->
                             <td class="actions-cell">
-                                <a href="javascript:void(0);" class="button book" onclick="bookConsultation('{{ doctor.id }}', '{{ doctor.name }}', '{{ doctor.specialization }}', '{{ time }}')">Book</a>
+                                <a href="javascript:void(0);" class="button book" onclick="bookConsultation('{{ doctor.id }}', '{{ doctor.name }}', '{{ doctor.specialization }}', '{{ time.original }}')">Book</a>
                             </td>
                         </tr>
                     {% endfor %}
                 {% empty %}
                     <tr>
-                        <td colspan="4">No doctors available.</td>
+                        <td colspan="4">No available consultations.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -41,7 +39,6 @@
         <input type="hidden" name="time" id="time-input">
     </form>
 </div>
-
 <script>
     function bookConsultation(doctorId, doctorName, doctorSpecialization, time) {
         document.getElementById('doctor-id-input').value = doctorId;

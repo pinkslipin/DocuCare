@@ -395,6 +395,7 @@ def process_payment(request, record_id):
     return render(request, 'user/process_payment.html', {'form': form, 'record': record})
 
 # Book Consultation
+
 @login_required
 def select_consultation(request):
     doctors = Doctor.objects.all()
@@ -407,7 +408,9 @@ def select_consultation(request):
 
     # Attach time slots to each doctor
     for doctor in doctors:
-        doctor.time_slots = doctor_timeslots.get(doctor.id, [])
+        time_slots = doctor_timeslots.get(doctor.id, [])
+        formatted_time_slots = [{'original': time, 'formatted': datetime.strptime(time, '%H:%M').strftime('%I:%M %p').lstrip('0')} for time in time_slots]
+        doctor.time_slots = formatted_time_slots
 
     if request.method == 'POST':
         doctor_id = request.POST.get('doctor_id')
