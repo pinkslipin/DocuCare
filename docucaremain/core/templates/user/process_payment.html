@@ -38,15 +38,44 @@
         <a href="{% url 'patient_billing_records' %}" class="btn-secondary">Back to Billing Records</a>
     </form>
 </div>
+
+<!-- Snackbar -->
+<div id="snackbar">
+    <span id="snackbar-message">Are you sure you want to submit this payment?</span>
+    <div id="snackbar-buttons">
+        <button onclick="confirmPayment()">Yes</button>
+        <button onclick="hideSnackbar()">No</button>
+    </div>
+</div>
+
 <script>
     function validatePayment() {
         const paymentAmount = parseFloat(document.querySelector('input[name="payment_amount"]').value);
         const balanceDue = parseFloat("{{ record.balance_due|floatformat:2 }}");
         if (paymentAmount > balanceDue) {
-            alert("Payment amount cannot exceed balance due.");
+            showSnackbar("Payment amount cannot exceed balance due.", false);
             return false;  // Prevent form submission
         }
-        return confirm("Are you sure you want to submit this payment?");
+        showSnackbar("Are you sure you want to submit this payment?", true);
+        return false;  // Prevent form submission until confirmed
+    }
+
+    function showSnackbar(message, showButtons) {
+        const snackbar = document.getElementById('snackbar');
+        const snackbarMessage = document.getElementById('snackbar-message');
+        const snackbarButtons = document.getElementById('snackbar-buttons');
+        snackbarMessage.textContent = message;
+        snackbar.className = "show";
+        snackbarButtons.style.display = showButtons ? "block" : "none";
+    }
+
+    function hideSnackbar() {
+        const snackbar = document.getElementById('snackbar');
+        snackbar.className = snackbar.className.replace("show", "");
+    }
+
+    function confirmPayment() {
+        document.getElementById('paymentForm').submit();
     }
 </script>
 {% endblock %}

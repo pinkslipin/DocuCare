@@ -534,7 +534,7 @@ def view_medical_test_applications(request):
     return render(request, 'admin/view_medical_test_applications.html', {'applications': applications})
 
 @login_required
-def view_prescriptions(request):
+def view_prescriptions(request):    
     patient_profile = get_object_or_404(PatientProfile, user=request.user)
     prescriptions = Prescription.objects.filter(patient=patient_profile)
     today = date.today()

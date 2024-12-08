@@ -17,10 +17,10 @@
                     {{ doctor.name }} - {{ doctor.specialization }} - {{ doctor.user.username }}
                     <div class="doctor-actions">
                         <a href="{% url 'view_doctor' doctor.pk %}">View</a>
-                        <form method="post" action="{% url 'doctor_delete' doctor.pk %}" style="display:inline;">
+                        <!-- <form method="post" action="{% url 'doctor_delete' doctor.pk %}" style="display:inline;">
                             {% csrf_token %}
                             <a>Delete</a>
-                        </form>
+                        </form> -->
                     </div>
                 </li>
             {% endfor %}

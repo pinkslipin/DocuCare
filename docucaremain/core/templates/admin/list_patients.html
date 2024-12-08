@@ -11,10 +11,10 @@
                 <h2>{{ patient.user.username }}</h2>
                 <div class="patient-actions">
                     <a href="{% url 'view_patient' patient.id %}">View</a>
-                    <form method="post" action="{% url 'delete_patient' patient.id %}" style="display:inline;">
+                    <!-- <form method="post" action="{% url 'delete_patient' patient.id %}" style="display:inline;">
                         {% csrf_token %}
                         <a >Delete</a>
-                    </form>
+                    </form> -->
                 </div>
             </li>
         {% endfor %}

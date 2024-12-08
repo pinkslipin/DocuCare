@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Add a New Prescription{% endblock %}
+{% block title %}Prescription Form{% endblock %}
 
 {% block content %}
 <div class="main-content">
-    <h1>Add a New Prescription</h1>
-    <form method="post">
+    <h1>Prescription Form</h1>
+    <form id="prescriptionForm" method="post" onsubmit="return validatePrescription()">
         {% csrf_token %}
         <div class="form-group">
             <label for="{{ form.patient.id_for_label }}">Patient:</label>
@@ -14,22 +14,6 @@
             </div>
             {% if form.patient.errors %}
                 <div class="alert alert-danger">{{ form.patient.errors }}</div>
-            {% endif %}
-
-            <label for="{{ form.date.id_for_label }}">Date:</label>
-            <div class="input-field">
-                {{ form.date }}
-            </div>
-            {% if form.date.errors %}
-                <div class="alert alert-danger">{{ form.date.errors }}</div>
-            {% endif %}
-
-            <label for="{{ form.time.id_for_label }}">Time:</label>
-            <div class="input-field">
-                {{ form.time }}
-            </div>
-            {% if form.time.errors %}
-                <div class="alert alert-danger">{{ form.time.errors }}</div>
             {% endif %}
 
             <label for="{{ form.medication.id_for_label }}">Medication:</label>
@@ -44,4 +28,38 @@
         <a href="{% url 'prescription_list' %}" class="btn-back">Back to Prescription List</a>
     </form>
 </div>
+
+<!-- Snackbar -->
+<div id="snackbar">
+    <span id="snackbar-message">Are you sure you want to save this prescription?</span>
+    <div id="snackbar-buttons">
+        <button onclick="confirmSave()">Yes</button>
+        <button onclick="hideSnackbar()">No</button>
+    </div>
+</div>
+
+<script>
+    function validatePrescription() {
+        showSnackbar("Are you sure you want to save this prescription?", true);
+        return false;  // Prevent form submission until confirmed
+    }
+
+    function showSnackbar(message, showButtons) {
+        const snackbar = document.getElementById('snackbar');
+        const snackbarMessage = document.getElementById('snackbar-message');
+        const snackbarButtons = document.getElementById('snackbar-buttons');
+        snackbarMessage.textContent = message;
+        snackbar.className = "show";
+        snackbarButtons.style.display = showButtons ? "block" : "none";
+    }
+
+    function hideSnackbar() {
+        const snackbar = document.getElementById('snackbar');
+        snackbar.className = snackbar.className.replace("show", "");
+    }
+
+    function confirmSave() {
+        document.getElementById('prescriptionForm').submit();
+    }
+</script>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% block content %}
 <div class="main-content">
     <h1>Book a Consultation</h1>
-    <form method="post">
+    <form id="bookConsultationForm" method="post" onsubmit="return validateBooking()">
         {% csrf_token %}
         <div class="form-group">
             <label for="{{ form.doctor.id_for_label }}">Doctor:</label>
@@ -45,4 +45,38 @@
         <a href="{% url 'select_consultation' %}" class="btn btn-secondary">Back to Select Consultation</a>
     </form>
 </div>
+
+<!-- Snackbar -->
+<div id="snackbar">
+    <span id="snackbar-message">Are you sure you want to book this consultation?</span>
+    <div id="snackbar-buttons">
+        <button onclick="confirmBooking()">Yes</button>
+        <button onclick="hideSnackbar()">No</button>
+    </div>
+</div>
+
+<script>
+    function validateBooking() {
+        showSnackbar("Are you sure you want to book this consultation?", true);
+        return false;  // Prevent form submission until confirmed
+    }
+
+    function showSnackbar(message, showButtons) {
+        const snackbar = document.getElementById('snackbar');
+        const snackbarMessage = document.getElementById('snackbar-message');
+        const snackbarButtons = document.getElementById('snackbar-buttons');
+        snackbarMessage.textContent = message;
+        snackbar.className = "show";
+        snackbarButtons.style.display = showButtons ? "block" : "none";
+    }
+
+    function hideSnackbar() {
+        const snackbar = document.getElementById('snackbar');
+        snackbar.className = snackbar.className.replace("show", "");
+    }
+
+    function confirmBooking() {
+        document.getElementById('bookConsultationForm').submit();
+    }
+</script>
 {% endblock %}
