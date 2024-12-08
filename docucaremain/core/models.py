@@ -161,13 +161,6 @@ class MedicalTestApplication(models.Model):
         return f"{self.patient.full_name} applied for {self.medical_test.name}"
 
 
-# Patient model
-class Patient(models.Model):
-    name = models.CharField(max_length=100)
-    contact = models.CharField(max_length=100)
-    
-    def __str__(self):
-        return self.name
 
 
 # Prescription model
@@ -181,14 +174,3 @@ class Prescription(models.Model):
 
     def __str__(self):
         return f"Prescription for {self.patient.full_name} - {self.medication}"
-
-
-# Appointment model
-class Appointment(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    date = models.DateField()
-    time = models.TimeField()
-    status = models.CharField(max_length=20, default='scheduled')
-    
-    def __str__(self):
-        return f"Appointment for {self.patient.name} on {self.date}"
