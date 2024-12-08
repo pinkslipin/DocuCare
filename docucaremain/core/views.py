@@ -33,7 +33,7 @@ from .models import (
     Patient,
     MedicalTestApplication
 )
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -535,8 +535,10 @@ def view_medical_test_applications(request):
 
 @login_required
 def view_prescriptions(request):
-    prescriptions = Prescription.objects.filter(patient__user=request.user)
-    return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions})
+    patient_profile = get_object_or_404(PatientProfile, user=request.user)
+    prescriptions = Prescription.objects.filter(patient=patient_profile)
+    today = date.today()
+    return render(request, 'user/view_prescriptions.html', {'prescriptions': prescriptions, 'today': today})
 
 @login_required
 def add_notes(request, consultation_id):
