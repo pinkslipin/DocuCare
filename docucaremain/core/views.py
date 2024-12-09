@@ -164,11 +164,13 @@ def doctor_list(request):
     return render(request, 'admin/doctor_list.html', {'form': form, 'doctors': doctors})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def view_doctor(request, pk):
     doctor = get_object_or_404(Doctor, pk=pk)
     return render(request, 'admin/view_doctor.html', {'doctor': doctor})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def medical_test_update(request, test_id):
     test = get_object_or_404(MedicalTest, id=test_id)
     form = MedicalTestForm(request.POST or None, instance=test)
@@ -178,6 +180,7 @@ def medical_test_update(request, test_id):
     return render(request, 'admin/medical_test_form.html', {'form': form})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def medical_test_delete(request, test_id):
     test = get_object_or_404(MedicalTest, id=test_id)
     if request.method == "POST":
@@ -187,6 +190,7 @@ def medical_test_delete(request, test_id):
 
 # Doctor Profile Edit (Admin-Only)
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def edit_profile(request):
     user = request.user  # This refers to the User instance
     doctor = get_object_or_404(Doctor, user=user)
@@ -264,6 +268,7 @@ def patient_billing_records(request):
     return render(request, 'user/patient_billing_records.html', {'records': records})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def delete_billing_record(request, record_id):
     record = get_object_or_404(BillingRecord, id=record_id)
     if record.patient.user == request.user:
@@ -449,6 +454,7 @@ def consultation_success(request):
 
 # List Consultations
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def consultation_list(request):
     if request.user.is_staff:
         consultations = Consultation.objects.all()
@@ -565,6 +571,7 @@ def view_consultations(request):
     return render(request, 'user/view_consultations.html', {'consultations': consultations})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff)
 def view_own_doctor_profile(request):
     doctor_profile = get_object_or_404(Doctor, user=request.user)
     return render(request, 'admin/view_own_doctor_profile.html', {'doctor': doctor_profile})
