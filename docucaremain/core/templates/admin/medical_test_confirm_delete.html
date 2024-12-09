@@ -7,8 +7,14 @@
     <h1>Are you sure you want to delete {{ test.name }}?</h1>
     <form id="deleteTestForm" method="post" onsubmit="return validateDelete()">
         {% csrf_token %}
+        <div class="form-group">
+            <label for="medical-test-details">Medical Test Details:</label>
+            <div class="input-field">
+                <p id="medical-test-details">{{ test.name }} - {{ test.description }} - Php {{ test.price }}</p>
+            </div>
+        </div>
         <button type="submit" class="btn-primary">Yes, delete</button>
-        <a href="{% url 'medical_test_management' %}" class="btn-secondary">Cancel</a>
+        <a href="{% url 'medical_test_management' %}" class="btn-back">Cancel</a>
     </form>
 </div>
 

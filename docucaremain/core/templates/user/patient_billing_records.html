@@ -32,10 +32,7 @@
                 </td>
                 <td class="actions-cell">
                     {% if record.status == 'Completed' %}
-                        <!-- <form method="post" action="{% url 'delete_billing_record' record.id %}" style="display:inline;">
-                            {% csrf_token %} -->
-                            <a class="button pay">Complete</a>
-                        <!-- </form>  -->
+                            <a class="button pay" style="color: black;">Complete</a>
                     {% else %}
                         <a class="button pay" href="{% url 'process_payment' record.id %}">Pay</a>
                     {% endif %}
